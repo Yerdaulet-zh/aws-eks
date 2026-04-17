@@ -1,4 +1,10 @@
 variable "cluster_config" {
+  description = <<EOT
+    Configuration object for the EKS Cluster, including networking, security, and resiliency settings.
+
+    Zonal shift: https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-shift.resource-types.eks.html
+  EOT
+
   type = object({
     cluster_name                  = string
     cluster_version               = number
@@ -14,6 +20,8 @@ variable "cluster_config" {
     upgrade_policy = object({
       support_type = string
     })
+
+    zonal_shift_enabled = bool
   })
 
   default = {
@@ -31,6 +39,8 @@ variable "cluster_config" {
     upgrade_policy = {
       support_type = "STANDARD"
     }
+
+    zonal_shift_enabled = false
   }
 }
 
