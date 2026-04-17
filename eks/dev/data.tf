@@ -12,12 +12,12 @@ data "terraform_remote_state" "vpc" {
 
 # Fetch the NVIDIA-optimized AMI version
 data "aws_ssm_parameter" "eks_ami_nvidia_amazon_linux_2023" {
-  name = "/aws/service/eks/optimized-ami/${var.cluster_version}/amazon-linux-2023/x86_64/nvidia/recommended/release_version"
+  name = "/aws/service/eks/optimized-ami/${var.cluster_config.cluster_version}/amazon-linux-2023/x86_64/nvidia/recommended/release_version"
 }
 
 # General-purpose EKS-optimized AMI
 data "aws_ssm_parameter" "eks_ami_amazon_linux_2023" {
-  name = "/aws/service/eks/optimized-ami/${var.cluster_version}/amazon-linux-2023/arm64/standard/recommended/release_version"
+  name = "/aws/service/eks/optimized-ami/${var.cluster_config.cluster_version}/amazon-linux-2023/arm64/standard/recommended/release_version"
 }
 
 data "aws_route53_zone" "zones" {
