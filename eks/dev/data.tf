@@ -24,3 +24,7 @@ data "aws_route53_zone" "zones" {
   for_each = toset(local.domains)
   name     = each.value
 }
+
+data "aws_vpc" "this" {
+  id = data.terraform_remote_state.vpc.vpc_id
+}
