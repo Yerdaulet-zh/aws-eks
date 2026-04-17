@@ -88,15 +88,47 @@ EOT
   type = object({
     endpoint_private_access = bool
     endpoint_public_access  = bool
-    public_access_cidrs     = list(string)
+    public_access_cidrs     = list(string) # list(string)
     security_group_ids      = list(string)
   })
 
   default = {
     endpoint_private_access = true
     endpoint_public_access  = true
-    public_access_cidrs     = ["0.0.0.0/0"]
-    security_group_ids      = []
+    public_access_cidrs = [
+      # ---------- IPv4 ----------
+      # Kazakhtelecom
+      "2.132.0.0/14, 95.56.0.0/14, 147.30.0.0/16",
+
+      # Kcell / Activ
+      "2.72.0.0/13, 164.0.0.0/16",
+
+      # Kar-Tel (Beeline)
+      "5.34.0.0/17, 37.99.0.0/17, 87.247.0.0/18",
+
+      # Tele2 / Altel
+      "176.64.0.0/16, 188.162.0.0/16",
+
+      # ---------- IPv6 ----------
+      # Kcell / Activ,
+      "2a02:50c0::/29",
+
+      # Kazakhtelecom
+      "2a00:13c8::/32",
+
+      # Mobile Telecom-Service (Tele2/Altel)
+      "2a03:32c0::/32",
+
+      # Kar-Tel (Beeline)
+      "2a10:b780::/29",
+
+      # Freedom Telecom
+      "2a04:3b00::/29",
+
+      # Yandex Cloud (KZ)
+      "2a12:5a40::/29"
+    ]
+    security_group_ids = []
   }
 }
 
