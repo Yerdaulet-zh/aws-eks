@@ -28,3 +28,9 @@ data "aws_route53_zone" "zones" {
 data "aws_vpc" "this" {
   id = data.terraform_remote_state.vpc.vpc_id
 }
+
+data "aws_eks_addon_version" "latest_coredns" {
+  addon_name         = "coredns"
+  kubernetes_version = aws_eks_cluster.main.version
+  most_recent        = true
+}
