@@ -61,3 +61,13 @@ resource "aws_eks_addon" "core_dns" {
     }
   })
 }
+
+# ------ Kube-Proxy Addon ------
+resource "aws_eks_addon" "kube_proxy" {
+  cluster_name                = aws_eks_cluster.main.name
+  addon_name                  = "kube-proxy"
+  addon_version               = data.aws_eks_addon_version.latest_kube_proxy.version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "PRESERVE"
+  preserve                    = true
+}
