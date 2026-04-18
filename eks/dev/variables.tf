@@ -142,3 +142,39 @@ EOT
   }
 }
 
+variable "cluster_access_config" {
+  description = <<EOT
+    - Cluster Access Configuration only supports access_entry type of "STANDARD"
+    - Configuration is designed to manage multiple users including cluster admin
+EOT
+  type = list(object({
+    user_arn          = string
+    kubernetes_groups = list(string)
+    policy_arn        = string
+    access_scope = object({
+      type       = string
+      namespaces = list(string)
+    })
+  }))
+
+  default = [
+    {
+      user_arn          = "admin_iam_user_arn"
+      kubernetes_groups = []
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      access_scope = {
+        type       = "cluster"
+        namespaces = []
+      }
+    },
+    {
+      user_arn          = "network_iam_user_arn"
+      kubernetes_groups = ["junior-network-manager"]                                   # restrict via RBAC the permissions to certain groups and resources
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy" # for jun-network engineer might be dangerous
+      access_scope = {
+        type       = "namespace"
+        namespaces = ["dev-frontend", "dev-backend"]
+      }
+    },
+  ]
+}
