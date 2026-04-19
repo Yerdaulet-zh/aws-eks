@@ -121,7 +121,7 @@ resource "aws_eks_addon" "vpc_cni" {
       var.kubernetes_network_config.ip_family == "ipv4" ? {
         MINIMUM_IP_TARGET  = tostring(var.addon_configs.vpc_cni.minimum_ip_target)
         WARM_IP_TARGET     = tostring(var.addon_configs.vpc_cni.warm_ip_target)
-        WARM_PREFIX_TARGET = "0"
+        WARM_PREFIX_TARGET = tostring(var.addon_configs.vpc_cni.warm_prefix_target)
       } : {}
     )
   })
