@@ -121,3 +121,58 @@ resource "aws_eks_addon" "vpc_cni" {
     }
   })
 }
+
+# ------ EBS CSI Addon ------
+data "aws_iam_policy_document" "ebs_csi_pod_identity_trust" {
+  statement {
+    actions = ["sts:AssumeRole", "sts:TagSession"]
+    effect  = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["pods.eks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "ebs_csi_role" {
+  name               = "${aws_eks_cluster.main.name}-ebs-csi-role"
+  assume_role_policy = data.aws_iam_policy_document.ebs_csi_pod_identity_trust.json
+}
+
+resource "aws_iam_role_policy_attachment" "ebs_csi_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.ebs_csi_role.name
+}
+
+resource "aws_eks_pod_identity_association" "ebs_csi" {
+  cluster_name    = aws_eks_cluster.main.name
+  namespace       = "kube-system"
+  service_account = "ebs-csi-controller-sa"
+  role_arn        = aws_iam_role.ebs_csi_role.arn
+}
+
+resource "aws_eks_addon" "ebs_csi" {
+  cluster_name  = aws_eks_cluster.main.name
+  addon_name    = "aws-ebs-csi-driver"
+  addon_version = data.aws_eks_addon_version.latest_ebs_csi.version
+
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "PRESERVE"
+  preserve                    = true
+
+  configuration_values = jsonencode({
+    controller = {
+      resources = {
+        limits = {
+          cpu    = "100m"
+          memory = "128Mi"
+        }
+        requests = {
+          cpu    = "10m"
+          memory = "64Mi"
+        }
+      }
+    }
+  })
+}
