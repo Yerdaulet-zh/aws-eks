@@ -90,6 +90,53 @@ resource "aws_iam_role" "cni_role" {
   assume_role_policy = data.aws_iam_policy_document.vpc_cni_pod_identity.json
 }
 
+# If the cluster is IPv6 then we need to add this policy.
+# Default AmazonEKS_CNI_Policy has no policies approporate to IPv6
+
+# This document aligns with the official AWS EKS IPv6 documentation
+# See: https://docs.aws.amazon.com/eks/latest/userguide/deploy-ipv6-cluster.html
+data "aws_iam_policy_document" "vpc_cni_ipv6" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ec2:AssignIpv6Addresses",
+      "ec2:DescribeInstances",
+      "ec2:DescribeTags",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeInstanceTypes"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ec2:CreateTags"
+    ]
+    resources = ["arn:aws:ec2:*:*:network-interface/*"]
+  }
+}
+
+resource "aws_iam_policy" "vpc_cni_ipv6" {
+  count  = var.kubernetes_network_config.ip_family == "ipv6" ? 1 : 0
+  name   = "${aws_eks_cluster.main.name}-vpc-cni-ipv6-policy"
+  path   = "/"
+  policy = data.aws_iam_policy_document.vpc_cni_ipv6.json
+}
+
+# Attach the Standard IPv4 Managed Policy (Always needed for basic EC2 actions)
+resource "aws_iam_role_policy_attachment" "vpc_cni_managed" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.cni_role.name
+}
+
+# Attach the Custom IPv6 Policy (Only if family is ipv6)
+resource "aws_iam_role_policy_attachment" "vpc_cni_ipv6" {
+  count      = var.kubernetes_network_config.ip_family == "ipv6" ? 1 : 0
+  policy_arn = aws_iam_policy.vpc_cni_ipv6[0].arn
+  role       = aws_iam_role.cni_role.name
+}
+
 resource "aws_eks_pod_identity_association" "vpc_cni" {
   cluster_name    = aws_eks_cluster.main.name
   namespace       = "kube-system"
@@ -100,7 +147,7 @@ resource "aws_eks_pod_identity_association" "vpc_cni" {
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name  = aws_eks_cluster.main.name
   addon_name    = "vpc-cni"
-  addon_version = data.aws_eks_addon_version.latest_vpc_cni.version
+  addon_version = var.addon_configs.vpc_cni.vpc_cni_version
 
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
