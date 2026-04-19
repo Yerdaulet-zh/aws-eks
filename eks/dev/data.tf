@@ -47,3 +47,9 @@ data "aws_eks_addon_version" "latest_vpc_cni" {
   kubernetes_version = aws_eks_cluster.main.version
   most_recent        = true
 }
+
+data "aws_eks_addon_version" "latest_ebs_csi" {
+  addon_name         = "aws-ebs-csi-driver"
+  kubernetes_version = aws_eks_cluster.main.version
+  most_recent        = true
+}
