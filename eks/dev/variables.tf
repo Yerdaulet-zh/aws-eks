@@ -178,3 +178,25 @@ EOT
     },
   ]
 }
+
+variable "addon_configs" {
+  type = object({
+    vpc_cni = object({
+      enable_prefix_delegation = bool
+      disable_tcp_early_demux  = bool
+      minimum_ip_target        = number
+      warm_ip_target           = number
+      warm_prefix_target       = number
+    })
+  })
+
+  default = {
+    vpc_cni = {
+      enable_prefix_delegation = true,
+      disable_tcp_early_demux  = true,
+      minimum_ip_target        = 16,
+      warm_ip_target           = 10,
+      warm_prefix_target       = 0,
+    }
+  }
+}
