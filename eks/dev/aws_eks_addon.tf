@@ -107,18 +107,23 @@ resource "aws_eks_addon" "vpc_cni" {
   preserve                    = true
 
   configuration_values = jsonencode({
-    env = {
-      # Enable Prefix Delegation for high pod density.
-      # See: https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-      ENABLE_PREFIX_DELEGATION = "true"
-      MINIMUM_IP_TARGET        = "16"
-      WARM_IP_TARGET           = "10"
-      WARM_PREFIX_TARGET       = "0"
+    env = merge(
+      {
+        # Enable Prefix Delegation for high pod density.
+        # See: https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+        ENABLE_PREFIX_DELEGATION = tostring(var.addon_configs.vpc_cni.enable_prefix_delegation)
 
-      # Recommended to avoid "stuck traffic" (timeouts) & NetworkPolicies wont take affect when the PODs in the same node.
-      # All because of the shorcut of packets, if it sees the destination being local then directly delivers to POD by skipping Policies.
-      DISABLE_TCP_EARLY_DEMUX = "true"
-    }
+        # Recommended to avoid "stuck traffic" (timeouts) & NetworkPolicies wont take affect when the PODs in the same node.
+        # All because of the shorcut of packets, if it sees the destination being local then directly delivers to POD by skipping Policies.
+        DISABLE_TCP_EARLY_DEMUX = tostring(var.addon_configs.vpc_cni.disable_tcp_early_demux)
+      },
+      # Only inject these if we are in IPv4 mode
+      var.kubernetes_network_config.ip_family == "ipv4" ? {
+        MINIMUM_IP_TARGET  = tostring(var.addon_configs.vpc_cni.minimum_ip_target)
+        WARM_IP_TARGET     = tostring(var.addon_configs.vpc_cni.warm_ip_target)
+        WARM_PREFIX_TARGET = "0"
+      } : {}
+    )
   })
 }
 
