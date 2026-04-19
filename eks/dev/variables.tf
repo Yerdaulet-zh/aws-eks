@@ -182,6 +182,7 @@ EOT
 variable "addon_configs" {
   type = object({
     vpc_cni = object({
+      vpc_cni_version          = string
       enable_prefix_delegation = bool
       disable_tcp_early_demux  = bool
       minimum_ip_target        = number
@@ -192,6 +193,8 @@ variable "addon_configs" {
 
   default = {
     vpc_cni = {
+      # If null then default "stable" version for that specific cluster version
+      vpc_cni_version          = null
       enable_prefix_delegation = true,
       disable_tcp_early_demux  = true,
       minimum_ip_target        = 16,
