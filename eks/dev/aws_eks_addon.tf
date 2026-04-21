@@ -147,7 +147,7 @@ resource "aws_eks_pod_identity_association" "vpc_cni" {
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name  = aws_eks_cluster.main.name
   addon_name    = "vpc-cni"
-  addon_version = var.addon_configs.vpc_cni.vpc_cni_version
+  addon_version = var.addon_configs.vpc_cni.addon_version
 
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
@@ -207,7 +207,7 @@ resource "aws_eks_pod_identity_association" "ebs_csi" {
 resource "aws_eks_addon" "ebs_csi" {
   cluster_name  = aws_eks_cluster.main.name
   addon_name    = "aws-ebs-csi-driver"
-  addon_version = data.aws_eks_addon_version.latest_ebs_csi.version
+  addon_version = var.addon_configs.ebs_csi.addon_version
 
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
@@ -217,12 +217,12 @@ resource "aws_eks_addon" "ebs_csi" {
     controller = {
       resources = {
         limits = {
-          cpu    = "100m"
-          memory = "128Mi"
+          cpu    = var.addon_configs.ebs_csi.controller.resources.limits.cpu
+          memory = var.addon_configs.ebs_csi.controller.resources.limits.memory
         }
         requests = {
-          cpu    = "10m"
-          memory = "64Mi"
+          cpu    = var.addon_configs.ebs_csi.controller.resources.requests.cpu
+          memory = var.addon_configs.ebs_csi.controller.resources.requests.memory
         }
       }
     }
