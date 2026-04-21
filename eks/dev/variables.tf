@@ -401,3 +401,98 @@ variable "addon_configs" {
     }
   }
 }
+
+variable "node_group_configs" {
+  type = map(object({
+    node_group_name = string
+    instance_types  = list(string)
+    capacity_type   = string # "ON_DEMAND" or "SPOT"
+    subnet_ids      = list(string)
+    role_key        = string
+
+    # Scaling settings
+    desired_size = number
+    max_size     = number
+    min_size     = number
+
+    # Kubernetes labels and taints
+    labels = map(string)
+    taints = list(object({
+      key    = string
+      value  = string
+      effect = string
+    }))
+  }))
+
+  default = {
+    # General purpose nodes
+    "app1" = {
+      node_group_name = "app-workloads-1"
+      instance_types  = ["t3.small", "t3.medium", "t3.large"]
+      capacity_type   = "ON_DEMAND"
+      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets[0]]
+      role_key        = "app*"
+      desired_size    = 1
+      max_size        = 2
+      min_size        = 0
+      labels          = { role = "state-full-less-apps" }
+      taints          = []
+    },
+    "app2" = {
+      node_group_name = "app-workloads-2"
+      instance_types  = ["t3.small", "t3.medium", "t3.large"]
+      capacity_type   = "ON_DEMAND"
+      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets[0]]
+      role_key        = "app*"
+      desired_size    = 1
+      max_size        = 2
+      min_size        = 0
+      labels          = { role = "state-full-less-apps" }
+      taints          = []
+    },
+    # Spot instances
+    "ai-ml-workers" = {
+      node_group_name = "ai-ml-workers"
+      instance_types  = ["t4g.small", "t4g.medium", "t4g.large"]
+      capacity_type   = "SPOT"
+      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets[0]]
+      role_key        = "ai-ml-workloads"
+      desired_size    = 1
+      max_size        = 2
+      min_size        = 0
+      labels          = { role = "ai-worker" }
+      taints = [{
+        key    = "workload"
+        value  = "heavy"
+        effect = "NO_SCHEDULE"
+      }]
+    }
+  }
+}
+
+variable "node_group_iam_configs" {
+  type = map(object({
+    role_name              = string
+    enable_ssm             = bool
+    enable_cloudwatch_logs = bool
+    enable_ecr_ro_access   = bool
+    custom_policy_arns     = list(string)
+  }))
+
+  default = {
+    "app*" = {
+      role_name              = "general-purpose-app"
+      enable_ssm             = true
+      enable_cloudwatch_logs = true
+      enable_ecr_ro_access   = true
+      custom_policy_arns     = []
+    },
+    "ai-ml-workloads" = {
+      role_name              = "ai-ml-workloads"
+      enable_ssm             = true
+      enable_cloudwatch_logs = true
+      enable_ecr_ro_access   = true
+      custom_policy_arns     = []
+    }
+  }
+}
