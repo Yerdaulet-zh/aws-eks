@@ -217,6 +217,26 @@ variable "addon_configs" {
       enable_custom_affinity = bool
     })
 
+    kube_proxy = object({
+      addon_version = string
+      resources = object({
+        limits = object({
+          cpu    = string
+          memory = string
+        })
+        requests = object({
+          cpu    = string
+          memory = string
+        })
+      })
+      tolerations = list(
+        object({
+          operator = string
+          effect   = string
+        })
+      )
+    })
+
     vpc_cni = object({
       addon_version            = string
       enable_prefix_delegation = bool
@@ -303,6 +323,30 @@ variable "addon_configs" {
         }
       }
       enable_custom_affinity = true
+    }
+
+    kube_proxy = {
+      addon_version = null
+      resources = {
+        limits = {
+          cpu    = "100m"
+          memory = "128Mi"
+        }
+        requests = {
+          cpu    = "10m"
+          memory = "64Mi"
+        }
+      }
+      tolerations = [
+        {
+          operator = "Exists"
+          effect   = "NoSchedule"
+        },
+        {
+          operator = "Exists"
+          effect   = "NoExecute"
+        }
+      ]
     }
 
     vpc_cni = {

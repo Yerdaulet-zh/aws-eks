@@ -2,7 +2,7 @@
 resource "aws_eks_addon" "pod_identity_agent" {
   cluster_name                = aws_eks_cluster.main.name
   addon_name                  = "eks-pod-identity-agent"
-  addon_version               = var.addon_configs.pod_identity_agent.addon_version # Use the latest version for your K8s version
+  addon_version               = var.addon_configs.pod_identity_agent.addon_version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
   preserve                    = true
@@ -40,10 +40,15 @@ resource "aws_eks_addon" "core_dns" {
 resource "aws_eks_addon" "kube_proxy" {
   cluster_name                = aws_eks_cluster.main.name
   addon_name                  = "kube-proxy"
-  addon_version               = data.aws_eks_addon_version.latest_kube_proxy.version
+  addon_version               = var.addon_configs.kube_proxy.addon_version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
   preserve                    = true
+
+  configuration_values = jsonencode({
+    resources   = var.addon_configs.kube_proxy.resources
+    tolerations = var.addon_configs.kube_proxy.tolerations
+  })
 }
 
 # ------ VPC CNI Addon ------
