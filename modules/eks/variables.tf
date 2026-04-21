@@ -430,7 +430,7 @@ variable "node_group_configs" {
       node_group_name = "app-workloads-1"
       instance_types  = ["t3.small", "t3.medium", "t3.large"]
       capacity_type   = "ON_DEMAND"
-      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets[0]]
+      subnet_ids      = []
       role_key        = "app*"
       desired_size    = 1
       max_size        = 2
@@ -442,7 +442,7 @@ variable "node_group_configs" {
       node_group_name = "app-workloads-2"
       instance_types  = ["t3.small", "t3.medium", "t3.large"]
       capacity_type   = "ON_DEMAND"
-      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets[0]]
+      subnet_ids      = []
       role_key        = "app*"
       desired_size    = 1
       max_size        = 2
@@ -455,7 +455,7 @@ variable "node_group_configs" {
       node_group_name = "ai-ml-workers"
       instance_types  = ["t4g.small", "t4g.medium", "t4g.large"]
       capacity_type   = "SPOT"
-      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets[0]]
+      subnet_ids      = []
       role_key        = "ai-ml-workloads"
       desired_size    = 1
       max_size        = 2
