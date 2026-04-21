@@ -1,9 +1,4 @@
 locals {
-  domains = [
-    "imon.work",
-    "imon.academy"
-  ]
-
   contol_plane_subnets = [
     data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"],
     data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_b"]
