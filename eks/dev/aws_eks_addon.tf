@@ -217,11 +217,11 @@ resource "aws_eks_addon" "ebs_csi" {
     controller = {
       resources = {
         limits = {
-          cpu    = var.addon_configs.ebs_csi.controller.resources.limits.cpu
+          cpu    = var.addon_configs.ebs_csi.controller.resources.limits.cpu,
           memory = var.addon_configs.ebs_csi.controller.resources.limits.memory
         }
         requests = {
-          cpu    = var.addon_configs.ebs_csi.controller.resources.requests.cpu
+          cpu    = var.addon_configs.ebs_csi.controller.resources.requests.cpu,
           memory = var.addon_configs.ebs_csi.controller.resources.requests.memory
         }
       }
