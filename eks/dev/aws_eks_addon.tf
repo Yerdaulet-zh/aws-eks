@@ -34,6 +34,8 @@ resource "aws_eks_addon" "core_dns" {
       label_value     = "coredns"
     })) : null # Using null allows the addon to use its internal defaults
   })
+
+  depends_on = [aws_eks_addon.pod_identity_agent]
 }
 
 # ------ Kube-Proxy Addon ------
@@ -49,6 +51,8 @@ resource "aws_eks_addon" "kube_proxy" {
     resources   = var.addon_configs.kube_proxy.resources
     tolerations = var.addon_configs.kube_proxy.tolerations
   })
+
+  depends_on = [aws_eks_addon.pod_identity_agent]
 }
 
 # ------ VPC CNI Addon ------
@@ -151,6 +155,8 @@ resource "aws_eks_addon" "vpc_cni" {
       } : {}
     )
   })
+
+  depends_on = [aws_eks_addon.pod_identity_agent]
 }
 
 # ------ EBS CSI Addon ------
@@ -213,4 +219,6 @@ resource "aws_eks_addon" "ebs_csi" {
       tolerations = var.addon_configs.ebs_csi.node.tolerations
     }
   })
+
+  depends_on = [aws_eks_addon.pod_identity_agent]
 }
