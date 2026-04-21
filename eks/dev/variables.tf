@@ -209,6 +209,7 @@ variable "addon_configs" {
     ebs_csi = object({
       addon_version = string
       controller = object({
+        replicaCount = number
         resources = object({
           limits = object({
             cpu    = string
@@ -250,6 +251,7 @@ variable "addon_configs" {
       addon_version = null
       controller = {
         resources = {
+          replicaCount = 3
           limits = {
             cpu    = "100m"
             memory = "128Mi"

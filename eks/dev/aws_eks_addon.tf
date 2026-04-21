@@ -217,6 +217,7 @@ resource "aws_eks_addon" "ebs_csi" {
     # Deployment
     controller = {
       resources = {
+        replicaCount = var.addon_configs.ebs_csi.controller.resources.replicaCount
         limits = {
           cpu    = var.addon_configs.ebs_csi.controller.resources.limits.cpu,
           memory = var.addon_configs.ebs_csi.controller.resources.limits.memory
