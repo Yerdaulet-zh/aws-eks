@@ -1,3 +1,18 @@
+# ------ Pod Identity Agent Addon ------
+resource "aws_eks_addon" "pod_identity_agent" {
+  cluster_name                = aws_eks_cluster.main.name
+  addon_name                  = "eks-pod-identity-agent"
+  addon_version               = var.addon_configs.pod_identity_agent.addon_version # Use the latest version for your K8s version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "PRESERVE"
+  preserve                    = true
+
+  configuration_values = jsonencode({
+    resources   = var.addon_configs.pod_identity_agent.resources
+    tolerations = var.addon_configs.pod_identity_agent.tolerations
+  })
+}
+
 # ------ CoreDNS Addon ------
 resource "aws_eks_addon" "core_dns" {
   cluster_name                = aws_eks_cluster.main.name
@@ -189,7 +204,8 @@ resource "aws_eks_addon" "ebs_csi" {
 
     # DaemonSet
     node = {
-      resources = var.addon_configs.ebs_csi.node.resources
+      resources   = var.addon_configs.ebs_csi.node.resources
+      tolerations = var.addon_configs.ebs_csi.node.tolerations
     }
   })
 }

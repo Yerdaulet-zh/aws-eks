@@ -181,6 +181,26 @@ EOT
 
 variable "addon_configs" {
   type = object({
+    pod_identity_agent = object({
+      addon_version = string
+      resources = object({
+        limits = object({
+          cpu    = string
+          memory = string
+        })
+        requests = object({
+          cpu    = string
+          memory = string
+        })
+      })
+      tolerations = list(
+        object({
+          operator = string
+          effect   = string
+        })
+      )
+    })
+
     core_dns = object({
       addon_version = string
       replicaCount  = number
@@ -233,12 +253,42 @@ variable "addon_configs" {
             memory = string
           })
         })
+        tolerations = list(
+          object({
+            operator = string
+            effect   = string
+          })
+        )
       })
       enable_custom_affinity = bool
     })
   })
 
   default = {
+    pod_identity_agent = {
+      addon_version = null
+      resources = {
+        limits = {
+          cpu    = "100m"
+          memory = "128Mi"
+        }
+        requests = {
+          cpu    = "10m"
+          memory = "64Mi"
+        }
+      }
+      tolerations = [
+        {
+          operator = "Exists"
+          effect   = "NoSchedule"
+        },
+        {
+          operator = "Exists"
+          effect   = "NoExecute"
+        }
+      ]
+    }
+
     core_dns = {
       addon_version = null
       replicaCount  = 3
@@ -292,6 +342,16 @@ variable "addon_configs" {
             memory = "64Mi"
           }
         }
+        tolerations = [
+          {
+            operator = "Exists"
+            effect   = "NoSchedule"
+          },
+          {
+            operator = "Exists"
+            effect   = "NoExecute"
+          }
+        ]
       }
       enable_custom_affinity = true
     }
