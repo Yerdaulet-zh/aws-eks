@@ -182,12 +182,28 @@ EOT
 variable "addon_configs" {
   type = object({
     vpc_cni = object({
-      vpc_cni_version          = string
+      addon_version            = string
       enable_prefix_delegation = bool
       disable_tcp_early_demux  = bool
       minimum_ip_target        = number
       warm_ip_target           = number
       warm_prefix_target       = number
+    })
+
+    ebs_csi = object({
+      addon_version = string
+      controller = object({
+        resources = object({
+          limits = object({
+            cpu    = string
+            memory = string
+          })
+          requests = object({
+            cpu    = string
+            memory = string
+          })
+        })
+      })
     })
   })
 
@@ -200,6 +216,22 @@ variable "addon_configs" {
       minimum_ip_target        = 16,
       warm_ip_target           = 10,
       warm_prefix_target       = 0,
+    }
+
+    ebs_csi = {
+      addon_version = null
+      controller = {
+        resources = {
+          limits = {
+            cpu    = "100m"
+            memory = "128Mi"
+          }
+          requests = {
+            cpu    = "10m"
+            memory = "64Mi"
+          }
+        }
+      }
     }
   }
 }
