@@ -195,6 +195,13 @@ variable "addon_configs" {
           })
         })
       })
+
+      affinity = object({
+        weight = number
+        podAntiAffinity = object({
+          labelSelector = string
+        })
+      })
     })
 
     vpc_cni = object({
@@ -221,6 +228,7 @@ variable "addon_configs" {
           })
         })
       })
+
       node = object({
         resources = object({
           limits = object({
@@ -233,10 +241,26 @@ variable "addon_configs" {
           })
         })
       })
+
+      affinity = object({
+        weight = number
+        podAntiAffinity = object({
+          labelSelector = string
+        })
+      })
     })
   })
 
   default = {
+    core_dns = {
+      affinity = {
+        weight = 100
+        podAntiAffinity = {
+          labelSelector = "coredns"
+        }
+      }
+    }
+
     vpc_cni = {
       # If null then default "stable" version for that specific cluster version
       vpc_cni_version          = null
@@ -262,6 +286,7 @@ variable "addon_configs" {
           }
         }
       }
+
       node = {
         resources = {
           limits = {
@@ -272,6 +297,13 @@ variable "addon_configs" {
             cpu    = "10m"
             memory = "64Mi"
           }
+        }
+      }
+
+      affinity = {
+        weight = 100
+        podAntiAffinity = {
+          labelSelector = "coredns"
         }
       }
     }
