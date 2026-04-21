@@ -1,0 +1,44 @@
+{
+  "nodeAffinity": {
+    "preferredDuringSchedulingIgnoredDuringExecution": [{
+      "weight": ${weight},
+      "preference": {
+        "matchExpressions": [{
+          "key": "${capacity_key}",
+          "operator": "In",
+          "values": ${jsonencode(capacity_values)}
+        }]
+      }
+    }]
+  },
+  "podAntiAffinity": {
+    "preferredDuringSchedulingIgnoredDuringExecution": [
+      {
+        "weight": ${weight},
+        "podAffinityTerm": {
+          "labelSelector": {
+            "matchExpressions": [{
+              "key": "${label_key}",
+              "operator": "In",
+              "values": ["${label_value}"]
+            }]
+          },
+          "topologyKey": "kubernetes.io/hostname"
+        }
+      },
+      {
+        "weight": ${weight},
+        "podAffinityTerm": {
+          "labelSelector": {
+            "matchExpressions": [{
+              "key": "${label_key}",
+              "operator": "In",
+              "values": ["${label_value}"]
+            }]
+          },
+          "topologyKey": "topology.kubernetes.io/zone"
+        }
+      }
+    ]
+  }
+}

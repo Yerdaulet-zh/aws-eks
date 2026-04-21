@@ -2,63 +2,22 @@
 resource "aws_eks_addon" "core_dns" {
   cluster_name                = aws_eks_cluster.main.name
   addon_name                  = "coredns"
-  addon_version               = data.aws_eks_addon_version.latest_coredns.version
+  addon_version               = var.addon_configs.core_dns.addon_version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
   preserve                    = true
 
   configuration_values = jsonencode({
-    replicaCount = 3
-    resources = {
-      limits   = { cpu = "100m", memory = "150Mi" }
-      requests = { cpu = "100m", memory = "150Mi" }
-    }
+    replicaCount = var.addon_configs.core_dns.replicaCount
+    resources    = var.addon_configs.core_dns.resources
 
-    affinity = {
-      nodeAffinity = {
-        preferredDuringSchedulingIgnoredDuringExecution = [{
-          weight = 100
-          preference = {
-            matchExpressions = [{
-              key      = "eks.amazonaws.com/capacityType"
-              operator = "In"
-              values   = ["ON_DEMAND"]
-            }]
-          }
-        }]
-      }
-
-      podAntiAffinity = {
-        preferredDuringSchedulingIgnoredDuringExecution = [
-          {
-            weight = 100
-            podAffinityTerm = {
-              labelSelector = {
-                matchExpressions = [{
-                  key      = "k8s-app"
-                  operator = "In"
-                  values   = ["coredns"]
-                }]
-              }
-              topologyKey = "kubernetes.io/hostname"
-            }
-          },
-          {
-            weight = 100
-            podAffinityTerm = {
-              labelSelector = {
-                matchExpressions = [{
-                  key      = "k8s-app"
-                  operator = "In"
-                  values   = ["coredns"]
-                }]
-              }
-              topologyKey = "topology.kubernetes.io/zone"
-            }
-          }
-        ]
-      }
-    }
+    affinity = var.addon_configs.core_dns.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
+      weight          = 100
+      capacity_key    = "eks.amazonaws.com/capacityType"
+      capacity_values = ["ON_DEMAND"] # "SPOT"
+      label_key       = "k8s-app"
+      label_value     = "coredns"
+    })) : null # Using null allows the addon to use its internal defaults
   })
 }
 
@@ -216,30 +175,21 @@ resource "aws_eks_addon" "ebs_csi" {
   configuration_values = jsonencode({
     # Deployment
     controller = {
-      resources = {
-        replicaCount = var.addon_configs.ebs_csi.controller.resources.replicaCount
-        limits = {
-          cpu    = var.addon_configs.ebs_csi.controller.resources.limits.cpu,
-          memory = var.addon_configs.ebs_csi.controller.resources.limits.memory
-        }
-        requests = {
-          cpu    = var.addon_configs.ebs_csi.controller.resources.requests.cpu,
-          memory = var.addon_configs.ebs_csi.controller.resources.requests.memory
-        }
-      }
+      replicaCount = var.addon_configs.ebs_csi.controller.replicaCount
+      resources    = var.addon_configs.ebs_csi.controller.resources
+
+      affinity = var.addon_configs.ebs_csi.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
+        weight          = 100
+        capacity_key    = "eks.amazonaws.com/capacityType"
+        capacity_values = ["ON_DEMAND"] # "SPOT"
+        label_key       = "app.kubernetes.io/name"
+        label_value     = "aws-ebs-csi-driver"
+      })) : null
     }
+
+    # DaemonSet
     node = {
-      # DaemonSet
-      resources = {
-        limits = {
-          cpu    = var.addon_configs.ebs_csi.node.resources.limits.cpu,
-          memory = var.addon_configs.ebs_csi.node.resources.limits.memory
-        }
-        requests = {
-          cpu    = var.addon_configs.ebs_csi.node.resources.requests.cpu,
-          memory = var.addon_configs.ebs_csi.node.resources.requests.memory
-        }
-      }
+      resources = var.addon_configs.ebs_csi.node.resources
     }
   })
 }

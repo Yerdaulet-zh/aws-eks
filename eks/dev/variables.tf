@@ -182,26 +182,19 @@ EOT
 variable "addon_configs" {
   type = object({
     core_dns = object({
-      configuration_values = object({
-        replicaCount = number
-        resources = object({
-          limits = object({
-            cpu    = string
-            memory = string
-          })
-          requests = object({
-            cpu    = string
-            memory = string
-          })
+      addon_version = string
+      replicaCount  = number
+      resources = object({
+        limits = object({
+          cpu    = string
+          memory = string
+        })
+        requests = object({
+          cpu    = string
+          memory = string
         })
       })
-
-      affinity = object({
-        weight = number
-        podAntiAffinity = object({
-          labelSelector = string
-        })
-      })
+      enable_custom_affinity = bool
     })
 
     vpc_cni = object({
@@ -241,24 +234,25 @@ variable "addon_configs" {
           })
         })
       })
-
-      affinity = object({
-        weight = number
-        podAntiAffinity = object({
-          labelSelector = string
-        })
-      })
+      enable_custom_affinity = bool
     })
   })
 
   default = {
     core_dns = {
-      affinity = {
-        weight = 100
-        podAntiAffinity = {
-          labelSelector = "coredns"
+      addon_version = null
+      replicaCount  = 3
+      resources = {
+        limits = {
+          cpu    = "100m"
+          memory = "128Mi"
+        }
+        requests = {
+          cpu    = "10m"
+          memory = "64Mi"
         }
       }
+      enable_custom_affinity = true
     }
 
     vpc_cni = {
@@ -274,8 +268,8 @@ variable "addon_configs" {
     ebs_csi = {
       addon_version = null
       controller = {
+        replicaCount = 3
         resources = {
-          replicaCount = 3
           limits = {
             cpu    = "100m"
             memory = "128Mi"
@@ -299,13 +293,7 @@ variable "addon_configs" {
           }
         }
       }
-
-      affinity = {
-        weight = 100
-        podAntiAffinity = {
-          labelSelector = "coredns"
-        }
-      }
+      enable_custom_affinity = true
     }
   }
 }
