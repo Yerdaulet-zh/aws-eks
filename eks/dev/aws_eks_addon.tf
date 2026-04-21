@@ -214,6 +214,7 @@ resource "aws_eks_addon" "ebs_csi" {
   preserve                    = true
 
   configuration_values = jsonencode({
+    # Deployment
     controller = {
       resources = {
         limits = {
@@ -223,6 +224,19 @@ resource "aws_eks_addon" "ebs_csi" {
         requests = {
           cpu    = var.addon_configs.ebs_csi.controller.resources.requests.cpu,
           memory = var.addon_configs.ebs_csi.controller.resources.requests.memory
+        }
+      }
+    }
+    node = {
+      # DaemonSet
+      resources = {
+        limits = {
+          cpu    = var.addon_configs.ebs_csi.node.resources.limits.cpu,
+          memory = var.addon_configs.ebs_csi.node.resources.limits.memory
+        }
+        requests = {
+          cpu    = var.addon_configs.ebs_csi.node.resources.requests.cpu,
+          memory = var.addon_configs.ebs_csi.node.resources.requests.memory
         }
       }
     }
