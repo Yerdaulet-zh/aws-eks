@@ -52,7 +52,7 @@ resource "aws_eks_cluster" "main" {
   }
 
   upgrade_policy {
-    support_type = var.upgrade_policy.support_type
+    support_type = var.cluster_config.upgrade_policy.support_type
   }
 
   zonal_shift_config {
