@@ -181,6 +181,22 @@ EOT
 
 variable "addon_configs" {
   type = object({
+    core_dns = object({
+      configuration_values = object({
+        replicaCount = number
+        resources = object({
+          limits = object({
+            cpu    = string
+            memory = string
+          })
+          requests = object({
+            cpu    = string
+            memory = string
+          })
+        })
+      })
+    })
+
     vpc_cni = object({
       addon_version            = string
       enable_prefix_delegation = bool
@@ -193,6 +209,18 @@ variable "addon_configs" {
     ebs_csi = object({
       addon_version = string
       controller = object({
+        resources = object({
+          limits = object({
+            cpu    = string
+            memory = string
+          })
+          requests = object({
+            cpu    = string
+            memory = string
+          })
+        })
+      })
+      node = object({
         resources = object({
           limits = object({
             cpu    = string
@@ -221,6 +249,18 @@ variable "addon_configs" {
     ebs_csi = {
       addon_version = null
       controller = {
+        resources = {
+          limits = {
+            cpu    = "100m"
+            memory = "128Mi"
+          }
+          requests = {
+            cpu    = "10m"
+            memory = "64Mi"
+          }
+        }
+      }
+      node = {
         resources = {
           limits = {
             cpu    = "100m"
