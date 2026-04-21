@@ -257,7 +257,7 @@ variable "addon_configs" {
 
     vpc_cni = {
       # If null then default "stable" version for that specific cluster version
-      vpc_cni_version          = null
+      addon_version            = null
       enable_prefix_delegation = true,
       disable_tcp_early_demux  = true,
       minimum_ip_target        = 16,
