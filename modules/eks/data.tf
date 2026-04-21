@@ -11,7 +11,7 @@ data "terraform_remote_state" "vpc" {
 }
 
 data "aws_vpc" "this" {
-  id = data.terraform_remote_state.vpc.vpc_id
+  id = data.terraform_remote_state.vpc.outputs.vpc_id
 }
 
 # Addons
