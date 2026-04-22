@@ -48,8 +48,8 @@ resource "aws_eks_addon" "kube_proxy" {
   preserve                    = true
 
   configuration_values = jsonencode({
-    resources   = var.addon_configs.kube_proxy.resources
-    tolerations = var.addon_configs.kube_proxy.tolerations
+    mode      = "nftables"
+    resources = var.addon_configs.kube_proxy.resources
   })
 
   depends_on = [aws_eks_addon.pod_identity_agent]
