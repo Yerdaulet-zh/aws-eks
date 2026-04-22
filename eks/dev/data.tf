@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_iam_role" "sso_admin" {
+  name = var.sso_admin_iam_name
+}
+
 data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
