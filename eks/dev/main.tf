@@ -24,7 +24,7 @@ module "eks_dev" {
     # General purpose nodes
     "app1" = {
       node_group_name     = "app-workloads-1"
-      instance_types      = ["t3.small", "t3.medium", "t3.large"]
+      instance_types      = ["t3.small", "t3.medium"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
@@ -38,7 +38,7 @@ module "eks_dev" {
     },
     "app2" = {
       node_group_name     = "app-workloads-2"
-      instance_types      = ["t3.small", "t3.medium", "t3.large"]
+      instance_types      = ["t3.small", "t3.medium"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
