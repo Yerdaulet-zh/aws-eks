@@ -30,11 +30,16 @@ module "eks_dev" {
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
       role_key            = "app*"
-      desired_size        = 1
-      max_size            = 2
-      min_size            = 0
-      labels              = { role = "state-full-less-apps" }
-      taints              = []
+      scaling_config = {
+        desired_size = 1
+        max_size     = 2
+        min_size     = 0
+      }
+      update_config = {
+        max_unavailable_percentage = 25
+      }
+      labels = { role = "state-full-less-apps" }
+      taints = []
     },
     "app2" = {
       node_group_name     = "app-workloads-2"
@@ -44,11 +49,16 @@ module "eks_dev" {
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
       role_key            = "app*"
-      desired_size        = 1
-      max_size            = 2
-      min_size            = 0
-      labels              = { role = "state-full-less-apps" }
-      taints              = []
+      scaling_config = {
+        desired_size = 1
+        max_size     = 2
+        min_size     = 0
+      }
+      update_config = {
+        max_unavailable_percentage = 25
+      }
+      labels = { role = "state-full-less-apps" }
+      taints = []
     },
     # Spot instances
     "ai-ml-workers" = {
@@ -59,10 +69,15 @@ module "eks_dev" {
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
       role_key            = "ai-ml-workloads"
-      desired_size        = 1
-      max_size            = 2
-      min_size            = 0
-      labels              = { role = "ai-worker" }
+      scaling_config = {
+        desired_size = 1
+        max_size     = 2
+        min_size     = 0
+      }
+      update_config = {
+        max_unavailable_percentage = 25
+      }
+      labels = { role = "ai-worker" }
       taints = [{
         key    = "workload"
         value  = "heavy"
