@@ -3,5 +3,9 @@ kind: Kustomization
 
 namespace: nginx-gateway
 
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+
 resources:
   - https://github.com/nginx/nginx-gateway-fabric/deploy/manifests/install.yaml?ref=v1.2.0
