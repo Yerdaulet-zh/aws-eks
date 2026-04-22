@@ -9,16 +9,17 @@ resource "aws_eks_node_group" "main" {
   release_version = each.value.ami_release_version
 
   scaling_config {
-    desired_size = each.value.desired_size
-    max_size     = each.value.max_size
-    min_size     = each.value.min_size
+    desired_size = each.value.scaling_config.desired_size
+    max_size     = each.value.scaling_config.max_size
+    min_size     = each.value.scaling_config.min_size
   }
 
   instance_types = each.value.instance_types
   capacity_type  = each.value.capacity_type
 
   update_config {
-    max_unavailable = 1
+    max_unavailable            = each.value.scaling_config.max_unavailable
+    max_unavailable_percentage = each.value.scaling_config.max_unavailable_percentage
   }
 
   labels = each.value.labels
