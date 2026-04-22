@@ -225,6 +225,7 @@ variable "addon_configs" {
 
     kube_proxy = object({
       addon_version = string
+      mode          = string
       resources = object({
         limits = object({
           cpu    = string
@@ -235,12 +236,6 @@ variable "addon_configs" {
           memory = string
         })
       })
-      tolerations = list(
-        object({
-          operator = string
-          effect   = string
-        })
-      )
     })
 
     vpc_cni = object({
@@ -333,6 +328,7 @@ variable "addon_configs" {
 
     kube_proxy = {
       addon_version = null
+      mode          = "nftables"
       resources = {
         limits = {
           cpu    = "100m"
@@ -343,16 +339,6 @@ variable "addon_configs" {
           memory = "64Mi"
         }
       }
-      tolerations = [
-        {
-          operator = "Exists"
-          effect   = "NoSchedule"
-        },
-        {
-          operator = "Exists"
-          effect   = "NoExecute"
-        }
-      ]
     }
 
     vpc_cni = {

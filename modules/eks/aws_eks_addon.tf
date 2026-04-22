@@ -48,7 +48,7 @@ resource "aws_eks_addon" "kube_proxy" {
   preserve                    = true
 
   configuration_values = jsonencode({
-    mode      = "nftables"
+    mode      = var.addon_configs.kube_proxy.mode
     resources = var.addon_configs.kube_proxy.resources
   })
 
