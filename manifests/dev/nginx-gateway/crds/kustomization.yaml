@@ -5,4 +5,3 @@ namespace: nginx-gateway
 
 resources:
   - https://github.com/nginx/nginx-gateway-fabric/config/crd?ref=v1.2.0
-  - https://github.com/nginx/nginx-gateway-fabric/deploy/manifests/install.yaml?ref=v1.2.0
