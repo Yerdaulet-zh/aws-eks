@@ -5,6 +5,8 @@ resource "aws_eks_node_group" "main" {
   node_group_name = each.value.node_group_name
   node_role_arn   = aws_iam_role.eks_node_role[each.value.role_key].arn
   subnet_ids      = each.value.subnet_ids
+  ami_type        = each.value.ami_type
+  release_version = each.value.ami_release_version
 
   scaling_config {
     desired_size = each.value.desired_size

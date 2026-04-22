@@ -23,40 +23,46 @@ module "eks_dev" {
   node_group_configs = {
     # General purpose nodes
     "app1" = {
-      node_group_name = "app-workloads-1"
-      instance_types  = ["t3.small", "t3.medium", "t3.large"]
-      capacity_type   = "ON_DEMAND"
-      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-      role_key        = "app*"
-      desired_size    = 1
-      max_size        = 2
-      min_size        = 0
-      labels          = { role = "state-full-less-apps" }
-      taints          = []
+      node_group_name     = "app-workloads-1"
+      instance_types      = ["t3.small", "t3.medium", "t3.large"]
+      capacity_type       = "ON_DEMAND"
+      subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
+      ami_type            = "AL2023_x86_64_STANDARD"
+      ami_release_version = "1.35.3-20260415"
+      role_key            = "app*"
+      desired_size        = 1
+      max_size            = 2
+      min_size            = 0
+      labels              = { role = "state-full-less-apps" }
+      taints              = []
     },
     "app2" = {
-      node_group_name = "app-workloads-2"
-      instance_types  = ["t3.small", "t3.medium", "t3.large"]
-      capacity_type   = "ON_DEMAND"
-      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-      role_key        = "app*"
-      desired_size    = 1
-      max_size        = 2
-      min_size        = 0
-      labels          = { role = "state-full-less-apps" }
-      taints          = []
+      node_group_name     = "app-workloads-2"
+      instance_types      = ["t3.small", "t3.medium", "t3.large"]
+      capacity_type       = "ON_DEMAND"
+      subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
+      ami_type            = "AL2023_x86_64_STANDARD"
+      ami_release_version = "1.35.3-20260415"
+      role_key            = "app*"
+      desired_size        = 1
+      max_size            = 2
+      min_size            = 0
+      labels              = { role = "state-full-less-apps" }
+      taints              = []
     },
     # Spot instances
     "ai-ml-workers" = {
-      node_group_name = "ai-ml-workers"
-      instance_types  = ["t4g.small", "t4g.medium", "t4g.large"]
-      capacity_type   = "SPOT"
-      subnet_ids      = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-      role_key        = "ai-ml-workloads"
-      desired_size    = 1
-      max_size        = 2
-      min_size        = 0
-      labels          = { role = "ai-worker" }
+      node_group_name     = "ai-ml-workers"
+      instance_types      = ["t3.small", "t3.medium", "t3.large"]
+      capacity_type       = "SPOT"
+      subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
+      ami_type            = "AL2023_x86_64_STANDARD"
+      ami_release_version = "1.35.3-20260415"
+      role_key            = "ai-ml-workloads"
+      desired_size        = 1
+      max_size            = 2
+      min_size            = 0
+      labels              = { role = "ai-worker" }
       taints = [{
         key    = "workload"
         value  = "heavy"
