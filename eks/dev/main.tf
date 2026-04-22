@@ -1,5 +1,24 @@
 module "eks_dev" {
   source = "../../modules/eks"
+  cluster_config = {
+    cluster_name                  = "eks-academy-dev"
+    cluster_version               = 1.35
+    deletion_protection           = false
+    bootstrap_self_managed_addons = false
+    force_update_version          = false
+    enabled_cluster_log_types     = ["api", "authenticator", "controllerManager", "scheduler"] # "audit"
+    authentication_mode           = "API_AND_CONFIG_MAP"
+    control_plane_scaling_tier    = "standard" # standard, tier-xl, tier-2xl, tier-4xl, tier-8xl
+
+    kms_key_arn = null
+
+    upgrade_policy = {
+      support_type = "STANDARD"
+    }
+
+    zonal_shift_enabled = false
+  }
+
   cluster_access_config = [{
     user_arn          = data.aws_iam_role.sso_admin.arn
     kubernetes_groups = []
@@ -36,6 +55,7 @@ module "eks_dev" {
         min_size     = 0
       }
       update_config = {
+        # max_unavailable            = null
         max_unavailable_percentage = 25
       }
       labels = { role = "state-full-less-apps" }
@@ -55,6 +75,7 @@ module "eks_dev" {
         min_size     = 0
       }
       update_config = {
+        max_unavailable            = null
         max_unavailable_percentage = 25
       }
       labels = { role = "state-full-less-apps" }
@@ -75,6 +96,7 @@ module "eks_dev" {
         min_size     = 0
       }
       update_config = {
+        max_unavailable            = null
         max_unavailable_percentage = 25
       }
       labels = { role = "ai-worker" }
