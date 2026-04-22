@@ -419,9 +419,16 @@ variable "node_group_configs" {
     ami_release_version = string
 
     # Scaling settings
-    desired_size = number
-    max_size     = number
-    min_size     = number
+    scaling_config = object({
+      desired_size = number
+      max_size     = number
+      min_size     = number
+    })
+
+    update_config = optional(object({
+      max_unavailable            = optional(number)
+      max_unavailable_percentage = optional(number)
+    }), { max_unavailable = 1 })
 
     # Kubernetes labels and taints
     labels = map(string)
@@ -431,6 +438,14 @@ variable "node_group_configs" {
       effect = string
     }))
   }))
+
+  validation {
+    condition = (
+      (var.node_group_config.update_config.max_unavailable != null && var.node_group_config.update_config.max_unavailable_percentage == null) ||
+      (var.node_group_config.update_config.max_unavailable == null && var.node_group_config.update_config.max_unavailable_percentage != null)
+    )
+    error_message = "In update_config, you must provide either 'max_unavailable' or 'max_unavailable_percentage', but not both."
+  }
 
   default = {
     # General purpose nodes
@@ -442,11 +457,16 @@ variable "node_group_configs" {
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
       role_key            = "app*"
-      desired_size        = 1
-      max_size            = 2
-      min_size            = 0
-      labels              = { role = "state-full-less-apps" }
-      taints              = []
+      scaling_config = {
+        desired_size = 1
+        max_size     = 2
+        min_size     = 0
+      }
+      update_config = {
+        max_unavailable_percentage = 25
+      }
+      labels = { role = "state-full-less-apps" }
+      taints = []
     },
     "app2" = {
       node_group_name     = "app-workloads-2"
@@ -456,11 +476,16 @@ variable "node_group_configs" {
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
       role_key            = "app*"
-      desired_size        = 1
-      max_size            = 2
-      min_size            = 0
-      labels              = { role = "state-full-less-apps" }
-      taints              = []
+      scaling_config = {
+        desired_size = 1
+        max_size     = 2
+        min_size     = 0
+      }
+      update_config = {
+        max_unavailable_percentage = 25
+      }
+      labels = { role = "state-full-less-apps" }
+      taints = []
     },
     # Spot instances
     "ai-ml-workers" = {
@@ -471,10 +496,15 @@ variable "node_group_configs" {
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
       role_key            = "ai-ml-workloads"
-      desired_size        = 1
-      max_size            = 2
-      min_size            = 0
-      labels              = { role = "ai-worker" }
+      scaling_config = {
+        desired_size = 1
+        max_size     = 2
+        min_size     = 0
+      }
+      update_config = {
+        max_unavailable_percentage = 25
+      }
+      labels = { role = "ai-worker" }
       taints = [{
         key    = "workload"
         value  = "heavy"
