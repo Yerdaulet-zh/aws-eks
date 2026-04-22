@@ -18,8 +18,8 @@ resource "aws_eks_node_group" "main" {
   capacity_type  = each.value.capacity_type
 
   update_config {
-    max_unavailable            = each.value.scaling_config.max_unavailable
-    max_unavailable_percentage = each.value.scaling_config.max_unavailable_percentage
+    max_unavailable            = each.value.update_config.max_unavailable
+    max_unavailable_percentage = each.value.update_config.max_unavailable_percentage
   }
 
   labels = each.value.labels
