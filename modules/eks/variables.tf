@@ -425,14 +425,6 @@ variable "node_group_configs" {
     }))
   }))
 
-  validation {
-    condition = (
-      (var.node_group_config.update_config.max_unavailable != null && var.node_group_config.update_config.max_unavailable_percentage == null) ||
-      (var.node_group_config.update_config.max_unavailable == null && var.node_group_config.update_config.max_unavailable_percentage != null)
-    )
-    error_message = "In update_config, you must provide either 'max_unavailable' or 'max_unavailable_percentage', but not both."
-  }
-
   default = {
     # General purpose nodes
     "app1" = {
