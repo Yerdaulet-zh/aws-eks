@@ -5,17 +5,21 @@ metadata:
   namespace: argocd
 spec:
   project: default
+
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
     path: manifests/dev/nginx-gateway
+
   destination:
     server: https://kubernetes.default.svc
     namespace: nginx-gateway
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
