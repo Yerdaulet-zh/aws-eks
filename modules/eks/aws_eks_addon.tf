@@ -145,7 +145,7 @@ resource "aws_eks_addon" "vpc_cni" {
 
         # Recommended to avoid "stuck traffic" (timeouts) & NetworkPolicies wont take affect when the PODs in the same node.
         # All because of the shorcut of packets, if it sees the destination being local then directly delivers to POD by skipping Policies.
-        DISABLE_TCP_EARLY_DEMUX = tostring(var.addon_configs.vpc_cni.disable_tcp_early_demux)
+        # DISABLE_TCP_EARLY_DEMUX = tostring(var.addon_configs.vpc_cni.disable_tcp_early_demux) - not supported in v1.21.1-eksbuild.1 VPC CNI
       },
       # Only inject these if we are in IPv4 mode
       var.kubernetes_network_config.ip_family == "ipv4" ? {
