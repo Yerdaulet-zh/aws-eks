@@ -1,3 +1,13 @@
+# ------ Metrics Server Addon ------
+resource "aws_eks_addon" "metrics_server" {
+  cluster_name                = aws_eks_cluster.main.name
+  addon_name                  = "metrics-server"
+  addon_version               = var.addon_configs.metrics_server.addon_version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "PRESERVE"
+  preserve                    = true
+}
+
 # ------ Pod Identity Agent Addon ------
 resource "aws_eks_addon" "pod_identity_agent" {
   cluster_name                = aws_eks_cluster.main.name

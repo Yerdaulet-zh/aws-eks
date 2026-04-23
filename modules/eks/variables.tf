@@ -187,6 +187,10 @@ EOT
 
 variable "addon_configs" {
   type = object({
+    metrics_server = object({
+      addon_version = string
+    })
+
     pod_identity_agent = object({
       addon_version = string
       resources = object({
@@ -286,6 +290,10 @@ variable "addon_configs" {
   })
 
   default = {
+    metrics_server = {
+      addon_version = null
+    }
+
     pod_identity_agent = {
       addon_version = null
       resources = {
