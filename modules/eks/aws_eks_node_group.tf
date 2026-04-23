@@ -33,6 +33,11 @@ resource "aws_eks_node_group" "main" {
     }
   }
 
+  tags = {
+    "k8s.io/cluster-autoscaler/${aws_eks_cluster.main.name}" = "owned"
+    "k8s.io/cluster-autoscaler/enabled"                      = "true"
+  }
+
   depends_on = [
     aws_iam_role.eks_node_role,
     aws_iam_role_policy_attachment.worker_node,
