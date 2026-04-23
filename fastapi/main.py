@@ -69,3 +69,13 @@ async def get_trends():
         "region": "North America",
         "last_updated": time.strftime("%Y-%m-%d %H:%M:%S")
     }
+
+@app.get("/cpu-intensive")
+async def do_calc():
+    """Returns 'looped' the last value. This is needed for pod autoscaler load tests"""
+    x = 0
+    for i in range(1000000):
+        x += i
+    return {
+        "result": x
+    }
