@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base/fastapi/
+  - namespace.yaml
+
+namespace: backend-dev
+
+images:
+  - name: 895587011312.dkr.ecr.eu-central-1.amazonaws.com/python-repository
+    # newName:
+    newTag: v1.0.1
+
+patches:
+  - target:
+      kind: Service
+      name: fastapi-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: ClusterIP
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: fastapi-hpa
+    patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 2
+
