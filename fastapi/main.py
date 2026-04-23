@@ -70,7 +70,7 @@ async def get_trends():
         "last_updated": time.strftime("%Y-%m-%d %H:%M:%S")
     }
 
-@app.get("/cpu-intensive")
+@app.get("/cpu-intensive", tags=["Debug"])
 async def do_calc():
     """Returns 'looped' the last value. This is needed for pod autoscaler load tests"""
     x = 0
@@ -78,4 +78,11 @@ async def do_calc():
         x += i
     return {
         "result": x
+    }
+
+@app.get("/version", tags=["Debug"])
+async def get_version():
+    """Returns current version"""
+    return {
+        "version": "v1.0.1"
     }
