@@ -5,6 +5,10 @@ class FastApiUser(HttpUser):
     # Wait between 1 and 2 seconds between tasks to simulate human behavior
     wait_time = between(1, 2)
 
+    @task(5) # High weight to ensure CPU usage stays up
+    def trigger_cpu(self):
+        self.client.get("/cpu-intensive")
+
     @task(3)
     def browse_trends(self):
         """Simulate a user looking at trending items (higher weight)"""
