@@ -1,0 +1,4 @@
+resources:
+  - cluster-autoscaler-sa.yaml
+  - cluster-autoscaler-deployment.yaml
+  - cluster-autoscaler-rbac.yaml
