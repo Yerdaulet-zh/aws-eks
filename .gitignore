@@ -6,7 +6,7 @@ fastapi/venv/
 fastapi/__pycache__/
 
 # Ignore helm charts downloaded via kustomize
-manifests/base/cluster-autoscaler/charts/
+manifests/base/*/charts/
 
 # Local .terraform directories
 .terraform/
