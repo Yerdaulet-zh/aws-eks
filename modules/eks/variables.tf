@@ -431,6 +431,8 @@ variable "node_group_configs" {
       value  = string
       effect = string
     }))
+
+    tags = optional(map(string), {})
   }))
 
   default = {
@@ -453,6 +455,10 @@ variable "node_group_configs" {
       }
       labels = { role = "state-full-less-apps" }
       taints = []
+      tags = {
+        "k8s.io/cluster-autoscaler/${aws_eks_cluster.main.name}" = "owned"
+        "k8s.io/cluster-autoscaler/enabled"                      = "true"
+      }
     },
     "app2" = {
       node_group_name     = "app-workloads-2"
@@ -472,6 +478,10 @@ variable "node_group_configs" {
       }
       labels = { role = "state-full-less-apps" }
       taints = []
+      tags = {
+        "k8s.io/cluster-autoscaler/${aws_eks_cluster.main.name}" = "owned"
+        "k8s.io/cluster-autoscaler/enabled"                      = "true"
+      }
     },
     # Spot instances
     "ai-ml-workers" = {
@@ -496,6 +506,10 @@ variable "node_group_configs" {
         value  = "heavy"
         effect = "NO_SCHEDULE"
       }]
+      tags = {
+        "k8s.io/cluster-autoscaler/${aws_eks_cluster.main.name}" = "owned"
+        "k8s.io/cluster-autoscaler/enabled"                      = "true"
+      }
     }
   }
 }
