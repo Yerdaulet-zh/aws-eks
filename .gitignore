@@ -1,6 +1,9 @@
 # Ignore VS Code generated files
 .vscode/
 
+# Ignore FastAPI venv
+fastapi/venv/
+
 # Local .terraform directories
 .terraform/
 
