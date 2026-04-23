@@ -15,7 +15,7 @@ APP_START_TIME = time.time()
 IS_READY = True
 
 # --- Prometheus Metrics Setup ---
-Instrumentator().instrument(app).bootstrap()
+Instrumentator().instrument(app).expose(app)
 
 # --- Data Models ---
 class Order(BaseModel):
