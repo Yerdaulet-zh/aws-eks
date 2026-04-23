@@ -57,8 +57,9 @@ module "eks_test" {
       update_config = {
         max_unavailable_percentage = 25
       }
-      labels = { role = "state-full-less-apps" }
-      taints = []
+      labels             = { role = "state-full-less-apps" }
+      taints             = []
+      enable_autoscaling = true
     },
     "app2" = {
       node_group_name     = "app-workloads-2"
@@ -76,8 +77,9 @@ module "eks_test" {
       update_config = {
         max_unavailable_percentage = 25
       }
-      labels = { role = "state-full-less-apps" }
-      taints = []
+      labels             = { role = "state-full-less-apps" }
+      taints             = []
+      enable_autoscaling = true
     },
     # Spot instances
     "ai-ml-workers" = {
@@ -102,6 +104,7 @@ module "eks_test" {
         value  = "heavy"
         effect = "NO_SCHEDULE"
       }]
+      enable_autoscaling = true
     }
   }
 }
