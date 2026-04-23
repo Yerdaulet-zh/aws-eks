@@ -40,9 +40,12 @@ resource "aws_eks_node_group" "main" {
   }
 
   tags = merge(
+    each.value.enable_autoscaling ? {
+      "k8s.io/cluster-autoscaler/${aws_eks_cluster.main.name}" = "owned"
+      "k8s.io/cluster-autoscaler/enabled"                      = "true"
+    } : {},
     each.value.tags
   )
-
 
   depends_on = [
     aws_iam_role.eks_node_role,
