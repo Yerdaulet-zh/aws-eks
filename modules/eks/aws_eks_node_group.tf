@@ -33,6 +33,12 @@ resource "aws_eks_node_group" "main" {
     }
   }
 
+  lifecycle {
+    ignore_changes = [
+      scaling_config[0].desired_size
+    ]
+  }
+
   tags = {
     "k8s.io/cluster-autoscaler/${aws_eks_cluster.main.name}" = "owned"
     "k8s.io/cluster-autoscaler/enabled"                      = "true"
