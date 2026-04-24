@@ -43,7 +43,7 @@ module "eks_dev" {
     # General purpose nodes
     "app1" = {
       node_group_name     = "app-workloads-1"
-      instance_types      = ["t3.small", "t3.medium"]
+      instance_types      = ["t3.large"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
@@ -64,7 +64,7 @@ module "eks_dev" {
     },
     "app2" = {
       node_group_name     = "app-workloads-2"
-      instance_types      = ["t3.small", "t3.medium"]
+      instance_types      = ["t3.large"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
@@ -93,8 +93,8 @@ module "eks_dev" {
       ami_release_version = "1.35.3-20260415"
       role_key            = "ai-ml-workloads"
       scaling_config = {
-        desired_size = 1
-        max_size     = 2
+        desired_size = 2
+        max_size     = 4
         min_size     = 0
       }
       update_config = {
