@@ -102,11 +102,12 @@ module "eks_dev" {
         max_unavailable_percentage = 25
       }
       labels = { role = "ai-worker" }
-      taints = [{
-        key    = "workload"
-        value  = "heavy"
-        effect = "NO_SCHEDULE"
-      }]
+      taints = []
+      # taints = [{
+      #   key    = "workload"
+      #   value  = "heavy"
+      #   effect = "NO_SCHEDULE"
+      # }]
       enable_autoscaling = true
     }
   }
