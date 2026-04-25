@@ -84,5 +84,5 @@ async def do_calc():
 async def get_version():
     """Returns current version"""
     return {
-        "version": "v1.0.1"
+        "version": "v1.0.2"
     }
