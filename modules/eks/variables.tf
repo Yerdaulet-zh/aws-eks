@@ -98,6 +98,7 @@ EOT
   type = object({
     endpoint_private_access = bool
     endpoint_public_access  = bool
+    contol_plane_subnets    = list(string)
     public_access_cidrs     = list(string) # list(string)
     security_group_ids      = list(string)
   })
@@ -105,6 +106,7 @@ EOT
   default = {
     endpoint_private_access = true
     endpoint_public_access  = true
+    contol_plane_subnets    = ["value"]
     public_access_cidrs = [
       # ---------- IPv4 ----------
       # Kazakhtelecom
