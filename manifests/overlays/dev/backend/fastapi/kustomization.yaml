@@ -9,7 +9,7 @@ namespace: backend-dev
 images:
   - name: 895587011312.dkr.ecr.eu-central-1.amazonaws.com/python-repository
     # newName:
-    newTag: v1.0.1
+    newTag: v1.0.0
 
 patches:
   - target:
