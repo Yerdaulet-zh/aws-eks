@@ -12,4 +12,4 @@ helmCharts:
     releaseName: ngf
     repo: oci://ghcr.io/nginx/charts
     version: 2.5.1
-    valuesFile: values.yaml
+    # valuesFile: values.yaml
