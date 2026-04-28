@@ -1,5 +1,5 @@
 resources:
-  # - proxy.yaml
+  - proxy.yaml
   - gateway.yaml
   - http-route.yaml
   - reference-grant.yaml
