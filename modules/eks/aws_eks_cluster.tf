@@ -34,7 +34,7 @@ resource "aws_eks_cluster" "main" {
   vpc_config {
     endpoint_private_access = var.vpc_config.endpoint_private_access
     endpoint_public_access  = var.vpc_config.endpoint_public_access
-    subnet_ids              = local.contol_plane_subnets
+    subnet_ids              = var.vpc_config.contol_plane_subnets
     public_access_cidrs     = var.vpc_config.public_access_cidrs
     security_group_ids      = var.vpc_config.security_group_ids
   }
