@@ -1,7 +1,7 @@
 module "eks_dev" {
   source = "../../modules/eks"
   cluster_config = {
-    cluster_name                  = "eks-academy-dev"
+    cluster_name                  = local.cluster_name
     cluster_version               = 1.35
     deletion_protection           = false
     bootstrap_self_managed_addons = false
@@ -30,13 +30,23 @@ module "eks_dev" {
   }]
 
   kubernetes_network_config = {
-    ip_family = "ipv6"
+    ip_family = "ipv4"
     service_ipv4_cidr = {
       use_custom_service_cidr  = true
       vpc_cidr_prefix_to_check = "10."
       first_cidr               = "172.20.0.0/16" # If VPC is 10.x, use 172.x
       second_cidr              = "10.100.0.0/16" # If VPC is not 10.x, use 10.x
     }
+  }
+
+  vpc_config = {
+    endpoint_private_access = true
+    endpoint_public_access  = true
+    contol_plane_subnets    = local.contol_plane_subnets["public_dual"]
+    public_access_cidrs = [
+      "0.0.0.0/0"
+    ]
+    security_group_ids = []
   }
 
   node_group_configs = {
