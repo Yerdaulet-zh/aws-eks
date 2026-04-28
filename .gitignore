@@ -6,8 +6,7 @@ fastapi/venv/
 fastapi/__pycache__/
 
 # Ignore helm charts downloaded via kustomize
-manifests/base/*/charts/
-manifests/overlays/*/*/*/charts/
+**/charts/
 
 # Local .terraform directories
 .terraform/
