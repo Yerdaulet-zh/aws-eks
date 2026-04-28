@@ -1,0 +1,11 @@
+apiVersion: gateway.nginx.org/v1alpha2
+kind: NginxProxy
+metadata:
+  name: ipv4-proxy-config
+  namespace: nginx-gateway
+spec:
+  ipFamily: ipv4  # Options: ipv4, ipv6, or dual
+  kubernetes:
+    service:
+      type: LoadBalancer
+      loadBalancerClass: service.k8s.aws/nlb
