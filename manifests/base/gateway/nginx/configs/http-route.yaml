@@ -7,9 +7,9 @@ spec:
   parentRefs:
   - name: my-ipv4-gateway
     namespace: nginx-gateway
+    group: gateway.networking.k8s.io
+    kind: Gateway
     sectionName: http
-  # hostnames:
-  #   - "*"
   rules:
   - matches:
     - path:
@@ -18,4 +18,6 @@ spec:
     backendRefs:
     - name: fastapi-service
       namespace: backend-dev
+      group: ""
+      kind: Service
       port: 80
