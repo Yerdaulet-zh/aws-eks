@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
+    targetRevision: HEAD
+    path: manifests/base/cert-manager
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      # Required for large CRDs to avoid the "too long" annotation error
+      - ServerSideApply=true
+      # Ensures that if a sync fails, it doesn't just stop everything
+      - SkipDryRunOnMissingResource=true
