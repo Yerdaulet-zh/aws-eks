@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
-    path: manifests/base/cert-manager
+    path: manifests/base/gateway/certificate
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
