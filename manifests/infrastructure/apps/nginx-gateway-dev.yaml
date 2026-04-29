@@ -21,3 +21,19 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+  ignoreDifferences:
+    # Ignore metadata that the API server or controllers add automatically
+    - group: ""
+      kind: ConfigMap
+      jsonPointers:
+        - /metadata/annotations/control-plane.alpha.kubernetes.io~1leader
+    # Ignore fields in Gateway resources that are managed by the controller
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      jsonPointers:
+        - /metadata/annotations
+    # Often the NGINX Gateway adds dynamic certificates or secrets
+    - group: ""
+      kind: Secret
+      jsonPointers:
+        - /data
