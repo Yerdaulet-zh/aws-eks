@@ -9,3 +9,11 @@ resource "aws_eks_pod_identity_association" "lbc" {
     module.eks_dev
   ]
 }
+
+# ---------- Route53 Cert Manager ----------
+resource "aws_eks_pod_identity_association" "cert_manager" {
+  cluster_name    = local.cluster_name
+  namespace       = "cert-manager"
+  service_account = "cert-manager"
+  role_arn        = aws_iam_role.cert_manager_route53.arn
+}
