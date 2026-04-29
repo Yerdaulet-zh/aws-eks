@@ -37,3 +37,13 @@ spec:
       kind: Secret
       jsonPointers:
         - /data
+    # ignore the "ghosting" status fields
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      jsonPointers:
+        - /status # Ignore the status updates from the NGINX controller
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      jsonPointers:
+        - /status
+        - /metadata/annotations
