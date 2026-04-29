@@ -5,4 +5,10 @@ namespace: argocd
 
 resources:
   - namespace.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+  # Non High Available ArgoCD
+  # - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+  # High Avaliable ArgoCD
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/ha/namespace-install.yaml
+  - https://github.com/argoproj/argo-cd/manifests/crds?ref=v2.10.9
