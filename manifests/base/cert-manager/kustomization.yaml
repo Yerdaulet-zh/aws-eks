@@ -3,14 +3,30 @@ kind: Kustomization
 
 namespace: cert-manager
 
-resources:
-  - https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
+helmCharts:
+  - name: cert-manager
+    repo: https://charts.jetstack.io
+    version: v1.14.4
+    releaseName: cert-manager
+    namespace: cert-manager
 
-patches:
-  - target:
-      kind: Deployment
-      name: cert-manager
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 2
+    includeCRDs: true
+
+    valuesInline:
+      replicaCount: 2
+      global:
+        priorityClassName: system-cluster-critical
+      crds:
+        enabled: true
+      webhook:
+        replicaCount: 2
+        timeoutSeconds: 10
+      cainjector:
+        replicaCount: 2
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
