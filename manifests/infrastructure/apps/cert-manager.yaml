@@ -16,11 +16,11 @@ spec:
     namespace: cert-manager
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
+      allowEmpty: true
     syncOptions:
       - CreateNamespace=false
-      # Required for large CRDs to avoid the "too long" annotation error
       - ServerSideApply=true
-      # Ensures that if a sync fails, it doesn't just stop everything
       - SkipDryRunOnMissingResource=true
