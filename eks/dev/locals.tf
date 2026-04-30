@@ -2,6 +2,10 @@ locals {
   cluster_name = "eks-academy-dev"
   region       = "eu-central-1"
 
+  domains = [
+    "imon.work"
+  ]
+
   contol_plane_subnets = {
     "public_ipv4" : [
       data.terraform_remote_state.vpc.outputs.public_ipv4_subnets["public_ipv4_a"],

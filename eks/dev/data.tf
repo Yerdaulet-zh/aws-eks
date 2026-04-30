@@ -14,6 +14,11 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+data "aws_route53_zone" "zones" {
+  for_each = toset(local.domains)
+  name     = each.value
+}
+
 # Addons
 data "aws_eks_addon_version" "latest_coredns" {
   addon_name         = "coredns"
