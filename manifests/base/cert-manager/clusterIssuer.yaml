@@ -17,7 +17,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: imon-work-wildcard
-  namespace: nginx-gateway
+  namespace: cert-manager
 spec:
   secretName: imon-work-wildcard-tls
   issuerRef:
