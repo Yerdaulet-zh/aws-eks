@@ -4,11 +4,7 @@ kind: Kustomization
 namespace: kube-system
 
 resources:
-  # Standard Gateway API
-  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml
-
-  # AWS Gateway Extensions
-  - https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/config/crd/gateway/gateway-crds.yaml
+  - https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/crds.yaml
 
 helmCharts:
   - name: aws-load-balancer-controller
@@ -17,7 +13,7 @@ helmCharts:
     version: 3.2.2
     valuesInline:
       priorityClassName: system-cluster-critical
-      installCRDs: true
+      installCRDs: false
       enableCertManager: true
       clusterName: "eks-academy-dev"
       vpcId: "vpc-07cd1651bb52b7d36"
