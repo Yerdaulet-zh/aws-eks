@@ -1,4 +1,6 @@
-data "aws_elb_hosted_zone_id" "main" {}
+data "aws_lb" "gateway_nlb" {
+  name = var.load_balancer_name
+}
 
 resource "aws_route53_record" "this" {
   zone_id = data.aws_route53_zone.zones["imon.work"].zone_id
@@ -8,8 +10,8 @@ resource "aws_route53_record" "this" {
   allow_overwrite = true
 
   alias {
-    name                   = var.load_balancer_dns_name
-    zone_id                = data.aws_elb_hosted_zone_id.main.id
+    name                   = data.aws_lb.gateway_nlb.dns_name
+    zone_id                = data.aws_lb.gateway_nlb.zone_id
     evaluate_target_health = true
   }
 

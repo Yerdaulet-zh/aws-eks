@@ -7,6 +7,6 @@ variable "vpc_id" {
   type = string
 }
 
-variable "load_balancer_dns_name" {
+variable "load_balancer_name" {
   type = string
 }
