@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
-    argocd.argoproj.io/sync-options: Prune=confirm
+    argocd.argoproj.io/sync-options: Prune=confirm,Delete=false
 spec:
   project: default
   source:
