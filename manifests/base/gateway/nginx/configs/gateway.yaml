@@ -24,7 +24,9 @@ spec:
     tls:
       mode: Terminate
       certificateRefs:
-      - name: imon-work-wildcard-tls
+        - group: cert-manager.io/v1
+          kind: Certificate
+          name: imon-work-wildcard-tls
     allowedRoutes:
       namespaces:
         from: All
