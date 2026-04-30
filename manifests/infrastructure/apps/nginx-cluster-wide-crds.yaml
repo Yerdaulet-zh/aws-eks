@@ -6,20 +6,25 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
     argocd.argoproj.io/sync-options: Prune=confirm,Delete=false
+
 spec:
   project: default
+
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
     path: manifests/base/gateway/nginx/bootstrap
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: true
+
     syncOptions:
       - CreateNamespace=false
       - ServerSideApply=true
