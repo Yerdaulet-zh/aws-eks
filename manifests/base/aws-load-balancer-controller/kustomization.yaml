@@ -14,6 +14,7 @@ helmCharts:
     valuesInline:
       priorityClassName: system-cluster-critical
       installCRDs: true
+      enableCertManager: true
       clusterName: "eks-academy-dev"
       vpcId: "vpc-07cd1651bb52b7d36"
       region: "eu-central-1"
