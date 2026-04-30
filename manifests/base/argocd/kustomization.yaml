@@ -24,3 +24,14 @@ patches:
         name: argocd-cm
       data:
         kustomize.buildOptions: --enable-helm
+  # Global server-side apply for ArgoCD to avoid conflicts with other tools
+  - target:
+      kind: ConfigMap
+      name: argocd-cmd-params-cm
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-cmd-params-cm
+      data:
+        controller.diff.server.side: "true"
