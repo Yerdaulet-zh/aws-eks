@@ -3,6 +3,8 @@ kind: Gateway
 metadata:
   name: my-ipv4-gateway
   namespace: nginx-gateway
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dns
 spec:
   gatewayClassName: nginx
   infrastructure:
@@ -19,14 +21,15 @@ spec:
       namespaces:
         from: All
   - name: https
+    hostname: "*.imon.work"
     port: 443
     protocol: HTTPS
     tls:
       mode: Terminate
       certificateRefs:
-        - group: ''
+        - name: imon-work-wildcard-tls
           kind: Secret
-          name: imon-work-wildcard-tls
+          group: ""
     allowedRoutes:
       namespaces:
         from: All
