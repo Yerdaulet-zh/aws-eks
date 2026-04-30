@@ -1,26 +1,41 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
+
 metadata:
   name: root-app
   namespace: argocd
-  argocd.argoproj.io/sync-options: Prune=confirm,Delete=false
+
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=confirm,Delete=false
+
 spec:
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
   project: default
+
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     path: manifests/infrastructure/apps
     targetRevision: HEAD
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      jsonPointers:
+        - /status
+
   syncPolicy:
     automated:
       enabled: true
       prune: true
       selfHeal: true
       allowEmpty: true
+
     syncOptions:
       - CreateNamespace=false
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true
