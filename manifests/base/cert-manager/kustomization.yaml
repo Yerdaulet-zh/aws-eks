@@ -10,13 +10,15 @@ resources:
 helmCharts:
   - name: cert-manager
     repo: https://charts.jetstack.io
-    version: v1.14.4
+    version: v1.20.0
     releaseName: cert-manager
     namespace: cert-manager
 
     includeCRDs: true
 
     valuesInline:
+      config:
+        enableGatewayAPI: true
       replicaCount: 2
       global:
         priorityClassName: system-cluster-critical
