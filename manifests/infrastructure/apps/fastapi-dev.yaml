@@ -5,23 +5,35 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "5"
+
 spec:
   project: default
+
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
     path: manifests/overlays/dev/backend/fastapi
+
   destination:
     server: https://kubernetes.default.svc
     namespace: backend-dev
+
+  ignoreDifferences:
+    - group: "apps"
+      kind: "Deployment"
+      jsonPointers:
+        - /spec/replicas
+
   syncPolicy:
     automated:
       enabled: true
       prune: true
       selfHeal: true
       allowEmpty: true
+
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true

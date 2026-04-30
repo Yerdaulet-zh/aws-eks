@@ -5,23 +5,46 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+
 spec:
   project: default
+
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
     path: manifests/base/gateway/nginx
+
   destination:
     server: https://kubernetes.default.svc
     namespace: nginx-gateway
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      jsonPointers:
+        - /status
+
+    - group: ""
+      kind: Service
+      jsonPointers:
+        - /status
+        - /metadata/annotations/service.beta.kubernetes.io~1aws-load-balancer-arn
+
   syncPolicy:
     automated:
       enabled: true
       prune: true
       selfHeal: true
       allowEmpty: true
+
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true

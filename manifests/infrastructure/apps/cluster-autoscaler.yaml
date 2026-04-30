@@ -6,23 +6,38 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
     argocd.argoproj.io/sync-options: Prune=confirm
+
 spec:
   project: default
+
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
     path: manifests/base/cluster-autoscaler
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: cluster-autoscaler
+      namespace: kube-system
+      jsonPointers:
+        - /spec/replicas
+        - /status
+
   syncPolicy:
     automated:
       enabled: true
       prune: true
       selfHeal: true
       allowEmpty: true
+
     syncOptions:
       - CreateNamespace=false
       - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true
