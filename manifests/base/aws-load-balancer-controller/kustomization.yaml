@@ -12,6 +12,7 @@ helmCharts:
     repo: https://aws.github.io/eks-charts
     version: 3.2.2
     valuesInline:
+      priorityClassName: system-cluster-critical
       clusterName: "eks-academy-dev"
       vpcId: "vpc-07cd1651bb52b7d36"
       region: "eu-central-1"

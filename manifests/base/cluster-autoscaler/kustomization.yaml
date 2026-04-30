@@ -12,6 +12,7 @@ helmCharts:
 
     # Use valuesInline instead of a separate values.yaml file
     valuesInline:
+      priorityClassName: system-cluster-critical
       autoDiscovery:
         clusterName: "eks-academy-dev"
 
