@@ -3,8 +3,8 @@ kind: Kustomization
 
 namespace: kube-system
 
-resources:
-  - https://github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master
+# resources:
+#   - https://github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master
 
 helmCharts:
   - name: aws-load-balancer-controller
@@ -13,6 +13,7 @@ helmCharts:
     version: 3.2.2
     valuesInline:
       priorityClassName: system-cluster-critical
+      installCRDs: true
       clusterName: "eks-academy-dev"
       vpcId: "vpc-07cd1651bb52b7d36"
       region: "eu-central-1"
