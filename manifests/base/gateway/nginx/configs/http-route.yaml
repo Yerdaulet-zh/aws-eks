@@ -24,3 +24,30 @@ spec:
       kind: Service
       port: 80
       weight: 1
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: python
+  namespace: nginx-gateway
+spec:
+  parentRefs:
+  - name: my-ipv4-gateway
+    namespace: nginx-gateway
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    sectionName: https
+  hostnames:
+  - "backend.imon.work"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: fastapi-service
+      namespace: backend-dev
+      group: ""
+      kind: Service
+      port: 80
+      weight: 1
