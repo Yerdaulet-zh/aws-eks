@@ -3,9 +3,7 @@ kind: Kustomization
 
 namespace: kube-system
 
-resources:
-  - https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/crds.yaml
-  - https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/gateway-api-v1beta1-crds.yaml
+resources: []
 
 helmCharts:
   - name: aws-load-balancer-controller
@@ -13,14 +11,14 @@ helmCharts:
     repo: https://aws.github.io/eks-charts
     version: 3.2.2
     valuesInline:
-      priorityClassName: system-cluster-critical
-      installCRDs: false
-      enableCertManager: true
       clusterName: "eks-academy-dev"
       vpcId: "vpc-07cd1651bb52b7d36"
       region: "eu-central-1"
+      priorityClassName: system-cluster-critical
+
+      installCRDs: true
+
+      enableCertManager: true
       serviceAccount:
         create: true
         name: aws-load-balancer-controller
-        annotations:
-          # eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/AmazonEKSLoadBalancerControllerRole
