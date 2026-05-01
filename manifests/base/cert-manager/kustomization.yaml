@@ -5,6 +5,7 @@ namespace: cert-manager
 
 resources:
   - namespace.yaml
+  - certificate.yaml
 
 helmCharts:
   - name: cert-manager
