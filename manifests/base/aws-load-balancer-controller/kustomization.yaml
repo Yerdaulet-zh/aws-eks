@@ -4,6 +4,10 @@ kind: Kustomization
 namespace: kube-system
 
 resources:
+  # Base Gateway API CRDs (Required first)
+  - github.com/kubernetes-sigs/gateway-api/config/crd/experimental?ref=v1.1.0
+
+  # AWS LB Controller CRDs
   - github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master
 
 helmCharts:
