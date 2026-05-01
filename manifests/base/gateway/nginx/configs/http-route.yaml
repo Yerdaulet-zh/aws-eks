@@ -28,8 +28,8 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: python-backend
-  namespace: nginx-gateway
+  name: argocd
+  namespace: argocd
 spec:
   parentRefs:
   - name: my-ipv4-gateway
@@ -38,15 +38,15 @@ spec:
     kind: Gateway
     sectionName: https
   hostnames:
-  - "backend.imon.work"
+  - "argocd.imon.work"
   rules:
   - matches:
     - path:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: fastapi-service
-      namespace: backend-dev
+    - name: argocd-server
+      namespace: argocd
       group: ""
       kind: Service
       port: 80
