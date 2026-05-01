@@ -5,6 +5,7 @@ namespace: kube-system
 
 resources:
   - https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/crds.yaml
+  - https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/gateway-api-v1beta1-crds.yaml
 
 helmCharts:
   - name: aws-load-balancer-controller
