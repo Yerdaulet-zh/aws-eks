@@ -3,7 +3,8 @@ kind: Kustomization
 
 namespace: kube-system
 
-resources: []
+resources:
+  - github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master
 
 helmCharts:
   - name: aws-load-balancer-controller
