@@ -49,5 +49,5 @@ spec:
       namespace: argocd
       group: ""
       kind: Service
-      port: 443
+      port: 80
       weight: 1
