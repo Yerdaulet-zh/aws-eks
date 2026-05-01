@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-dns
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: yerdaulet.art@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-dns-account-key
+    solvers:
+    - dns01:
+        route53:
+          region: eu-central-1
