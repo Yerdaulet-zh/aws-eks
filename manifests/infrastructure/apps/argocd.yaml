@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-load-balancer-controller
+  name: argocd
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-4"
@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
-    path: manifests/base/aws-load-balancer-controller
+    path: manifests/base/argocd
 
   destination:
     server: https://kubernetes.default.svc
