@@ -1,0 +1,33 @@
+global:
+  domain: "argocd.imon.work"
+
+  logging:
+    # -- Set the global logging format. Either: `text` or `json`
+    format: json
+    # -- Set the global logging level. One of: `debug`, `info`, `warn` or `error`
+    level: info
+
+# Enable Insecure ArgoCD API Server
+configs:
+  params:
+    server.insecure: true
+
+# HA mode with autoscaling
+redis-ha:
+  enabled: true
+
+controller:
+  replicas: 1
+
+server:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+
+repoServer:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+
+applicationSet:
+  replicas: 2
