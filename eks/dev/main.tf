@@ -197,4 +197,27 @@ module "eks_dev" {
       enable_autoscaling = true
     },
   }
+  node_group_iam_configs = {
+    "app*" = {
+      role_name              = "general-purpose-app"
+      enable_ssm             = true
+      enable_cloudwatch_logs = true
+      enable_ecr_ro_access   = true
+      custom_policy_arns     = []
+    },
+    "ai-ml-workloads" = {
+      role_name              = "ai-ml-workloads"
+      enable_ssm             = true
+      enable_cloudwatch_logs = true
+      enable_ecr_ro_access   = true
+      custom_policy_arns     = []
+    },
+    "stateful*" = {
+      role_name              = "stateful-workloads"
+      enable_ssm             = true
+      enable_cloudwatch_logs = true
+      enable_ecr_ro_access   = true
+      custom_policy_arns     = []
+    }
+  }
 }
