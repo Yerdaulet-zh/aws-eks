@@ -235,18 +235,18 @@ prometheus-node-exporter:
 ##
 prometheusOperator:
   enabled: true
+  service:
+    ipDualStack:
+      enabled: true
+      ipFamilies: ["IPv6", "IPv4"]
+      ipFamilyPolicy: "PreferDualStack"
+      serviceMonitor:
+        selfMonitor: true
+        interval: "15s"
   deployment:
-    enabled: false
+    enabled: true
     replicas: 1
     resources: {}
-  service:
-  ipDualStack:
-    enabled: true
-    ipFamilies: ["IPv6", "IPv4"]
-    ipFamilyPolicy: "PreferDualStack"
-    serviceMonitor:
-      selfMonitor: true
-      interval: "15s"
   resources: {}
 
   # Enable vertical pod autoscaler support for prometheus-operator
