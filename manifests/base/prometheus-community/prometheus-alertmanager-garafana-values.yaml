@@ -41,8 +41,8 @@ grafana:
   adminPassword: "scjoiahsc891uoahbsc"
   service:
     portName: http-web
-    ipFamilies: ["IPv6", "IPv4"]
-    ipFamilyPolicy: "PreferDualStack"
+    # ipFamilies: ["IPv6", "IPv4"]
+    # ipFamilyPolicy: "PreferDualStack"
   # ReadWriteOnce storage and type: sts are used to ensure that only one replica of grafana is running at a time, since EBS volumes can only be attached to one instance at a time.
   persistence:
     enabled: true
