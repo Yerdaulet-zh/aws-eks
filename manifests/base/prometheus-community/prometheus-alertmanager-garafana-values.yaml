@@ -434,7 +434,7 @@ prometheus:
       whenScaled: Retain
 
     nodeSelector:
-      workload: statefull
+      role: stateful
 
     tolerations:
       - key: "workload"
