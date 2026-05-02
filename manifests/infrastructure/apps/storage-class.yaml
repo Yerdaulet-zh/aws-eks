@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
     targetRevision: HEAD
-    path: manifests/base/gateway/storage-class
+    path: manifests/base/storage-class
 
   destination:
     server: https://kubernetes.default.svc
