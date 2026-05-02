@@ -125,7 +125,7 @@ coreDns:
     targetPort: 9153
 
     ipDualStack:
-      enabled: true
+      enabled: false
       ipFamilies: ["IPv6", "IPv4"]
       ipFamilyPolicy: "PreferDualStack"
     selector:
@@ -221,7 +221,7 @@ nodeExporter:
 prometheus-node-exporter:
   service:
     ipDualStack:
-      enabled: true
+      enabled: false
       ipFamilies: ["IPv6", "IPv4"]
       ipFamilyPolicy: "PreferDualStack"
 
@@ -237,7 +237,7 @@ prometheusOperator:
   enabled: true
   service:
     ipDualStack:
-      enabled: true
+      enabled: false
       ipFamilies: ["IPv6", "IPv4"]
       ipFamilyPolicy: "PreferDualStack"
       serviceMonitor:
@@ -323,7 +323,7 @@ prometheus:
     enabled: false
 
     ipDualStack:
-      enabled: true
+      enabled: false
       ipFamilies: ["IPv6", "IPv4"]
       ipFamilyPolicy: "PreferDualStack"
 
@@ -355,7 +355,7 @@ prometheus:
   service:
     enabled: true
     ipDualStack:
-      enabled: true
+      enabled: false
       ipFamilies: ["IPv6", "IPv4"]
       ipFamilyPolicy: "PreferDualStack"
 
@@ -392,7 +392,7 @@ prometheus:
     ## Service dual stack
     ##
     ipDualStack:
-      enabled: true
+      enabled: false
       ipFamilies: ["IPv6", "IPv4"]
       ipFamilyPolicy: "PreferDualStack"
 
@@ -646,7 +646,7 @@ thanosRuler:
   service:
     enabled: true
     ipDualStack:
-      enabled: true
+      enabled: false
       ipFamilies: ["IPv6", "IPv4"]
       ipFamilyPolicy: "PreferDualStack"
 
