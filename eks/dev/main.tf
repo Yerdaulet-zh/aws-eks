@@ -68,7 +68,7 @@ module "eks_dev" {
         # max_unavailable            = null
         max_unavailable_percentage = 25
       }
-      labels             = { role = "state-full-less-apps" }
+      labels             = { role = "state-ful-less-apps" }
       taints             = []
       enable_autoscaling = true
     },
@@ -89,7 +89,7 @@ module "eks_dev" {
         max_unavailable            = null
         max_unavailable_percentage = 25
       }
-      labels             = { role = "state-full-less-apps" }
+      labels             = { role = "state-ful-less-apps" }
       taints             = []
       enable_autoscaling = true
     },
@@ -138,7 +138,7 @@ module "eks_dev" {
         max_unavailable            = null
         max_unavailable_percentage = 25
       }
-      labels = { role = "statefull" }
+      labels = { role = "stateful" }
       taints = [{
         key    = "workload"
         value  = "stateful"
@@ -163,7 +163,7 @@ module "eks_dev" {
         max_unavailable            = null
         max_unavailable_percentage = 25
       }
-      labels = { role = "statefull" }
+      labels = { role = "stateful" }
       taints = [{
         key    = "workload"
         value  = "stateful"
@@ -188,7 +188,7 @@ module "eks_dev" {
         max_unavailable            = null
         max_unavailable_percentage = 25
       }
-      labels = { role = "statefull" }
+      labels = { role = "stateful" }
       taints = [{
         key    = "workload"
         value  = "stateful"
