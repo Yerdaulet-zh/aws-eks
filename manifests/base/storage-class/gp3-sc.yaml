@@ -7,8 +7,28 @@ metadata:
   labels:
     addonmanager.kubernetes.io/mode: EnsureExists
 provisioner: ebs.csi.aws.com
-volumeBindingMode: WaitForFirstConsumer
-reclaimPolicy: Delete
-allowVolumeExpansion: true
 parameters:
   type: gp3
+  fsType: ext4
+  # Performance Tuning
+  iops: "3000"
+  throughput: "125"
+  # Security
+  encrypted: "true"
+  kmsKeyId: ""
+  # Metadata
+  tagSpecification_1: "Environment=ALL"
+  tagSpecification_2: "Team=ALL"
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+mountOptions:
+  - discard # Enables Continuous TRIM support for better performance and longevity
+  - noatime # Improves performance by not updating access times on the volume
+allowedTopologies:
+- matchLabelExpressions:
+  - key: topology.kubernetes.io/zone
+    values:
+    - eu-central-1a
+    - eu-central-1b
+    - eu-central-1c
