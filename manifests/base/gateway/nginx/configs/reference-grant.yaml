@@ -42,3 +42,18 @@ spec:
   - group: ""
     kind: Service
     name: kube-prometheus-stack-grafana
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-nginx-to-alloy
+  namespace: alloy
+spec:
+  from:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    namespace: nginx-gateway
+  to:
+  - group: ""
+    kind: Service
+    name: alloy-gateway
