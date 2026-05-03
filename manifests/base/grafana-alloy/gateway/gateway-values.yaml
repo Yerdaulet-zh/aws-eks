@@ -1,0 +1,204 @@
+# -- Overrides the chart's computed fullname. Used to change the full prefix of
+# resource names.
+fullnameOverride: "alloy-gateway"
+
+## Various Alloy settings. For backwards compatibility with the grafana-agent
+## chart, this field may also be called "agent". Naming this field "agent" is
+## deprecated and will be removed in a future release.
+alloy:
+  configMap:
+    # -- Create a new ConfigMap for the config file.
+    create: false
+    # -- Name of existing ConfigMap to use. Used when create is false.
+    name: alloy-gateway-config
+    # -- Key in ConfigMap to get config from.
+    key: config.alloy
+
+  clustering:
+    # -- Deploy Alloy in a cluster to allow for load distribution.
+    enabled: false
+
+    # -- Name for the Alloy cluster. Used for differentiating between clusters.
+    name: "alloy-gateway-cluster"
+
+  # -- Minimum stability level of components and behavior to enable. Must be
+  # one of "experimental", "public-preview", or "generally-available".
+  stabilityLevel: "generally-available"
+
+  # -- Path to where Grafana Alloy stores data (for example, the Write-Ahead Log).
+  # By default, data is lost between reboots.
+  storagePath: /var/lib/alloy/data
+
+  # -- Extra ports to expose on the Alloy container.
+  # If `service.type` is `NodePort`, each item may set `nodePort` to choose the Service NodePort for that port.
+  extraPorts:
+    - name: "otlp-grpc"
+      port: 4317
+      targetPort: 4317
+      protocol: "TCP"
+    - name: "loki-push"
+      port: 3100
+      targetPort: 3100
+      protocol: "TCP"
+
+  mounts:
+    # -- Mount /var/log from the host into the container for log collection.
+    varlog: false
+
+  # -- Enables sending Grafana Labs anonymous usage stats to help improve Grafana
+  # Alloy.
+  enableReporting: false
+
+
+serviceAccount:
+  # -- Whether to create a service account for the Grafana Alloy deployment.
+  create: true
+
+# Options for the extra controller used for config reloading.
+configReloader:
+  # -- Enables automatically reloading when the Alloy config changes.
+  enabled: true
+
+
+controller:
+  # -- Type of controller to use for deploying Grafana Alloy in the cluster.
+  # Must be one of 'daemonset', 'deployment', or 'statefulset'.
+  type: 'statefulset'
+
+  # -- Number of pods to deploy. Ignored when controller.type is 'daemonset'.
+  replicas: 3
+
+  # -- How many additional seconds to wait before considering a pod ready.
+  minReadySeconds: 10
+
+  # -- nodeSelector to apply to Grafana Alloy pods.
+  nodeSelector:
+      role: stateful
+
+  # -- Tolerations to apply to Grafana Alloy pods.
+  tolerations:
+    - key: "workload"
+      operator: "Equal"
+      value: "stateful"
+      effect: "NoSchedule"
+
+  # -- Topology Spread Constraints to apply to Grafana Alloy pods.
+  topologySpreadConstraints:
+    # --- SPREAD ACROSS ZONES ---
+    - maxSkew: 1
+      topologyKey: "topology.kubernetes.io/zone"
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: alloy
+          app.kubernetes.io/instance: alloy-gateway
+
+    # --- SPREAD ACROSS NODES ---
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: alloy
+          app.kubernetes.io/instance: alloy-gateway
+
+    # -- PodDisruptionBudget configuration.
+  podDisruptionBudget:
+    # -- Whether to create a PodDisruptionBudget for the controller.
+    enabled: true
+    # -- Minimum number of pods that must be available during a disruption.
+    # Note: Only one of minAvailable or maxUnavailable should be set.
+    minAvailable: 2
+    # -- Maximum number of pods that can be unavailable during a disruption.
+    # Note: Only one of minAvailable or maxUnavailable should be set.
+    maxUnavailable: null
+
+  # -- Whether to enable automatic deletion of stale PVCs due to a scale down operation, when controller.type is 'statefulset'.
+  enableStatefulSetAutoDeletePVC: true
+
+  autoscaling:
+    # -- Creates a HorizontalPodAutoscaler for controller type deployment.
+    # Deprecated: Please use controller.autoscaling.horizontal instead
+    enabled: false
+
+    # -- Configures the Vertical Pod Autoscaler for the controller.
+    vertical:
+      # -- Enables the Vertical Pod Autoscaler for the controller.
+      enabled: true
+      # -- Configures the resource policy for the Vertical Pod Autoscaler.
+      resourcePolicy:
+        # -- Configures the container policies for the Vertical Pod Autoscaler.
+        containerPolicies:
+        - containerName: alloy
+          # -- The controlled resources for the Vertical Pod Autoscaler.
+          controlledResources:
+          - cpu
+          - memory
+          # -- The controlled values for the Vertical Pod Autoscaler. Needs to be either RequestsOnly or RequestsAndLimits.
+          controlledValues: "RequestsAndLimits"
+          # -- The maximum allowed values for the pods.
+          maxAllowed:
+            cpu: 200m
+            memory: 100Mi
+          # -- Defines the min allowed resources for the pod
+          minAllowed:
+            cpu: 200m
+            memory: 100Mi
+
+      # -- Configures the update policy for the Vertical Pod Autoscaler.
+      updatePolicy:
+        # -- Specifies minimal number of replicas which need to be alive for VPA Updater to attempt pod eviction
+        minReplicas: 2
+        # -- Specifies whether recommended updates are applied when a Pod is started and whether recommended updates
+        # are applied during the life of a Pod. Possible values are "Off", "Initial", "Recreate", and "Auto".
+        updateMode: Auto
+
+  # -- volumeClaimTemplates to add when controller.type is 'statefulset'.
+  # ENABLED: This automatically creates the AWS EBS volumes
+  volumeClaimTemplates:
+    - metadata:
+        name: alloy-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "gp3"
+        resources:
+          requests:
+            storage: 10Gi
+
+networkPolicy:
+  enabled: false
+  flavor: kubernetes
+
+  policyTypes:
+    - Ingress
+    - Egress
+
+  # Default allow all traffic because Alloy is so configurable
+  # It is recommended to change this before deploying to production
+  # To disable each policyType, set value to `null`
+  ingress:
+    - {}
+  egress:
+    - {}
+
+service:
+  # -- Creates a Service for the controller's pods.
+  enabled: true
+  # -- Service type
+  type: ClusterIP
+  # -- NodePort port. Only takes effect when `service.type: NodePort`
+  nodePort: 31128
+  # -- Cluster IP, can be set to None, empty "" or an IP address
+  clusterIP: ''
+  # -- Value for internal traffic policy. 'Cluster' or 'Local'
+  internalTrafficPolicy: Cluster
+  annotations: {}
+    # cloud.google.com/load-balancer-type: Internal
+
+
+serviceMonitor:
+  enabled: true
+  # -- Additional labels for the service monitor.
+  additionalLabels: {}
+  # -- Scrape interval. If not set, the Prometheus default scrape interval is used.
+  interval: "15s"
