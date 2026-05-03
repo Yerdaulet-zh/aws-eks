@@ -103,5 +103,5 @@ spec:
       namespace: alloy
       group: ""
       kind: Service
-      port: 80
+      port: 3100
       weight: 1
