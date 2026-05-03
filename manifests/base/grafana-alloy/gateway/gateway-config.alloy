@@ -25,4 +25,7 @@ loki.process "mock_loki" {
   }
   // We forward to nothing so we don't get "no such host" errors
   forward_to = []
+  stage.log_print {
+    msg = "MOCK_LOKI_RECEIVE"
+  }
 }
