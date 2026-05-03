@@ -3,23 +3,12 @@ logging {
   format = "json"
 }
 
-// Receive OTLP data (Logs, Metrics, Traces) from your Edge pods
-otelcol.receiver.otlp "gateway" {
+// Listen for raw Loki logs sent from Edge (loki.write)
+loki.source.api "gateway" {
   http {
-    endpoint = "0.0.0.0:3100"
+    listen_address = "0.0.0.0"
+    listen_port    = 3100
   }
-  grpc {
-    endpoint = "0.0.0.0:4317"
-  }
-
-  output {
-    // This sends the logs portion of OTLP to the converter
-    logs = [otelcol.exporter.loki.to_loki.input]
-  }
-}
-
-// Convert OTLP logs into a format Loki understands
-otelcol.exporter.loki "to_loki" {
   forward_to = [loki.write.loki_storage.receiver]
 }
 
