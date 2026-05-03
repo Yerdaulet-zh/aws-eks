@@ -156,7 +156,9 @@ controller:
   # -- volumeClaimTemplates to add when controller.type is 'statefulset'.
   # ENABLED: This automatically creates the AWS EBS volumes
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: alloy-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
