@@ -13,3 +13,9 @@ helmCharts:
     valuesFile: edge-values.yaml
     includeCRDs: false
 
+configMapGenerator:
+  - name: alloy-edge-config
+    files:
+      - config.alloy=edge-config.alloy
+    options:
+      disableNameSuffixHash: true

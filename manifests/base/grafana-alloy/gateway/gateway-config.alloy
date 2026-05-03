@@ -1,0 +1,20 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+// Listen for logs from Edge
+loki.source.otlp "gateway" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port    = 3100
+  }
+  forward_to = [loki.write.loki_storage.receiver]
+}
+
+// Forward to your actual Loki/S3 storage
+loki.write "loki_storage" {
+  endpoint {
+    url = "http://loki-read.monitoring.svc:3100/loki/api/v1/push"
+  }
+}
