@@ -6,12 +6,4 @@ namespace: loki
 resources:
   - namespace.yaml
   - priority-class.yaml
-
-helmCharts:
-  - name: loki
-    releaseName: loki
-    repo: https://grafana.github.io/helm-charts
-    version: 13.5.0
-    namespace: loki
-    valuesFile: loki-ss-values-chart-13.5.0-app-3.7.1.yaml
-    includeCRDs: true
+  - simple-scalable/
