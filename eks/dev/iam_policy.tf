@@ -11,3 +11,10 @@ resource "aws_iam_policy" "cert_manager_route53" {
   description = "Permission for EKS Cert manager to manage Route53 DNS"
   policy      = file("iam_policies/aws-cert-manager-route53.json")
 }
+
+# ---------- Loki S3 Storage ----------
+resource "aws_iam_policy" "loki_s3_policy" {
+  name        = "${local.cluster_name}-loki-s3-policy"
+  description = "Permissions for Loki to manage S3 storage"
+  policy      = file("iam_policies/loki-s3-policy.json")
+}

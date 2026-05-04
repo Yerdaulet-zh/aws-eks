@@ -18,3 +18,12 @@ resource "aws_eks_pod_identity_association" "cert_manager" {
   role_arn        = aws_iam_role.cert_manager_route53.arn
   depends_on      = [module.eks_dev]
 }
+
+# --------- Loki S3 Storage ----------
+resource "aws_eks_pod_identity_association" "loki_s3_storage" {
+  cluster_name    = local.cluster_name
+  namespace       = "loki"
+  service_account = "loki-sa"
+  role_arn        = aws_iam_role.loki_s3_storage.arn
+  depends_on      = [module.eks_dev]
+}
