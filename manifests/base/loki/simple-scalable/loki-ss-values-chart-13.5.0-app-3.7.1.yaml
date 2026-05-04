@@ -523,10 +523,10 @@ write:
     # -- Annotations for Pod Disruption Budget
     annotations: {}
     # -- Labels for Pod Disruption Budget
-    labels:
-      # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    labels: {}
+    # minAvailable: 1
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for write pods
   nodeSelector:
@@ -655,11 +655,9 @@ read:
     enabled: true
     # -- Annotations for read Pod Disruption Budget
     annotations: {}
-    # -- Labels for read Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
   # -- The default is to deploy all pods in parallel.
   serviceAccount:
     # -- Specifies whether a ServiceAccount should be created
@@ -729,11 +727,9 @@ backend:
     enabled: true
     # -- Annotations for Pod Disruption Budget
     annotations: {}
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for backend pods
   nodeSelector:
@@ -835,11 +831,9 @@ ingester:
     enabled: true
     # -- Annotations for Pod Disruption Budget
     annotations: {}
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for ingester pods
   nodeSelector:
@@ -991,10 +985,9 @@ distributor:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    labels:
-      # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    # minAvailable: 1
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
   # -- Affinity for distributor pods.
   # @default -- Hard node anti-affinity
   # The value will be passed through tpl.
@@ -1079,11 +1072,9 @@ querier:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- topologySpread for querier pods.
   # @default -- Defaults to allow skew no more then 1 node
@@ -1179,11 +1170,9 @@ queryFrontend:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
   # -- Affinity for query-frontend pods.
   # @default -- Hard node anti-affinity
   # The value will be passed through tpl.
@@ -1253,11 +1242,9 @@ queryScheduler:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
-      # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    # minAvailable: 1
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- trafficDistribution for query-scheduler service
   trafficDistribution: "PreferClose"
@@ -1294,11 +1281,9 @@ indexGateway:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
-      # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    # minAvailable: 1
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
   affinity: {}
 
   # -- Node selector for ingester pods
@@ -1503,11 +1488,9 @@ bloomGateway:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
-      # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    # minAvailable: 1
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for bloom-gateway pods
   nodeSelector:
@@ -1605,11 +1588,9 @@ bloomPlanner:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for bloom-planner pods
   nodeSelector:
@@ -1748,11 +1729,9 @@ bloomBuilder:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Annotations for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Affinity for bloom-builder pods.
   # @default -- Hard node anti-affinity
@@ -1849,11 +1828,9 @@ patternIngester:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
   # -- Node selector for pattern ingester pods
   nodeSelector:
     role: stateful
@@ -1958,11 +1935,9 @@ ruler:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Affinity for ruler pods.
   # @default -- Hard node anti-affinity
@@ -2053,11 +2028,9 @@ overridesExporter:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 2
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Affinity for overrides-exporter pods.
   # @default -- Hard node anti-affinity
@@ -2180,11 +2153,9 @@ resultsCache:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- The name of the PriorityClass for results-cache pods
   priorityClassName: infrastructure-critical
@@ -2285,13 +2256,9 @@ chunksCache:
   podDisruptionBudget:
     # -- Enable Pod Disruption Budget
     enabled: true
-    # -- Annotations for Pod Disruption Budget
-    annotations: {}
-    # -- Labels for Pod Disruption Budget
-    labels:
     # minAvailable: 1
-      maxUnavailable: 1
-      unhealthyPodEvictionPolicy: IfHealthyBudget
+    maxUnavailable: 1
+    unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- The name of the PriorityClass for chunks-cache pods
   priorityClassName: infrastructure-critical
@@ -2394,11 +2361,9 @@ chunksCache:
     podDisruptionBudget:
       # -- Enable Pod Disruption Budget
       enabled: true
-      # -- Labels for Pod Disruption Budget
-      labels:
       # minAvailable: 1
-        maxUnavailable: 1
-        unhealthyPodEvictionPolicy: IfHealthyBudget
+      maxUnavailable: 1
+      unhealthyPodEvictionPolicy: IfHealthyBudget
 
     # -- The name of the PriorityClass for chunks-cache-l2 pods
     priorityClassName: infrastructure-critical
@@ -2541,16 +2506,6 @@ monitoring:
   serviceMonitor:
     # -- If enabled, ServiceMonitor resources for Prometheus Operator are created
     enabled: true
-    # -- To disable setting a 'cluster' label in metrics, set to 'null'.
-    # To overwrite the 'cluster' label with your own value, set to a non-empty string.
-    # Keep empty string "" to have the default value in the 'cluster' label, which is the helm release name for Loki.
-    clusterLabel: ""
-    # -- Namespace selector for ServiceMonitor resources
-    namespaceSelector: {}
-    # -- ServiceMonitor annotations
-    annotations: {}
-    # -- Additional ServiceMonitor labels
-    labels: {}
     # -- ServiceMonitor scrape interval
     # Default is 15s because included recording rules use a 1m rate, and scrape interval needs to be at
     # least 1/4 rate interval.
