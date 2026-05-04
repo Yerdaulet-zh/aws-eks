@@ -18,7 +18,7 @@ global:
 # -- Overrides the chart's computed fullname
 fullnameOverride: "loki"
 # -- Overrides the chart's namespace
-namespaceOverride: "logging"
+namespaceOverride: "loki"
 # -- Overrides the chart's cluster label
 clusterLabelOverride: "eks-academy-dev"
 # -- Deployment mode lets you specify how to deploy Loki.
