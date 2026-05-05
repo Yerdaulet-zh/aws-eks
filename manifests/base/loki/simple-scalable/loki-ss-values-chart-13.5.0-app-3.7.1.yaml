@@ -256,7 +256,7 @@ loki:
   compactor:
     # -- Matches our path_prefix from earlier
     working_directory: /var/lib/loki/compactor
-    shared_store: s3
+    # shared_store: s3 - Depreacated in favor of using the main storage configuration for the compactor as well, see `storage` config section.
     compaction_interval: 10m
 
     # -- Enable this to honor retention limits set in limits_config
