@@ -93,12 +93,6 @@ defaults:
       repository: kubectl
       # -- Overrides the image tag. Defaults to .Capabilities.KubeVersion.Version
       tag: ''
-  # -- Common additional CLI arguments for all jobs (that is, -log.level debug, -config.expand-env=true or -log-config-reverse-order)
-  # scope: backend, bloom-builder, bloom-gateway, bloom-planner, compactor, distributor, index-gateway, ingester, overrides-exporter, pattern-ingester, querier, query-frontend, query-scheduler, read, ruler, write.
-  extraArgs:
-    - "-config.expand-env=true"
-    - "-log.level=info"
-    - "-log.format=json"
 
 ######################################################################################################################
 #
