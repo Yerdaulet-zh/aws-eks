@@ -168,6 +168,7 @@ loki:
     type: s3
     s3:
       region: eu-central-1
+      endpoint: s3.eu-central-1.amazonaws.com
       insecure: false
       # -- Check https://grafana.com/docs/loki/latest/configure/#s3_storage_config for more info on how to provide a backoff_config
       backoff_config:
@@ -189,6 +190,7 @@ loki:
       s3:
         # Optional region
         region: eu-central-1
+        endpoint: s3.eu-central-1.amazonaws.com
         # Optional. Enable if using self-signed TLS
         insecure: false
         # Optional server-side encryption configuration
