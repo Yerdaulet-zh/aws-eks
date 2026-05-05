@@ -224,7 +224,7 @@ loki:
     # This keeps track of alerts currently being evaluated so they
     # aren't lost if the Ruler pod restarts.
     wal:
-      dir: /var/lib/loki/ruler-wal
+      dir: /var/loki/ruler-wal
 
     # -- Use your S3 storage for rules (Recommended for HA)
     # This ensures that all Ruler replicas see the same set of rules.
@@ -250,7 +250,7 @@ loki:
   # --  Optional compactor configuration
   compactor:
     # -- Matches our path_prefix from earlier
-    working_directory: /var/lib/loki/compactor
+    working_directory: /var/loki/compactor
     # shared_store: s3 - Depreacated in favor of using the main storage configuration for the compactor as well, see `storage` config section.
     compaction_interval: 10m
     delete_request_store: s3
@@ -271,7 +271,7 @@ loki:
   # --  Optional ingester configuration
   ingester:
     wal:
-      dir: /var/lib/loki/wal
+      dir: /var/loki/wal
       flush_on_shutdown: true # Prevents data loss during node upgrades
 
     # -- How long a log stream can sit idle before being cut into a chunk
