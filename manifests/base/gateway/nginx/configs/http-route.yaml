@@ -11,7 +11,7 @@ spec:
     kind: Gateway
     sectionName: https
   hostnames:
-  - "fastapi.imon.work"
+  - "fastapi.imon.academy"
   rules:
   - matches:
     - path:
@@ -38,7 +38,7 @@ spec:
     kind: Gateway
     sectionName: https
   hostnames:
-  - "argocd.imon.work"
+  - "argocd.imon.academy"
   rules:
   - matches:
     - path:
@@ -65,7 +65,7 @@ spec:
     kind: Gateway
     sectionName: https
   hostnames:
-  - "grafana.imon.work"
+  - "grafana.imon.academy"
   rules:
   - matches:
     - path:
@@ -92,7 +92,7 @@ spec:
     kind: Gateway
     sectionName: https
   hostnames:
-  - "alloy-gateway.imon.work"
+  - "alloy-gateway.imon.academy"
   rules:
   - matches:
     - path:
