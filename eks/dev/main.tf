@@ -61,7 +61,7 @@ module "eks_dev" {
       role_key            = "app*"
       scaling_config = {
         desired_size = 1
-        max_size     = 2
+        max_size     = 1
         min_size     = 0
       }
       update_config = {
@@ -82,7 +82,7 @@ module "eks_dev" {
       role_key            = "app*"
       scaling_config = {
         desired_size = 1
-        max_size     = 2
+        max_size     = 1
         min_size     = 0
       }
       update_config = {
@@ -123,7 +123,7 @@ module "eks_dev" {
     # Stateful workloads
     "stateful-node1" = {
       node_group_name     = "stateful-node1"
-      instance_types      = ["t3.large"]
+      instance_types      = ["r5.xlarge"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
@@ -148,7 +148,7 @@ module "eks_dev" {
     },
     "stateful-node2" = {
       node_group_name     = "stateful-node2"
-      instance_types      = ["t3.large"]
+      instance_types      = ["r5.xlarge"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
@@ -173,7 +173,7 @@ module "eks_dev" {
     },
     "stateful-node3" = {
       node_group_name     = "stateful-node3"
-      instance_types      = ["t3.large"]
+      instance_types      = ["r5.xlarge"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
