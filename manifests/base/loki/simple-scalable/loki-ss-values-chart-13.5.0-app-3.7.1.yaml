@@ -258,6 +258,7 @@ loki:
     working_directory: /var/lib/loki/compactor
     # shared_store: s3 - Depreacated in favor of using the main storage configuration for the compactor as well, see `storage` config section.
     compaction_interval: 10m
+    delete_request_store: s3
 
     # -- Enable this to honor retention limits set in limits_config
     retention_enabled: true
