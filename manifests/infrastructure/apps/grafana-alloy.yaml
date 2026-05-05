@@ -4,31 +4,53 @@ metadata:
   name: grafana-alloy
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-
 spec:
   project: default
+  sources:
+    # The Gateway (Installs CRDs)
+    - repoURL: 'https://grafana.github.io/helm-charts'
+      chart: alloy
+      targetRevision: 0.11.0
+      helm:
+        releaseName: alloy-gateway
+        valueFiles:
+          - $values/manifests/base/grafana-alloy/gateway/gateway-values.yaml
+        parameters:
+          - name: "crds.create"
+            value: "true"
 
-  source:
-    repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
-    targetRevision: HEAD
-    path: manifests/base/grafana-alloy
+    # The Edge
+    - repoURL: 'https://grafana.github.io/helm-charts'
+      chart: alloy
+      targetRevision: 0.11.0
+      helm:
+        releaseName: alloy-edge
+        valueFiles:
+          - $values/manifests/base/grafana-alloy/edge/edge-values.yaml
+        parameters:
+          - name: "crds.create"
+            value: "false"
+
+    # The Git Repo (referenced as $values above)
+    - repoURL: 'https://github.com/Yerdaulet-zh/aws-eks.git'
+      targetRevision: HEAD
+      ref: values
 
   destination:
-    server: https://kubernetes.default.svc
+    server: 'https://kubernetes.default.svc'
     namespace: alloy
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-      allowEmpty: true
 
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - RespectIgnoreDifferences=true
+  syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+    - ApplyOutOfSyncOnly=true
+    - PruneLast=true
+    - RespectIgnoreDifferences=true
