@@ -3,7 +3,8 @@ locals {
   region       = "eu-central-1"
 
   domains = [
-    "imon.work"
+    "imon.work",
+    "imon.academy"
   ]
 
   contol_plane_subnets = {
