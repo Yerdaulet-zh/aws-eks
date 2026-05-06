@@ -172,6 +172,16 @@ kubeProxy:
 kubeStateMetrics:
   enabled: true
 
+## Component scraping loki metrics
+##
+loki:
+  monitoring:
+    serviceMonitor:
+      enabled: true
+      namespace: loki # The namespace where alloy/loki are
+      metricsInstance:
+        enabled: false # Set this true when Grafana Alloy pushes metrics to prometheus
+
 ## Configuration for kube-state-metrics subchart
 ## (Tells the cluster to actually install/run the KSM pods.)
 ##
