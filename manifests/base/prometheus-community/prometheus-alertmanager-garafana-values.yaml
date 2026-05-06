@@ -643,6 +643,9 @@ prometheus:
     ## minutes).
     maximumStartupDurationSeconds: 0
 
+    # Allows Prometheus to find ServiceMonitors in ANY namespace
+    serviceMonitorSelectorNilUsesHelmValues: false
+
 ## Configuration for thanosRuler
 ## ref: https://thanos.io/tip/components/rule.md/
 ##
