@@ -3,8 +3,8 @@ data "aws_lb" "gateway_nlb" {
 }
 
 resource "aws_route53_record" "this" {
-  zone_id = data.aws_route53_zone.zones["imon.work"].zone_id
-  name    = "*.${data.aws_route53_zone.zones["imon.work"].name}"
+  zone_id = data.aws_route53_zone.zones["imon.academy"].zone_id
+  name    = "*.${data.aws_route53_zone.zones["imon.academy"].name}"
   type    = "A"
 
   allow_overwrite = true
