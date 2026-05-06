@@ -1,20 +1,35 @@
-logging {
-  level  = "info"
-  format = "json"
+discovery.kubernetes "pods" {
+  role = "pod"
 }
 
-// Listen for raw Loki logs sent from Edge (loki.write)
-loki.source.api "gateway" {
-  http {
-    listen_address = "0.0.0.0"
-    listen_port    = 3100
+loki.relabel "pod_logs" {
+  forward_to = [loki.source.kubernetes.pod_logs.receiver]
+
+  rule {
+    source_labels = ["__meta_kubernetes_namespace"]
+    target_label  = "namespace"
   }
-  forward_to = [loki.write.loki_storage.receiver]
+  rule {
+    source_labels = ["__meta_kubernetes_pod_name"]
+    target_label  = "pod"
+  }
+  rule {
+    source_labels = ["__meta_kubernetes_pod_container_name"]
+    target_label  = "container"
+  }
+  rule {
+    source_labels = ["__meta_kubernetes_pod_node_name"]
+    target_label  = "node"
+  }
 }
 
-// Forward to actual Loki/S3 storage
-loki.write "loki_storage" {
+loki.source.kubernetes "pod_logs" {
+  targets    = discovery.kubernetes.pods.targets
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
   endpoint {
-    url = "http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push"
+    url = "http://alloy-gateway.alloy.svc.cluster.local:3100/loki/api/v1/push"
   }
 }
