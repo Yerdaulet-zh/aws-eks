@@ -1,3 +1,8 @@
+logging {
+  level  = "info"
+  format = "json"
+}
+
 discovery.kubernetes "pods" {
   role = "pod"
 }
