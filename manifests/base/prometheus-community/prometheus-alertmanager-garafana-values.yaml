@@ -490,6 +490,10 @@ prometheus:
     #   bearerTokenFile: ""
     #   apiVersion: v2
 
+    ## enable --web.enable-remote-write-receiver flag on prometheus-server
+    ##
+    enableRemoteWriteReceiver: true
+
     ## How long to retain metrics
     ##
     retention: 10d
