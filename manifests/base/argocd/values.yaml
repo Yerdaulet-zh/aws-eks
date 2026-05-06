@@ -1,5 +1,5 @@
 global:
-  domain: "argocd.imon.work"
+  domain: "argocd.imon.academy"
 
   logging:
     # -- Set the global logging format. Either: `text` or `json`
