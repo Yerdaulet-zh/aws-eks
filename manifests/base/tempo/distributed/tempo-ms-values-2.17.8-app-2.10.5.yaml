@@ -784,7 +784,6 @@ storage:
       region: eu-central-1
     block:
       version: vParquet4
-      dedicated_columns: ["service.name", "http.method", "status.code"]
     pool:
       max_workers: 400
       queue_depth: 20000
