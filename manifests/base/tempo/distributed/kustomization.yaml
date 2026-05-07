@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: tempo
+
+resources: []
+
+helmCharts:
+  - name: tempo
+    releaseName: tempo
+    repo: https://grafana-community.github.io/helm-charts
+    version: 1.10.1 # This chart version installs Tempo App v2.10.1
+    namespace: tempo
+    valuesFile: tempo-ms-values-2.17.8-app-2.10.5.yaml
+    includeCRDs: true
