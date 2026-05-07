@@ -956,7 +956,7 @@ memcachedParquetFooter:
       memory: 2Gi
     limits:
       cpu: 500m
-    memory: 2Gi
+      memory: 2Gi
   # -- topologySpread for memcached-parquet-footer pods. Passed through `tpl` and, thus, to be configured as string
   # @default -- Defaults to allow skew no more than 1 node per AZ
   topologySpreadConstraints: |
@@ -1012,7 +1012,7 @@ memcachedFrontendSearch:
       memory: 2Gi
     limits:
       cpu: 500m
-    memory: 2Gi
+      memory: 2Gi
   # -- topologySpread for memcached-frontend-search pods. Passed through `tpl` and, thus, to be configured as string
   # @default -- Defaults to allow skew no more than 1 node per AZ
   topologySpreadConstraints: |
