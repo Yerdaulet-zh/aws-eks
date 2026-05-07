@@ -1,6 +1,6 @@
 module "s3_bucket" {
   source   = "terraform-aws-modules/s3-bucket/aws"
-  for_each = toset(["yerdaulet-loki-chunks", "yerdaulet-loki-ruler", "yerdaulet-loki-admin"])
+  for_each = toset(["yerdaulet-loki-chunks", "yerdaulet-loki-ruler", "yerdaulet-loki-admin", "yerdaulet-tempo-bucket"])
   bucket   = each.key
   acl      = "private"
 
