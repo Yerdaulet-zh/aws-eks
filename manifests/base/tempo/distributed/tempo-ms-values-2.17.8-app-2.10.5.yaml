@@ -21,7 +21,7 @@ tempo:
     # -- Docker image repository
     repository: grafana/tempo
     # -- Overrides the image tag whose default is the chart's appVersion
-    tag: 10.5.0
+    tag: 2.10.5
     pullPolicy: IfNotPresent
   service:
     # -- Configure the IP families for all tempo services
