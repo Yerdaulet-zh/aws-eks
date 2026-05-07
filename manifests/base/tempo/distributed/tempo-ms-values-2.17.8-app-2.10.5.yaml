@@ -1054,7 +1054,7 @@ metaMonitoring:
     # -- Alternative namespace for ServiceMonitor resources
     namespace: "monitoring"
     # -- Namespace selector for ServiceMonitor resources
-    namespaceSelector: {matchNames: ["tempo"]}
+    namespaceSelector: {}
     # -- Additional ServiceMonitor labels
     labels: {}
     # -- ServiceMonitor scrape interval
