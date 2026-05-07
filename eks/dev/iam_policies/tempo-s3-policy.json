@@ -12,7 +12,7 @@
             ],
             "Resource": [
                 "arn:aws:s3:::yerdaulet-tempo-bucket",
-                "arn:aws:s3:::yerdaulet-tempo-bucket/*",
+                "arn:aws:s3:::yerdaulet-tempo-bucket/*"
             ]
         }
     ]
