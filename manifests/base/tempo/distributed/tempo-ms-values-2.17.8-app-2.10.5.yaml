@@ -86,7 +86,7 @@ ingester:
     # -- Target CPU utilisation percentage for the ingester
     targetCPUUtilizationPercentage: 60
     # -- Target memory utilisation percentage for the ingester
-    targetMemoryUtilizationPercentage: nil
+    targetMemoryUtilizationPercentage:
   # -- Resource requests and limits for the ingester
   resources: {}
   # -- Grace period to allow the ingester to shutdown before it is killed. Especially for the ingestor,
