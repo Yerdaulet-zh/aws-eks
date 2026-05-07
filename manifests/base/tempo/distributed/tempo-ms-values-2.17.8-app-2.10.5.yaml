@@ -431,7 +431,7 @@ compactor:
             value: 1
             periodSeconds: 180
       # -- Target CPU utilisation percentage for the compactor
-      targetCPUUtilizationPercentage: 100
+      targetCPUUtilizationPercentage: 60
       # -- Target memory utilisation percentage for the compactor
       targetMemoryUtilizationPercentage:
   # -- Affinity for compactor pods. Passed through `tpl` and, thus, to be configured as string
