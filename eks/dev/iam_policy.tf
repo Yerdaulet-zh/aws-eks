@@ -18,3 +18,10 @@ resource "aws_iam_policy" "loki_s3_policy" {
   description = "Permissions for Loki to manage S3 storage"
   policy      = file("iam_policies/loki-s3-policy.json")
 }
+
+# ---------- Tempo S3 Storage ----------
+resource "aws_iam_policy" "tempo_s3_policy" {
+  name        = "${local.cluster_name}-tempo-s3-policy"
+  description = "Permissions for Tempo to manage S3 storage"
+  policy      = file("iam_policies/tempo-s3-policy.json")
+}

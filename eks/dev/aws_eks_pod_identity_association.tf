@@ -27,3 +27,12 @@ resource "aws_eks_pod_identity_association" "loki_s3_storage" {
   role_arn        = aws_iam_role.loki_s3_storage.arn
   depends_on      = [module.eks_dev]
 }
+
+# --------- Tempo S3 Storage ----------
+resource "aws_eks_pod_identity_association" "tempo_s3_storage" {
+  cluster_name    = local.cluster_name
+  namespace       = "tempo"
+  service_account = "tempo-sa"
+  role_arn        = aws_iam_role.tempo_s3_storage.arn
+  depends_on      = [module.eks_dev]
+}

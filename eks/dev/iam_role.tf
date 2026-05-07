@@ -15,3 +15,9 @@ resource "aws_iam_role" "loki_s3_storage" {
   name               = "${local.cluster_name}-loki-s3-storage"
   assume_role_policy = file("iam_policies/pod-identity-policy.json")
 }
+
+# ---------- Tempo S3 Storage ----------
+resource "aws_iam_role" "tempo_s3_storage" {
+  name               = "${local.cluster_name}-tempo-s3-storage"
+  assume_role_policy = file("iam_policies/pod-identity-policy.json")
+}

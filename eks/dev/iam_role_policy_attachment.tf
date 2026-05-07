@@ -15,3 +15,9 @@ resource "aws_iam_role_policy_attachment" "loki_s3_storage_attach" {
   policy_arn = aws_iam_policy.loki_s3_policy.arn
   role       = aws_iam_role.loki_s3_storage.name
 }
+
+# ---------- Tempo S3 Storage ----------
+resource "aws_iam_role_policy_attachment" "tempo_s3_storage_attach" {
+  policy_arn = aws_iam_policy.tempo_s3_policy.arn
+  role       = aws_iam_role.tempo_s3_storage.name
+}
