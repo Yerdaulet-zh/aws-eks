@@ -21,7 +21,7 @@ tempo:
     # -- Docker image repository
     repository: grafana/tempo
     # -- Overrides the image tag whose default is the chart's appVersion
-    tag: 2.10.5
+    tag: 2.4.1
     pullPolicy: IfNotPresent
   service:
     # -- Configure the IP families for all tempo services
@@ -176,7 +176,7 @@ ingester:
 # Configuration for the metrics-generator
 metricsGenerator:
   # -- Specifies whether a metrics-generator should be deployed
-  enabled: false
+  enabled: true
   # -- Kind of deployment [StatefulSet/Deployment]
   kind: StatefulSet
   # -- Number of replicas for the metrics-generator
