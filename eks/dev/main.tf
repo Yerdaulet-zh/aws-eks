@@ -19,15 +19,44 @@ module "eks_dev" {
     zonal_shift_enabled = false
   }
 
-  cluster_access_config = [{
-    user_arn          = data.aws_iam_role.sso_admin.arn
-    kubernetes_groups = []
-    policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-    access_scope = {
-      type       = "cluster"
-      namespaces = []
+  cluster_access_config = [
+    {
+      user_arn          = data.aws_iam_role.this["clusterAdmin"].arn
+      kubernetes_groups = []
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      access_scope = {
+        type       = "cluster"
+        namespaces = []
+      }
+    },
+    {
+      user_arn          = data.aws_iam_role.this["devops"].arn
+      kubernetes_groups = []
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+      access_scope = {
+        type       = "cluster"
+        namespaces = []
+      }
+    },
+    {
+      user_arn          = data.aws_iam_role.this["dev"].arn
+      kubernetes_groups = []
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
+      access_scope = {
+        type       = "namespace"
+        namespaces = ["fastapi"]
+      }
+    },
+    {
+      user_arn          = data.aws_iam_role.this["audit"].arn
+      kubernetes_groups = []
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+      access_scope = {
+        type       = "namespace"
+        namespaces = ["loki", "monitoring"]
+      }
     }
-  }]
+  ]
 
   kubernetes_network_config = {
     ip_family = "ipv4"

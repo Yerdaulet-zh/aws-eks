@@ -17,4 +17,11 @@ locals {
       data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_b"]
     ]
   }
+
+  cluster_user_arns = {
+    "clusterAdmin" : var.idenitiy_user_role_arns.clusterAdmin
+    "devops" : var.idenitiy_user_role_arns.devops
+    "dev" : var.idenitiy_user_role_arns.dev
+    "audit" : var.idenitiy_user_role_arns.audit
+  }
 }

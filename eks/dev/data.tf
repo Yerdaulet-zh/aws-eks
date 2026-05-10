@@ -1,7 +1,8 @@
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_role" "sso_admin" {
-  name = var.sso_admin_iam_name
+data "aws_iam_role" "this" {
+  for_each = local.cluster_user_arns
+  name     = each.value
 }
 
 data "terraform_remote_state" "vpc" {
