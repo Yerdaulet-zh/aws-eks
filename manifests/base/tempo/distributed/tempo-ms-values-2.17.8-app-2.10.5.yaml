@@ -17,12 +17,12 @@ reportingEnabled: false
 streamOverHTTPEnabled: true
 
 tempo:
-  image:
-    # -- Docker image repository
-    repository: grafana/tempo
-    # -- Overrides the image tag whose default is the chart's appVersion
-    tag: 2.5.0
-    pullPolicy: IfNotPresent
+  # image:
+  #   # -- Docker image repository
+  #   repository: grafana/tempo
+  #   # -- Overrides the image tag whose default is the chart's appVersion
+  #   tag: 2.5.0
+  #   pullPolicy: IfNotPresent
   service:
     # -- Configure the IP families for all tempo services
     # See the Service spec for details: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#servicespec-v1-core
