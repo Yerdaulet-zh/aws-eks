@@ -32,7 +32,7 @@ resource "aws_iam_policy" "resource_discovery" {
         Sid    = "AllowSSMReadActions"
         Effect = "Allow"
 
-        Resource = "arn:${data.aws_partition.current.partition}:ssm:${data.aws_region.current.name}::parameter/aws/service/*"
+        Resource = "arn:${data.aws_partition.current.partition}:ssm:${data.aws_region.current.region}::parameter/aws/service/*"
 
         Action = [
           "ssm:GetParameter"
