@@ -82,7 +82,7 @@ module "eks_dev" {
     # System Critical Nodes | Karpenter, AWS Addons, ArgoCD
     "systen-critical-1" = {
       node_group_name     = "systen-critical-1"
-      instance_types      = ["t3.large"]
+      instance_types      = ["t3.xlarge"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
@@ -108,7 +108,7 @@ module "eks_dev" {
     },
     "systen-critical-2" = {
       node_group_name     = "systen-critical-2"
-      instance_types      = ["t3.large"]
+      instance_types      = ["t3.xlarge"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
