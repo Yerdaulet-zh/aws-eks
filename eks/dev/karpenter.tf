@@ -2,7 +2,7 @@ module "karpenter" {
   source               = "../../modules/karpenter"
   cluster_name         = local.cluster_name
   namespace            = "kube-system"
-  service_account_name = "karpenter"
+  service_account_name = "karpenter-sa"
 
   enable_interruption_handling = false
   enable_ecr_ro                = true
