@@ -11,12 +11,12 @@ resource "aws_iam_policy" "node_lifecycle" {
         Effect = "Allow"
 
         Resource = [
-          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}::image/*",
-          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}::snapshot/*",
-          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:security-group/*",
-          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:subnet/*",
-          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:capacity-reservation/*",
-          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:placement-group/*"
+          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}::image/*",
+          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}::snapshot/*",
+          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:security-group/*",
+          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:subnet/*",
+          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:capacity-reservation/*",
+          "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:placement-group/*"
         ]
 
         Action = [
