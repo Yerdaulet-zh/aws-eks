@@ -55,5 +55,5 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_logs" {
   count = var.enable_cloudwatch_logs ? 1 : 0
 
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-  role       = aws_iam_role.eks_node_role[each.key].name
+  role       = aws_iam_role.karpenter_node_role.name
 }
