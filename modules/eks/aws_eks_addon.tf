@@ -6,16 +6,6 @@ resource "aws_eks_addon" "metrics_server" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
   preserve                    = true
-  configuration_values = jsonencode({
-    tolerations = [
-      {
-        key      = "CriticalAddonsOnly"
-        operator = "Exists"
-        effect   = "NoSchedule"
-      }
-    ]
-  })
-  depends_on = [aws_eks_node_group.main]
 }
 
 # ------ Pod Identity Agent Addon ------
@@ -31,7 +21,6 @@ resource "aws_eks_addon" "pod_identity_agent" {
     resources   = var.addon_configs.pod_identity_agent.resources
     tolerations = var.addon_configs.pod_identity_agent.tolerations
   })
-  depends_on = [aws_eks_node_group.main]
 }
 
 # ------ CoreDNS Addon ------
@@ -47,14 +36,6 @@ resource "aws_eks_addon" "core_dns" {
     replicaCount = var.addon_configs.core_dns.replicaCount
     resources    = var.addon_configs.core_dns.resources
 
-    tolerations = [
-      {
-        key      = "CriticalAddonsOnly"
-        operator = "Exists"
-        effect   = "NoSchedule"
-      }
-    ]
-
     affinity = var.addon_configs.core_dns.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
       weight          = 100
       capacity_key    = "eks.amazonaws.com/capacityType"
@@ -64,10 +45,7 @@ resource "aws_eks_addon" "core_dns" {
     })) : null # Using null allows the addon to use its internal defaults
   })
 
-  depends_on = [
-    aws_eks_addon.pod_identity_agent,
-    aws_eks_node_group.main
-  ]
+  depends_on = [aws_eks_addon.pod_identity_agent, ]
 }
 
 # ------ Kube-Proxy Addon ------
@@ -84,10 +62,7 @@ resource "aws_eks_addon" "kube_proxy" {
     resources = var.addon_configs.kube_proxy.resources
   })
 
-  depends_on = [
-    aws_eks_addon.pod_identity_agent,
-    aws_eks_node_group.main
-  ]
+  depends_on = [aws_eks_addon.pod_identity_agent]
 }
 
 # ------ VPC CNI Addon ------
@@ -191,10 +166,7 @@ resource "aws_eks_addon" "vpc_cni" {
     )
   })
 
-  depends_on = [
-    aws_eks_addon.pod_identity_agent,
-    aws_eks_node_group.main
-  ]
+  depends_on = [aws_eks_addon.pod_identity_agent]
 }
 
 # ------ EBS CSI Addon ------
@@ -242,14 +214,6 @@ resource "aws_eks_addon" "ebs_csi" {
       replicaCount = var.addon_configs.ebs_csi.controller.replicaCount
       resources    = var.addon_configs.ebs_csi.controller.resources
 
-      tolerations = [
-        {
-          key      = "CriticalAddonsOnly"
-          operator = "Exists"
-          effect   = "NoSchedule"
-        }
-      ]
-
       affinity = var.addon_configs.ebs_csi.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
         weight          = 100
         capacity_key    = "eks.amazonaws.com/capacityType"
@@ -266,8 +230,5 @@ resource "aws_eks_addon" "ebs_csi" {
     }
   })
 
-  depends_on = [
-    aws_eks_addon.pod_identity_agent,
-    aws_eks_node_group.main
-  ]
+  depends_on = [aws_eks_addon.pod_identity_agent]
 }
