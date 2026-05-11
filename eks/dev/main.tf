@@ -79,174 +79,56 @@ module "eks_dev" {
   }
 
   node_group_configs = {
-    # General purpose nodes
-    "app1" = {
-      node_group_name     = "app-workloads-1"
+    # System Critical Nodes | Karpenter, AWS Addons, ArgoCD
+    "systen-critical-1" = {
+      node_group_name     = "systen-critical-1"
       instance_types      = ["t3.large"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
-      role_key            = "app*"
+      role_key            = "control-plane"
       scaling_config = {
         desired_size = 1
-        max_size     = 1
-        min_size     = 0
+        max_size     = 2
+        min_size     = 1
       }
       update_config = {
-        # max_unavailable            = null
-        max_unavailable_percentage = 25
+        max_unavailable = 1
       }
-      labels             = { role = "state-ful-less-apps" }
+      labels             = { "intent" = "control-plane" }
       taints             = []
       enable_autoscaling = true
     },
-    "app2" = {
-      node_group_name     = "app-workloads-2"
+    "systen-critical-2" = {
+      node_group_name     = "systen-critical-2"
       instance_types      = ["t3.large"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
-      role_key            = "app*"
+      role_key            = "control-plane"
       scaling_config = {
         desired_size = 1
-        max_size     = 1
-        min_size     = 0
+        max_size     = 2
+        min_size     = 1
       }
       update_config = {
-        max_unavailable            = null
-        max_unavailable_percentage = 25
+        max_unavailable = 1
       }
-      labels             = { role = "state-ful-less-apps" }
+      labels             = { "intent" = "control-plane" }
       taints             = []
-      enable_autoscaling = true
-    },
-    # Spot instances
-    "ai-ml-workers" = {
-      node_group_name     = "ai-ml-workers"
-      instance_types      = ["t3.small", "t3.medium", "t3.large"]
-      capacity_type       = "SPOT"
-      subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-      ami_type            = "AL2023_x86_64_STANDARD"
-      ami_release_version = "1.35.3-20260415"
-      role_key            = "ai-ml-workloads"
-      scaling_config = {
-        desired_size = 2
-        max_size     = 4
-        min_size     = 0
-      }
-      update_config = {
-        max_unavailable            = null
-        max_unavailable_percentage = 25
-      }
-      labels = { role = "ai-worker" }
-      taints = []
-      # taints = [{
-      #   key    = "workload"
-      #   value  = "heavy"
-      #   effect = "NO_SCHEDULE"
-      # }]
-      enable_autoscaling = true
-    },
-    # Stateful workloads
-    # "stateful-node1" = {
-    #   node_group_name     = "stateful-node1"
-    #   instance_types      = ["r5.xlarge"]
-    #   capacity_type       = "ON_DEMAND"
-    #   subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-    #   ami_type            = "AL2023_x86_64_STANDARD"
-    #   ami_release_version = "1.35.3-20260415"
-    #   role_key            = "stateful*"
-    #   scaling_config = {
-    #     desired_size = 1
-    #     max_size     = 2
-    #     min_size     = 0
-    #   }
-    #   update_config = {
-    #     max_unavailable            = null
-    #     max_unavailable_percentage = 25
-    #   }
-    #   labels = { role = "stateful" }
-    #   taints = [{
-    #     key    = "workload"
-    #     value  = "stateful"
-    #     effect = "NO_SCHEDULE"
-    #   }]
-    #   enable_autoscaling = true
-    # },
-    "stateful-node2" = {
-      node_group_name     = "stateful-node2"
-      instance_types      = ["r5.large"]
-      capacity_type       = "ON_DEMAND"
-      subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-      ami_type            = "AL2023_x86_64_STANDARD"
-      ami_release_version = "1.35.3-20260415"
-      role_key            = "stateful*"
-      scaling_config = {
-        desired_size = 1
-        max_size     = 2
-        min_size     = 0
-      }
-      update_config = {
-        max_unavailable            = null
-        max_unavailable_percentage = 25
-      }
-      labels = { role = "stateful" }
-      taints = [{
-        key    = "workload"
-        value  = "stateful"
-        effect = "NO_SCHEDULE"
-      }]
-      enable_autoscaling = true
-    },
-    "stateful-node3" = {
-      node_group_name     = "stateful-node3"
-      instance_types      = ["r5.large"]
-      capacity_type       = "ON_DEMAND"
-      subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-      ami_type            = "AL2023_x86_64_STANDARD"
-      ami_release_version = "1.35.3-20260415"
-      role_key            = "stateful*"
-      scaling_config = {
-        desired_size = 1
-        max_size     = 2
-        min_size     = 0
-      }
-      update_config = {
-        max_unavailable            = null
-        max_unavailable_percentage = 25
-      }
-      labels = { role = "stateful" }
-      taints = [{
-        key    = "workload"
-        value  = "stateful"
-        effect = "NO_SCHEDULE"
-      }]
       enable_autoscaling = true
     },
   }
+
   node_group_iam_configs = {
-    "app*" = {
-      role_name              = "general-purpose-app"
-      enable_ssm             = true
+    "control-plane" = {
+      role_name              = "control-plane"
+      enable_ssm             = false
       enable_cloudwatch_logs = true
       enable_ecr_ro_access   = true
       custom_policy_arns     = []
     },
-    "ai-ml-workloads" = {
-      role_name              = "ai-ml-workloads"
-      enable_ssm             = true
-      enable_cloudwatch_logs = true
-      enable_ecr_ro_access   = true
-      custom_policy_arns     = []
-    },
-    "stateful*" = {
-      role_name              = "stateful-workloads"
-      enable_ssm             = true
-      enable_cloudwatch_logs = true
-      enable_ecr_ro_access   = true
-      custom_policy_arns     = []
-    }
   }
 }
