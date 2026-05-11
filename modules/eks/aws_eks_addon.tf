@@ -6,6 +6,7 @@ resource "aws_eks_addon" "metrics_server" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
   preserve                    = true
+  depends_on                  = [aws_eks_node_group.main]
 }
 
 # ------ Pod Identity Agent Addon ------
@@ -21,6 +22,7 @@ resource "aws_eks_addon" "pod_identity_agent" {
     resources   = var.addon_configs.pod_identity_agent.resources
     tolerations = var.addon_configs.pod_identity_agent.tolerations
   })
+  depends_on = [aws_eks_node_group.main]
 }
 
 # ------ CoreDNS Addon ------
@@ -45,7 +47,10 @@ resource "aws_eks_addon" "core_dns" {
     })) : null # Using null allows the addon to use its internal defaults
   })
 
-  depends_on = [aws_eks_addon.pod_identity_agent]
+  depends_on = [
+    aws_eks_addon.pod_identity_agent,
+    aws_eks_node_group.main
+  ]
 }
 
 # ------ Kube-Proxy Addon ------
@@ -62,7 +67,10 @@ resource "aws_eks_addon" "kube_proxy" {
     resources = var.addon_configs.kube_proxy.resources
   })
 
-  depends_on = [aws_eks_addon.pod_identity_agent]
+  depends_on = [
+    aws_eks_addon.pod_identity_agent,
+    aws_eks_node_group.main
+  ]
 }
 
 # ------ VPC CNI Addon ------
@@ -166,7 +174,10 @@ resource "aws_eks_addon" "vpc_cni" {
     )
   })
 
-  depends_on = [aws_eks_addon.pod_identity_agent]
+  depends_on = [
+    aws_eks_addon.pod_identity_agent,
+    aws_eks_node_group.main
+  ]
 }
 
 # ------ EBS CSI Addon ------
@@ -230,5 +241,8 @@ resource "aws_eks_addon" "ebs_csi" {
     }
   })
 
-  depends_on = [aws_eks_addon.pod_identity_agent]
+  depends_on = [
+    aws_eks_addon.pod_identity_agent,
+    aws_eks_node_group.main
+  ]
 }
