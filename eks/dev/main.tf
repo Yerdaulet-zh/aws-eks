@@ -96,8 +96,14 @@ module "eks_dev" {
       update_config = {
         max_unavailable = 1
       }
-      labels             = { "intent" = "control-plane" }
-      taints             = []
+      labels = { "intent" = "control-plane" }
+      taints = [
+        {
+          key    = "CriticalAddonsOnly"
+          value  = "true"
+          effect = "NO_SCHEDULE"
+        }
+      ]
       enable_autoscaling = true
     },
     "systen-critical-2" = {
@@ -116,8 +122,14 @@ module "eks_dev" {
       update_config = {
         max_unavailable = 1
       }
-      labels             = { "intent" = "control-plane" }
-      taints             = []
+      labels = { "intent" = "control-plane" }
+      taints = [
+        {
+          key    = "CriticalAddonsOnly"
+          value  = "true"
+          effect = "NO_SCHEDULE"
+        }
+      ]
       enable_autoscaling = true
     },
   }
