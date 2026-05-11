@@ -6,7 +6,16 @@ resource "aws_eks_addon" "metrics_server" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
   preserve                    = true
-  depends_on                  = [aws_eks_node_group.main]
+  configuration_values = jsonencode({
+    tolerations = [
+      {
+        key      = "CriticalAddonsOnly"
+        operator = "Exists"
+        effect   = "NoSchedule"
+      }
+    ]
+  })
+  depends_on = [aws_eks_node_group.main]
 }
 
 # ------ Pod Identity Agent Addon ------
@@ -37,6 +46,14 @@ resource "aws_eks_addon" "core_dns" {
   configuration_values = jsonencode({
     replicaCount = var.addon_configs.core_dns.replicaCount
     resources    = var.addon_configs.core_dns.resources
+
+    tolerations = [
+      {
+        key      = "CriticalAddonsOnly"
+        operator = "Exists"
+        effect   = "NoSchedule"
+      }
+    ]
 
     affinity = var.addon_configs.core_dns.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
       weight          = 100
@@ -224,6 +241,14 @@ resource "aws_eks_addon" "ebs_csi" {
     controller = {
       replicaCount = var.addon_configs.ebs_csi.controller.replicaCount
       resources    = var.addon_configs.ebs_csi.controller.resources
+
+      tolerations = [
+        {
+          key      = "CriticalAddonsOnly"
+          operator = "Exists"
+          effect   = "NoSchedule"
+        }
+      ]
 
       affinity = var.addon_configs.ebs_csi.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
         weight          = 100
