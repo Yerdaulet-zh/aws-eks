@@ -1,0 +1,107 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  kubelet:
+    # podsPerCore: 2
+    maxPods: 110
+    systemReserved:
+      cpu: 100m
+      memory: 100Mi
+      ephemeral-storage: 1Gi
+    kubeReserved:
+      cpu: 200m
+      memory: 100Mi
+      ephemeral-storage: 3Gi
+    evictionHard:
+      memory.available: 5%
+      nodefs.available: 10%
+      nodefs.inodesFree: 10%
+    evictionSoft:
+      memory.available: 500Mi
+      nodefs.available: 15%
+      nodefs.inodesFree: 15%
+    evictionSoftGracePeriod:
+      memory.available: 1m
+      nodefs.available: 1m30s
+      nodefs.inodesFree: 2m
+    evictionMaxPodGracePeriod: 60
+    imageGCHighThresholdPercent: 85
+    imageGCLowThresholdPercent: 80
+    cpuCFSQuota: true
+
+  # Optional, dictates UserData generation and default block device mappings.
+  # May be ommited when using an `alias` amiSelectorTerm, otherwise required.
+  amiFamily: Bottlerocket
+
+  # Each term in the array of amiSelectorTerms is ORed together
+  # Within a single term, all conditions are ANDed
+  amiSelectorTerms:
+    - id: ami-036dc4af6cfda29af
+
+  # Required, discovers subnets to attach to instances
+  subnetSelectorTerms:
+    - id: subnet-0bf72c77f2a11a7a8
+
+  # Required, discovers security groups to attach to instances
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: eks-academy-dev
+
+  # Optional, IAM role to use for the node identity.
+  # Must specify one of "role" or "instanceProfile" for Karpenter to launch nodes
+  role: "KarpenterNodeRole-eks-academy-dev"
+
+  # Optional, IAM instance profile to use for the node identity.
+  instanceProfile: "KarpenterNodeInstanceProfile-eks-academy-dev"
+
+  # Optional, the terms are exclusive
+  placementGroupSelector:
+    name: "eks-placement-group"
+
+  # Optional, propagates tags to underlying EC2 resources
+  tags:
+    environment: dev
+    project: imon-academy
+    used-for: general-purpose-apps
+
+  # configures IMDS for the instance
+  metadataOptions:
+    httpEndpoint: enabled
+    httpProtocolIPv6: enabled
+    httpPutResponseHopLimit: 1 # This is changed to disable IMDS access from containers not on the host network
+    httpTokens: required
+
+  # configures storage devices for the instance
+  blockDeviceMappings:
+    # Root device
+    - deviceName: /dev/xvda
+      ebs:
+        volumeSize: 4Gi
+        volumeType: gp3
+        encrypted: true
+        deleteOnTermination: true
+
+    # Data device: Container resources such as images and logs
+    - deviceName: /dev/xvdb
+      ebs:
+        volumeSize: 20Gi
+        volumeType: gp3
+        iops: 3000
+        throughput: 125
+        encrypted: true
+        deleteOnTermination: true
+
+  # this setting related to amiFamily: Bottlerocket
+  userData: |
+    [settings.kubernetes]
+    container-log-max-files = 3
+    container-log-max-size = "10Mi"
+
+  # configures detailed monitoring for the instance
+  detailedMonitoring: false # 5-minute periods - free | true: 1-minute periods - paid (per instance per month)
+
+  # configures if the instance should be launched with an associated public IP address.
+  # If not specified, the default value depends on the subnet's public IP auto-assign setting.
+  associatePublicIPAddress: false
