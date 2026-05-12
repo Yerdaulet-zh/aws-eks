@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - default-node-class.yaml
   - stateful-node-pools.yaml
+  - general-purpose-node-pools.yaml
