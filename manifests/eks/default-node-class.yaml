@@ -54,7 +54,7 @@ spec:
   role: "KarpenterNodeRole-eks-academy-dev"
 
   # Optional, IAM instance profile to use for the node identity.
-  instanceProfile: "KarpenterNodeInstanceProfile-eks-academy-dev"
+  # instanceProfile: "KarpenterNodeInstanceProfile-eks-academy-dev"
 
   # Optional, the terms are exclusive
   placementGroupSelector:
