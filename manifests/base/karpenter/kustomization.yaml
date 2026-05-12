@@ -7,6 +7,11 @@ resources:
   - ../../eks/
 
 helmCharts:
+  - name: karpenter-crd
+    repo: oci://public.ecr.aws/karpenter
+    version: 1.12.0
+    releaseName: karpenter-crd
+    namespace: kube-system
   - name: karpenter
     repo: oci://public.ecr.aws/karpenter
     version: 1.12.0
