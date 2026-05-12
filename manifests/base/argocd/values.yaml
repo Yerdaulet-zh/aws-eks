@@ -33,3 +33,14 @@ repoServer:
 
 applicationSet:
   replicas: 2
+
+# -- Node labels for pod assignment
+nodeSelector:
+  billing-team: stateful-1
+
+# -- Tolerations for pod assignment
+tolerations:
+  - key: "workload"
+    operator: "Equal"
+    value: "stateful"
+    effect: "NoSchedule"
