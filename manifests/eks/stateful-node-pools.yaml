@@ -2,6 +2,7 @@ apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
   name: stateful-1
+  finalizers: null
 spec:
   # Template section that describes how to template out NodeClaim resources that Karpenter will provision
   # Karpenter will consider this template to be the minimum requirements needed to provision a Node using this NodePool

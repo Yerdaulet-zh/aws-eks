@@ -2,6 +2,7 @@ apiVersion: karpenter.k8s.aws/v1
 kind: EC2NodeClass
 metadata:
   name: default
+  finalizers: null
 spec:
   kubelet:
     # podsPerCore: 2
@@ -51,10 +52,10 @@ spec:
 
   # Optional, IAM role to use for the node identity.
   # Must specify one of "role" or "instanceProfile" for Karpenter to launch nodes
-  role: "KarpenterNodeRole-eks-academy-dev"
+  # role: "KarpenterNodeRole-eks-academy-dev"
 
   # Optional, IAM instance profile to use for the node identity.
-  # instanceProfile: "KarpenterNodeInstanceProfile-eks-academy-dev"
+  instanceProfile: "KarpenterNodeInstanceProfile-eks-academy-dev"
 
   # Optional, the terms are exclusive
   placementGroupSelector:
