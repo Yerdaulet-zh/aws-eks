@@ -36,3 +36,12 @@ resource "aws_eks_pod_identity_association" "tempo_s3_storage" {
   role_arn        = aws_iam_role.tempo_s3_storage.arn
   depends_on      = [module.eks_dev]
 }
+
+# --------- Karpenter ---------
+resource "aws_eks_pod_identity_association" "karpenter" {
+  cluster_name    = local.cluster_name
+  namespace       = "kube-system"
+  service_account = "karpenter-sa"
+  role_arn        = module.karpenter.karpenter_controller_role_arn
+  depends_on      = [module.eks_dev]
+}
