@@ -7,6 +7,17 @@ global:
     # -- Set the global logging level. One of: `debug`, `info`, `warn` or `error`
     level: info
 
+  # -- Node labels for pod assignment
+  nodeSelector:
+    billing-team: stateful-1
+
+  # -- Tolerations for pod assignment
+  tolerations:
+    - key: "workload"
+      operator: "Equal"
+      value: "stateful"
+      effect: "NoSchedule"
+
 # Enable Insecure ArgoCD API Server
 configs:
   params:
@@ -33,14 +44,3 @@ repoServer:
 
 applicationSet:
   replicas: 2
-
-# -- Node labels for pod assignment
-nodeSelector:
-  billing-team: stateful-1
-
-# -- Tolerations for pod assignment
-tolerations:
-  - key: "workload"
-    operator: "Equal"
-    value: "stateful"
-    effect: "NoSchedule"
