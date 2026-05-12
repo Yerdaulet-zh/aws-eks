@@ -16,12 +16,10 @@ resource "aws_iam_policy" "interruption" {
 
     Statement = [
       {
-        Sid    = "AllowInterruptionQueueActions"
-        Effect = "Allow"
-
-        Resource = aws_sqs_queue.karpenter[0].arn
-
-        Action = [
+        "Sid" : "AllowInterruptionQueueActions",
+        "Effect" : "Allow",
+        "Resource" : "${aws_sqs_queue.karpenter[0].arn}",
+        "Action" : [
           "sqs:DeleteMessage",
           "sqs:GetQueueUrl",
           "sqs:ReceiveMessage"

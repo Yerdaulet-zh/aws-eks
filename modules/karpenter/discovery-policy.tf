@@ -7,13 +7,10 @@ resource "aws_iam_policy" "resource_discovery" {
 
     Statement = [
       {
-        Sid    = "AllowRegionalReadActions"
-        Effect = "Allow"
-
-        Resource = "*"
-
-        Action = [
-          "ec2:DescribeAvailabilityZones",
+        "Sid" : "AllowRegionalReadActions",
+        "Effect" : "Allow",
+        "Resource" : "*",
+        "Action" : [
           "ec2:DescribeCapacityReservations",
           "ec2:DescribeImages",
           "ec2:DescribeInstances",
@@ -25,29 +22,40 @@ resource "aws_iam_policy" "resource_discovery" {
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeSpotPriceHistory",
           "ec2:DescribeSubnets"
-        ]
+        ],
+        "Condition" : {
+          "StringEquals" : {
+            "aws:RequestedRegion" : "${data.aws_region.current.region}"
+          }
+        }
       },
 
       {
-        Sid    = "AllowSSMReadActions"
-        Effect = "Allow"
-
-        Resource = "arn:${data.aws_partition.current.partition}:ssm:${data.aws_region.current.region}::parameter/aws/service/*"
-
-        Action = [
-          "ssm:GetParameter"
-        ]
+        "Sid" : "AllowSSMReadActions",
+        "Effect" : "Allow",
+        "Resource" : "arn:${data.aws_partition.current.partition}:ssm:${data.aws_region.current.region}::parameter/aws/service/*",
+        "Action" : "ssm:GetParameter"
       },
 
       {
-        Sid    = "AllowPricingReadActions"
-        Effect = "Allow"
+        "Sid" : "AllowPricingReadActions",
+        "Effect" : "Allow",
+        "Resource" : "*",
+        "Action" : "pricing:GetProducts"
+      },
 
-        Resource = "*"
+      {
+        "Sid" : "AllowUnscopedInstanceProfileListAction",
+        "Effect" : "Allow",
+        "Resource" : "*",
+        "Action" : "iam:ListInstanceProfiles"
+      },
 
-        Action = [
-          "pricing:GetProducts"
-        ]
+      {
+        "Sid" : "AllowInstanceProfileReadActions",
+        "Effect" : "Allow",
+        "Resource" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:instance-profile/*",
+        "Action" : "iam:GetInstanceProfile"
       }
     ]
   })

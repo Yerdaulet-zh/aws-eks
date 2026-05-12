@@ -18,6 +18,11 @@ resource "aws_iam_role_policy_attachment" "controller_resource_discovery" {
   policy_arn = aws_iam_policy.resource_discovery.arn
 }
 
+resource "aws_iam_role_policy_attachment" "controller_zonal_shift" {
+  role       = aws_iam_role.karpenter_controller_role.name
+  policy_arn = aws_iam_policy.zonal_shift.arn
+}
+
 resource "aws_iam_role_policy_attachment" "controller_interruption" {
   count = var.enable_interruption_handling ? 1 : 0
 
