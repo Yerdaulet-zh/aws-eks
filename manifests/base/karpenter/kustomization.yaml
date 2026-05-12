@@ -3,9 +3,6 @@ kind: Kustomization
 
 namespace: kube-system
 
-resources:
-  - ../../eks/
-
 helmCharts:
   - name: karpenter-crd
     repo: oci://public.ecr.aws/karpenter
