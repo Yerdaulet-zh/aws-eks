@@ -79,50 +79,24 @@ module "eks_dev" {
   }
 
   node_group_configs = {
-    # System Critical Nodes | Karpenter, AWS Addons, ArgoCD
+    # System Node Group| Karpenter & AWS Addons
     "systen-critical-1" = {
       node_group_name     = "systen-critical-1"
-      instance_types      = ["t3.xlarge"]
+      instance_types      = ["t3.large"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
       ami_release_version = "1.35.3-20260415"
-      role_key            = "control-plane"
+      role_key            = "system-node-group"
       scaling_config = {
-        desired_size = 1
+        desired_size = 2
         max_size     = 2
-        min_size     = 1
+        min_size     = 2
       }
       update_config = {
         max_unavailable = 1
       }
-      labels = { "intent" = "control-plane" }
-      taints = [
-        {
-          key    = "CriticalAddonsOnly"
-          value  = "true"
-          effect = "NO_SCHEDULE"
-        }
-      ]
-      enable_autoscaling = true
-    },
-    "systen-critical-2" = {
-      node_group_name     = "systen-critical-2"
-      instance_types      = ["t3.xlarge"]
-      capacity_type       = "ON_DEMAND"
-      subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
-      ami_type            = "AL2023_x86_64_STANDARD"
-      ami_release_version = "1.35.3-20260415"
-      role_key            = "control-plane"
-      scaling_config = {
-        desired_size = 1
-        max_size     = 2
-        min_size     = 1
-      }
-      update_config = {
-        max_unavailable = 1
-      }
-      labels = { "intent" = "control-plane" }
+      labels = { "intent" = "system-node-group" }
       taints = [
         {
           key    = "CriticalAddonsOnly"
@@ -135,11 +109,11 @@ module "eks_dev" {
   }
 
   node_group_iam_configs = {
-    "control-plane" = {
-      role_name              = "control-plane"
+    "system-node-group" = {
+      role_name              = "system-node-group"
       enable_ssm             = false
       enable_cloudwatch_logs = true
-      enable_ecr_ro_access   = true
+      enable_ecr_ro_access   = false
       custom_policy_arns     = []
     },
   }
