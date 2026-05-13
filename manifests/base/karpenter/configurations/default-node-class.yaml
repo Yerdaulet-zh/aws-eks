@@ -105,4 +105,4 @@ spec:
 
   # configures if the instance should be launched with an associated public IP address.
   # If not specified, the default value depends on the subnet's public IP auto-assign setting.
-  associatePublicIPAddress: false
+  # associatePublicIPAddress: false
