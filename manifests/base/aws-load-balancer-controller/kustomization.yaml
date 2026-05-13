@@ -14,7 +14,7 @@ helmCharts:
     version: 3.2.2
     valuesInline:
       clusterName: "eks-academy-dev"
-      vpcId: "vpc-07cd1651bb52b7d36"
+      vpcId: "vpc-0e133e1f65ad6e1af"
       region: "eu-central-1"
       priorityClassName: system-cluster-critical
 
