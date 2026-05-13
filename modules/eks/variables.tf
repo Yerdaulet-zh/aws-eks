@@ -161,13 +161,15 @@ variable "cluster_access_config" {
 EOT
   type = list(object({
     principal_arn     = string
-    access_type       = string
     kubernetes_groups = list(string)
-    policy_arn        = string
-    access_scope = object({
-      type       = string
-      namespaces = list(string)
-    })
+    access_type       = string
+    access_policy_association = list(object({
+      policy_arn = string
+      access_scope = object({
+        type       = string
+        namespaces = list(string)
+      })
+    }))
   }))
 
   default = [
@@ -175,21 +177,25 @@ EOT
       principal_arn     = "admin_iam_principal_arn"
       access_type       = "STANDARD"
       kubernetes_groups = []
-      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-      access_scope = {
-        type       = "cluster"
-        namespaces = []
-      }
+      access_policy_association = [{
+        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        access_scope = {
+          type       = "cluster"
+          namespaces = []
+        }
+      }, ]
     },
     {
       principal_arn     = "network_iam_principal_arn"
       access_type       = "STANDARD"
-      kubernetes_groups = ["junior-network-manager"]                                   # restrict via RBAC the permissions to certain groups and resources
-      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy" # for jun-network engineer might be dangerous
-      access_scope = {
-        type       = "namespace"
-        namespaces = ["dev-frontend", "dev-backend"]
-      }
+      kubernetes_groups = ["junior-network-manager"] # restrict via RBAC the permissions to certain groups and resources
+      access_policy_association = [{
+        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy" # for jun-network engineer might be dangerous
+        access_scope = {
+          type       = "namespace"
+          namespaces = ["dev-frontend", "dev-backend"]
+        }
+      }, ]
     },
   ]
 }

@@ -24,53 +24,38 @@ module "eks_dev" {
       principal_arn     = data.aws_iam_role.this["clusterAdmin"].arn
       kubernetes_groups = []
       access_type       = "STANDARD"
-      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-      access_scope = {
-        type       = "cluster"
-        namespaces = []
-      }
-    },
-    {
-      principal_arn     = data.aws_iam_role.this["devops"].arn
-      kubernetes_groups = []
-      access_type       = "STANDARD"
-      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
-      access_scope = {
-        type       = "cluster"
-        namespaces = []
-      }
+      access_policy_association = [{
+        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        access_scope = {
+          type       = "cluster"
+          namespaces = []
+        }
+      }]
     },
     {
       principal_arn     = data.aws_iam_role.this["dev"].arn
       kubernetes_groups = []
       access_type       = "STANDARD"
-      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
-      access_scope = {
-        type       = "namespace"
-        namespaces = ["fastapi"]
-      }
+      access_policy_association = [{
+        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
+        access_scope = {
+          type       = "namespace"
+          namespaces = ["fastapi"]
+        }
+      }]
     },
     {
       principal_arn     = data.aws_iam_role.this["audit"].arn
       kubernetes_groups = []
       access_type       = "STANDARD"
-      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-      access_scope = {
-        type       = "namespace"
-        namespaces = ["loki", "monitoring"]
-      }
+      access_policy_association = [{
+        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+        access_scope = {
+          type       = "namespace"
+          namespaces = ["loki", "monitoring"]
+        }
+      }]
     },
-    # Karpenter
-    {
-      principal_arn     = module.karpenter.karpenter_node_role_arn
-      kubernetes_groups = []
-      access_type       = "EC2_LINUX"
-      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAutoNodePolicy"
-      access_scope = {
-        type       = "cluster"
-        namespaces = []
-      }
-    }
   ]
 
   kubernetes_network_config = {
