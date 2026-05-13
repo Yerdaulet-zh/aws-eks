@@ -1,44 +1,44 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: cluster-autoscaler
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "-3"
-    argocd.argoproj.io/sync-options: Prune=confirm
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: cluster-autoscaler
+#   namespace: argocd
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "-3"
+#     argocd.argoproj.io/sync-options: Prune=confirm
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
 
-spec:
-  project: default
+# spec:
+#   project: default
 
-  source:
-    repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
-    targetRevision: HEAD
-    path: manifests/base/cluster-autoscaler
+#   source:
+#     repoURL: https://github.com/Yerdaulet-zh/aws-eks.git
+#     targetRevision: HEAD
+#     path: manifests/base/cluster-autoscaler
 
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: kube-system
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: kube-system
 
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      name: cluster-autoscaler
-      namespace: kube-system
-      jsonPointers:
-        - /spec/replicas
-        - /status
+#   ignoreDifferences:
+#     - group: apps
+#       kind: Deployment
+#       name: cluster-autoscaler
+#       namespace: kube-system
+#       jsonPointers:
+#         - /spec/replicas
+#         - /status
 
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-      allowEmpty: true
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#       allowEmpty: true
 
-    syncOptions:
-      - CreateNamespace=false
-      - ServerSideApply=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - RespectIgnoreDifferences=true
+#     syncOptions:
+#       - CreateNamespace=false
+#       - ServerSideApply=true
+#       - ApplyOutOfSyncOnly=true
+#       - PruneLast=true
+#       - RespectIgnoreDifferences=true
