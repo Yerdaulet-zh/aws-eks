@@ -1,0 +1,175 @@
+autoDiscovery:
+  clusterName: eks-academy-dev
+
+# awsRegion -- AWS region (required if `cloudProvider=aws`)
+awsRegion: "eu-central-1"
+cloudProvider: aws
+
+# extraArgs -- Additional container arguments.
+# Refer to https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca for the full list of cluster autoscaler
+# parameters and their default values.
+# Everything after the first _ will be ignored allowing the use of multi-string arguments.
+extraArgs:
+  logtostderr: true
+  stderrthreshold: info
+  v: 2
+  write-status-configmap: true
+  status-config-map-name: cluster-autoscaler-status
+  leader-elect: true
+  leader-elect-resource-lock: leases
+  skip-nodes-with-local-storage: true
+  expander: least-waste
+  scale-down-enabled: true
+  balance-similar-node-groups: true
+  min-replica-count: 1
+  scale-down-utilization-threshold: 0.5
+  scale-down-non-empty-candidates-count: 30
+  max-node-provision-time: 8m0s
+  scan-interval: 10s
+  scale-down-delay-after-add: 10m
+  scale-down-delay-after-delete: 1m
+  scale-down-delay-after-failure: 3m
+  scale-down-unneeded-time: 10m
+  node-deletion-delay-timeout: 5m
+  node-deletion-batcher-interval: 0s
+  skip-nodes-with-system-pods: true # CA won't kill a node if it's running important system pods (like kube-dns or metrics-server) unless they have a PDB (Pod Disruption Budget).
+  # balancing-ignore-label_1: first-label-to-ignore
+  # balancing-ignore-label_2: second-label-to-ignore
+
+# podDisruptionBudget -- Pod disruption budget.
+podDisruptionBudget:
+  maxUnavailable: 1
+
+# priorityClassName -- priorityClassName
+priorityClassName: "system-cluster-critical"
+
+## Custom PrometheusRule to be defined
+## The value is evaluated as a template, so, for example, the value can depend on .Release or .Chart
+## ref: https://github.com/coreos/prometheus-operator#customresourcedefinitions
+prometheusRule:
+  # prometheusRule.enabled -- If true, creates a Prometheus Operator PrometheusRule.
+  enabled: false
+  # prometheusRule.additionalLabels -- Additional labels to be set in metadata.
+  additionalLabels:
+    release: kube-prometheus-stack
+  # prometheusRule.namespace -- Namespace which Prometheus is running in.
+  namespace: monitoring
+  # prometheusRule.interval -- How often rules in the group are evaluated (falls back to `global.evaluation_interval` if not set).
+  interval: null
+  # prometheusRule.rules -- Rules spec template (see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#rule).
+  rules: []
+
+rbac:
+  # rbac.create -- If `true`, create and use RBAC resources.
+  create: true
+  # rbac.clusterScoped -- if set to false will only provision RBAC to alter resources in the current namespace. Most useful for Cluster-API
+  clusterScoped: true
+  serviceAccount:
+    # rbac.serviceAccount.create -- If `true` and `rbac.create` is also true, a Service Account will be created.
+    create: true
+    # rbac.serviceAccount.name -- The name of the ServiceAccount to use. If not set and create is `true`, a name is generated using the fullname template.
+    name: "cluster-autoscaler-sa"
+    # rbac.serviceAccount.automountServiceAccountToken -- Automount API credentials for a Service Account.
+    automountServiceAccountToken: true
+
+# replicaCount -- Desired number of pods
+replicaCount: 3
+
+# resources -- Pod resource requests and limits.
+resources:
+  limits:
+    cpu: 100m
+    memory: 300Mi
+  requests:
+    cpu: 100m
+    memory: 300Mi
+
+# revisionHistoryLimit -- The number of revisions to keep.
+revisionHistoryLimit: 10
+
+# securityContext -- [Security context for pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+  fsGroup: 65534
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  seccompProfile:
+    type: RuntimeDefault
+
+service:
+  # service.create -- If `true`, a Service will be created.
+  create: true
+  # service.servicePort -- Service port to expose.
+  servicePort: 8085
+  # service.portName -- Name for service port.
+  portName: http
+  # service.type -- Type of service to create.
+  type: ClusterIP
+
+## Are you using Prometheus Operator?
+serviceMonitor:
+  # serviceMonitor.enabled -- If true, creates a Prometheus Operator ServiceMonitor.
+  enabled: true
+  # serviceMonitor.interval -- Interval that Prometheus scrapes Cluster Autoscaler metrics.
+  interval: 15s
+  # serviceMonitor.namespace -- Namespace which Prometheus is running in.
+  namespace: monitoring
+  ## [Prometheus Selector Label](https://github.com/helm/charts/tree/master/stable/prometheus-operator#prometheus-operator-1)
+  ## [Kube Prometheus Selector Label](https://github.com/helm/charts/tree/master/stable/prometheus-operator#exporters)
+  # serviceMonitor.selector -- Default to kube-prometheus install (CoreOS recommended), but should be set according to Prometheus install.
+  selector:
+    release: kube-prometheus-stack
+  # serviceMonitor.path -- The path to scrape for metrics; autoscaler exposes `/metrics` (this is standard)
+  path: /metrics
+
+# tolerations -- List of node taints to tolerate (requires Kubernetes >= 1.6).
+tolerations:
+  - key: "CriticalAddonsOnly"
+    operator: "Exists"
+    effect: "NoSchedule"
+
+# topologySpreadConstraints -- You can use topology spread constraints to control how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains. (requires Kubernetes >= 1.19).
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: PreferNoSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: cluster-autoscaler
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/hostname
+    whenUnsatisfiable: PreferNoSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: cluster-autoscaler
+
+# updateStrategy -- [Deployment update strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)
+updateStrategy:
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+  type: RollingUpdate
+
+# vpa -- Configure a VerticalPodAutoscaler for the cluster-autoscaler Deployment.
+vpa:
+  # vpa.enabled -- If true, creates a VerticalPodAutoscaler.
+  enabled: false
+  # vpa.updateMode -- [UpdateMode](https://github.com/kubernetes/autoscaler/blob/vertical-pod-autoscaler/v0.13.0/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1/types.go#L124)
+  updateMode: "Recreate"
+  # vpa.containerPolicy -- [ContainerResourcePolicy](https://github.com/kubernetes/autoscaler/blob/vertical-pod-autoscaler/v0.13.0/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1/types.go#L159). The containerName is always set to the deployment's container name. This value is required if VPA is enabled.
+  containerPolicy:
+    minAllowed:
+      cpu: 100m
+      memory: 256Mi
+    maxAllowed:
+      cpu: 1000m
+      memory: 1Gi
+  controlledResources: ["cpu", "memory"]
+  controlledValues: RequestsAndLimits
+  # vpa.recommender -- Name of the VPA recommender that will provide recommendations for vertical scaling.
+  recommender: default
