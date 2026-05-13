@@ -16,6 +16,8 @@ serviceAccount:
 serviceMonitor:
   # -- Specifies whether a ServiceMonitor should be created.
   enabled: true
+  additionalLabels:
+    release: kube-prometheus-stack
 
 # -- Number of replicas.
 replicas: 2
