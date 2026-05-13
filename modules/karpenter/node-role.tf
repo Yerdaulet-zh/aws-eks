@@ -41,7 +41,7 @@ resource "aws_iam_role_policy_attachment" "node_ecr" {
   count = var.enable_ecr_ro ? 1 : 0
 
   role       = aws_iam_role.karpenter_node_role.name
-  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/AmazonEC2ContainerRegistryPullOnly"
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
 resource "aws_iam_role_policy_attachment" "node_ssm" {
