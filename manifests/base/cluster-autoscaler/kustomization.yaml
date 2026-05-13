@@ -9,39 +9,4 @@ helmCharts:
     version: 9.56.0
     releaseName: cluster-autoscaler
     namespace: kube-system
-
-    # Use valuesInline instead of a separate values.yaml file
-    valuesInline:
-      priorityClassName: system-cluster-critical
-      autoDiscovery:
-        clusterName: "eks-academy-dev"
-
-      awsRegion: "eu-central-1"
-      cloudProvider: aws
-
-      rbac:
-        create: true
-        serviceAccount:
-          create: true
-          name: cluster-autoscaler
-          # Leave annotations empty because of Pod Identity
-          annotations: {}
-
-      replicaCount: 3
-
-      extraArgs:
-        v: 4
-        stderrthreshold: info
-        logtostderr: true
-        skip-nodes-with-local-storage: false
-        scan-interval: 10s
-        expander: least-waste
-        balance-similar-node-groups: true
-
-      resources:
-        limits:
-          cpu: 100m
-          memory: 200Mi
-        requests:
-          cpu: 100m
-          memory: 200Mi
+    valuesFile: override-ca-v9.56.0-values.yaml
