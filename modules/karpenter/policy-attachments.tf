@@ -23,13 +23,6 @@ resource "aws_iam_role_policy_attachment" "controller_zonal_shift" {
   policy_arn = aws_iam_policy.zonal_shift.arn
 }
 
-resource "aws_iam_role_policy_attachment" "controller_aws_sqs_queue_policy" {
-  count = var.enable_interruption_handling ? 1 : 0
-
-  role       = aws_iam_role.karpenter_controller_role.name
-  policy_arn = aws_iam_policy.aws_sqs_queue_policy[0].arn
-}
-
 resource "aws_iam_role_policy_attachment" "controller_interruption" {
   count = var.enable_interruption_handling ? 1 : 0
 
