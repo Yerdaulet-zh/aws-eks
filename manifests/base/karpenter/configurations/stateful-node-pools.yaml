@@ -87,11 +87,11 @@ spec:
     # Karpenter will respect the minimum of the currently active budgets, and will round up
     # when considering percentages. Duration and Schedule must be set together.
     budgets:
-    - nodes: 10%
+    - nodes: 30%
     # On Weekdays during business hours, don't do any deprovisioning.
     - schedule: "0 9 * * mon-fri"
       duration: 8h
-      nodes: "0"
+      nodes: "10%"
 
   # Optional: Number of nodes to maintain for static capacity
   # When set, NodePool operates in static mode maintaining fixed node count
