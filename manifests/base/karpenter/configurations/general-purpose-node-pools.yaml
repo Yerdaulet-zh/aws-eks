@@ -50,25 +50,15 @@ spec:
       # Operators { In, NotIn, Exists, DoesNotExist, Gt, Lt, Gte, and Lte } are supported.
       # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#operators
       requirements:
-        # - key: "karpenter.k8s.aws/instance-category"
-        #   operator: In
-        #   values: ["t", "c"]
-        #   # minValues here enforces the scheduler to consider at least that number of unique instance-category to schedule the pods.
-        #   # This field is ALPHA and can be dropped or replaced at any time
-        #   minValues: 2
         - key: "karpenter.k8s.aws/instance-family"
           operator: In
-          values: ["t3", "t3a", "c6"]
-          minValues: 1
+          values: ["t3", "t3a", "c6i", "c6a"] # Use specific c6 generations available in eu-central-1
         - key: "karpenter.k8s.aws/instance-cpu"
           operator: Lte
           values: ["4"]
         - key: "karpenter.k8s.aws/instance-hypervisor"
           operator: In
           values: ["nitro"]
-        # - key: "karpenter.k8s.aws/instance-generation"
-        #   operator: In
-        #   values: ["5"]
         - key: "topology.kubernetes.io/zone"
           operator: In
           values: ["eu-central-1a"]
@@ -77,7 +67,7 @@ spec:
           values: ["amd64"]
         - key: "karpenter.sh/capacity-type"
           operator: In
-          values: ["spot", "on-demand", "reserved"]
+          values: ["spot", "on-demand"]
 
   # Disruption section which describes the ways in which Karpenter can disrupt and replace Nodes
   # Configuration in this section constrains how aggressive Karpenter can be with performing operations
