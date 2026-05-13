@@ -12,11 +12,11 @@ global:
     billing-team: stateful-1
 
   # -- Tolerations for pod assignment
-  tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+  # tolerations:
+  #   - key: "workload"
+  #     operator: "Equal"
+  #     value: "stateful"
+  #     effect: "NoSchedule"
 
 # Enable Insecure ArgoCD API Server
 configs:
