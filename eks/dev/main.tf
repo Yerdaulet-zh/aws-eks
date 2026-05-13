@@ -113,7 +113,7 @@ module "eks_dev" {
       role_name              = "system-node-group"
       enable_ssm             = false
       enable_cloudwatch_logs = true
-      enable_ecr_ro_access   = false
+      enable_ecr_ro_access   = true
       custom_policy_arns     = []
     },
   }
