@@ -6,6 +6,26 @@ resource "aws_sqs_queue" "karpenter" {
   sqs_managed_sse_enabled   = true
 }
 
+resource "aws_sqs_queue_policy" "karpenter" {
+  count = var.enable_interruption_handling ? 1 : 0
+
+  queue_url = aws_sqs_queue.karpenter[0].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+        Action   = "sqs:SendMessage"
+        Resource = aws_sqs_queue.karpenter[0].arn
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "interruption" {
   count = var.enable_interruption_handling ? 1 : 0
 
