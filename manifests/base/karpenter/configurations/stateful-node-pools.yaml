@@ -12,7 +12,7 @@ spec:
     metadata:
       # Labels are arbitrary key-values that are applied to all nodes
       labels:
-        billing-team: stateful-1
+        role: stateful
 
       # Annotations are arbitrary key-values that are applied to all nodes
       annotations:
