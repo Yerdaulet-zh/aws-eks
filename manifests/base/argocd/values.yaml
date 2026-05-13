@@ -28,6 +28,12 @@ configs:
 # HA mode with autoscaling
 redis-ha:
   enabled: true
+  # --- did not respect the global setting
+  tolerations:
+    - key: "workload"
+      operator: "Equal"
+      value: "stateful"
+      effect: "NoSchedule"
 
 controller:
   replicas: 1
