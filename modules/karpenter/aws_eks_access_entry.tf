@@ -5,4 +5,10 @@ resource "aws_eks_access_entry" "this" {
   kubernetes_groups = []
 
   type = "EC2_LINUX"
+
+  lifecycle {
+    ignore_changes = [
+      user_name,
+    ]
+  }
 }
