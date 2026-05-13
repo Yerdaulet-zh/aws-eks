@@ -18,7 +18,7 @@ locals {
     ]
   }
 
-  cluster_user_arns = {
+  cluster_principal_arns = {
     "clusterAdmin" : var.idenitiy_user_role_arns.clusterAdmin
     "devops" : var.idenitiy_user_role_arns.devops
     "dev" : var.idenitiy_user_role_arns.dev

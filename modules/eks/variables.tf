@@ -160,7 +160,8 @@ variable "cluster_access_config" {
     - Configuration is designed to manage multiple users including cluster admin
 EOT
   type = list(object({
-    user_arn          = string
+    principal_arn     = string
+    access_type       = string
     kubernetes_groups = list(string)
     policy_arn        = string
     access_scope = object({
@@ -171,7 +172,8 @@ EOT
 
   default = [
     {
-      user_arn          = "admin_iam_user_arn"
+      principal_arn     = "admin_iam_principal_arn"
+      access_type       = "STANDARD"
       kubernetes_groups = []
       policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
       access_scope = {
@@ -180,7 +182,8 @@ EOT
       }
     },
     {
-      user_arn          = "network_iam_user_arn"
+      principal_arn     = "network_iam_principal_arn"
+      access_type       = "STANDARD"
       kubernetes_groups = ["junior-network-manager"]                                   # restrict via RBAC the permissions to certain groups and resources
       policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy" # for jun-network engineer might be dangerous
       access_scope = {

@@ -21,8 +21,9 @@ module "eks_dev" {
 
   cluster_access_config = [
     {
-      user_arn          = data.aws_iam_role.this["clusterAdmin"].arn
+      principal_arn     = data.aws_iam_role.this["clusterAdmin"].arn
       kubernetes_groups = []
+      access_type       = "STANDARD"
       policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
       access_scope = {
         type       = "cluster"
@@ -30,8 +31,9 @@ module "eks_dev" {
       }
     },
     {
-      user_arn          = data.aws_iam_role.this["devops"].arn
+      principal_arn     = data.aws_iam_role.this["devops"].arn
       kubernetes_groups = []
+      access_type       = "STANDARD"
       policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
       access_scope = {
         type       = "cluster"
@@ -39,8 +41,9 @@ module "eks_dev" {
       }
     },
     {
-      user_arn          = data.aws_iam_role.this["dev"].arn
+      principal_arn     = data.aws_iam_role.this["dev"].arn
       kubernetes_groups = []
+      access_type       = "STANDARD"
       policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
       access_scope = {
         type       = "namespace"
@@ -48,12 +51,24 @@ module "eks_dev" {
       }
     },
     {
-      user_arn          = data.aws_iam_role.this["audit"].arn
+      principal_arn     = data.aws_iam_role.this["audit"].arn
       kubernetes_groups = []
+      access_type       = "STANDARD"
       policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
       access_scope = {
         type       = "namespace"
         namespaces = ["loki", "monitoring"]
+      }
+    },
+    # Karpenter
+    {
+      principal_arn     = module.karpenter.karpenter_node_role_arn
+      kubernetes_groups = []
+      access_type       = "EC2_LINUX"
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAutoNodePolicy"
+      access_scope = {
+        type       = "cluster"
+        namespaces = []
       }
     }
   ]

@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_role" "this" {
-  for_each = local.cluster_user_arns
+  for_each = local.cluster_principal_arns
   name     = each.value
 }
 
