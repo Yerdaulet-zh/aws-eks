@@ -8,7 +8,7 @@ resource "aws_eks_access_entry" "this" {
 
   lifecycle {
     ignore_changes = [
-      user_name,
+      kubernetes_groups,
     ]
   }
 }
