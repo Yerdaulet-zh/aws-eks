@@ -1,0 +1,64 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: redis-selfsigned-issuer
+  namespace: redis
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: redis-ca-cert
+  namespace: redis
+spec:
+  isCA: true
+  commonName: redis-ca
+  secretName: redis-ca-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: redis-selfsigned-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: redis-ca-issuer
+  namespace: redis
+spec:
+  ca:
+    secretName: redis-ca-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: redis-cluster-tls
+  namespace: redis
+spec:
+  secretName: redis-tls-cert-secret
+  duration: 2160h   # 90 days
+  renewBefore: 360h # 15 days
+  subject:
+    organizations:
+      - imon.work
+  commonName: redis-cluster
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - redis-cluster
+    - redis-cluster.redis
+    - redis-cluster.redis.svc
+    - redis-cluster.redis.svc.cluster.local
+  issuerRef:
+    name: redis-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
