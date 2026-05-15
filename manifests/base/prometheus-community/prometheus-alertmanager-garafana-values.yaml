@@ -443,14 +443,14 @@ prometheus:
       whenDeleted: Delete
       whenScaled: Retain
 
-    nodeSelector:
-      role: stateful
+    # nodeSelector:
+    #   role: stateful
 
-    tolerations:
-      - key: "workload"
-        operator: "Equal"
-        value: "stateful"
-        effect: "NoSchedule"
+    # tolerations:
+      # - key: "workload"
+      #   operator: "Equal"
+      #   value: "stateful"
+      #   effect: "NoSchedule"
 
     topologySpreadConstraints:
       # --- SPREAD ACROSS ZONES ---
