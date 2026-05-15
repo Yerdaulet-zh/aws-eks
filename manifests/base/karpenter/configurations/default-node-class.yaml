@@ -65,7 +65,6 @@ spec:
   tags:
     environment: dev
     project: imon-academy
-    used-for: general-purpose-apps
 
   # configures IMDS for the instance
   metadataOptions:
