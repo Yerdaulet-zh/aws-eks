@@ -99,7 +99,7 @@ module "eks_dev" {
       labels = { "intent" = "system-node-group" }
       taints = [
         {
-          key    = "CriticalAddonsOnly"
+          key    = "ClusterManagement"
           value  = "true"
           effect = "NO_SCHEDULE"
         }
