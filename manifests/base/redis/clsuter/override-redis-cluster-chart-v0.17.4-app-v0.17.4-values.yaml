@@ -49,11 +49,11 @@ redisCluster:
       #         operator: In
       #         values:
       #         - ssd
-    tolerations: []
-      # - key: "key"
-      #   operator: "Equal"
-      #   value: "value"
-      #   effect: "NoSchedule"
+    tolerations:
+      - key: "redis-cluster"
+        operator: "Equal"
+        value: "stateful"
+        effect: "NoSchedule"
     nodeSelector: null
       # memory: medium
     securityContext:
@@ -91,11 +91,11 @@ redisCluster:
       #         operator: In
       #         values:
       #         - ssd
-    tolerations: []
-      # - key: "key"
-      #   operator: "Equal"
-      #   value: "value"
-      #   effect: "NoSchedule"
+    tolerations:
+      - key: "redis-cluster"
+        operator: "Equal"
+        value: "stateful"
+        effect: "NoSchedule"
     nodeSelector: null
       # memory: medium
     securityContext:

@@ -26,7 +26,7 @@ redisOperator:
   # Additional arguments for redis-operator container
   extraArgs: []
   # When not specified, the operator will watch all namespaces. It can be set to a specific namespace or multiple namespaces separated by commas.
-  watchNamespace: "redis"
+  watchNamespace: ""
   env: []
   # If set to true, webhook server will be enabled for masterSlaveAntiAffinity feature
   # Certificate handling:
@@ -68,7 +68,7 @@ serviceAccount:
 
 service:
   name: webhook-service
-  namespace: redis
+  namespace: redis-operator
 
 certificate:
   name: serving-cert
@@ -98,7 +98,11 @@ certmanager:
 priorityClassName: ""
 nodeSelector: {}
 tolerateAllTaints: false
-tolerations: []
+tolerations:
+  - name: "redis-cluster"
+    operator: "Equal"
+    value: "stateful"
+    effect: "NoSchedule"
 affinity: {}
 
 podSecurityContext:
