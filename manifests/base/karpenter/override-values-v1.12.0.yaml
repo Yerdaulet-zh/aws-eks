@@ -74,7 +74,7 @@ topologySpreadConstraints:
         app.kubernetes.io/name: karpenter
 # -- Tolerations to allow the pod to be scheduled to nodes with taints.
 tolerations:
-  - key: CriticalAddonsOnly
+  - key: ClusterManagement
     operator: Exists
 
 controller:
