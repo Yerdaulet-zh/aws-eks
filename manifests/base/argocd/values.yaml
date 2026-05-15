@@ -8,11 +8,11 @@ global:
     level: info
 
   # -- Tolerations for pod assignment
-  # tolerations:
-  #   - key: "workload"
-  #     operator: "Equal"
-  #     value: "stateful"
-  #     effect: "NoSchedule"
+  tolerations:
+    - key: "ClusterManagement"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
 
 # Enable Insecure ArgoCD API Server
 configs:
@@ -26,9 +26,9 @@ redis-ha:
   enabled: true
   # --- did not respect the global setting
   tolerations:
-    - key: "workload"
+    - key: "ClusterManagement"
       operator: "Equal"
-      value: "stateful"
+      value: "true"
       effect: "NoSchedule"
 
 controller:
