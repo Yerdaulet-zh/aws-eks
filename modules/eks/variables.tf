@@ -422,7 +422,7 @@ variable "addon_configs" {
     ebs_csi = {
       addon_version = null
       controller = {
-        replicaCount = 3
+        replicaCount = 2
         resources = {
           limits = {
             cpu    = "100m"
