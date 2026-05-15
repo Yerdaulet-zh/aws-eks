@@ -35,6 +35,7 @@ resource "aws_eks_addon" "core_dns" {
   configuration_values = jsonencode({
     replicaCount = var.addon_configs.core_dns.replicaCount
     resources    = var.addon_configs.core_dns.resources
+    tolerations  = var.addon_configs.core_dns.tolerations
 
     affinity = var.addon_configs.core_dns.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
       weight          = 100

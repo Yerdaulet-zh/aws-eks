@@ -239,6 +239,12 @@ variable "addon_configs" {
           memory = string
         })
       })
+      tolerations = list(
+        object({
+          operator = string
+          effect   = string
+        })
+      )
       enable_custom_affinity = bool
     })
 
@@ -346,6 +352,10 @@ variable "addon_configs" {
           memory = "64Mi"
         }
       }
+      tolerations = [{
+        key      = "ClusterManagement"
+        operator = "Exists"
+      }]
       enable_custom_affinity = true
     }
 
