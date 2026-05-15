@@ -204,6 +204,22 @@ variable "addon_configs" {
   type = object({
     metrics_server = object({
       addon_version = string
+      resources = object({
+        limits = object({
+          cpu    = string
+          memory = string
+        })
+        requests = object({
+          cpu    = string
+          memory = string
+        })
+      })
+      tolerations = list(
+        object({
+          operator = string
+          effect   = string
+        })
+      )
     })
 
     pod_identity_agent = object({
@@ -286,6 +302,12 @@ variable "addon_configs" {
             memory = string
           })
         })
+        tolerations = list(
+          object({
+            operator = string
+            effect   = string
+          })
+        )
       })
 
       node = object({
@@ -313,6 +335,22 @@ variable "addon_configs" {
   default = {
     metrics_server = {
       addon_version = null
+      resources = {
+        limits = {
+          cpu    = "100m"
+          memory = "400Mi"
+        }
+        requests = {
+          cpu    = "100m"
+          memory = "200Mi"
+        }
+      }
+      tolerations = [
+        {
+          operator = "Exists"
+          effect   = null
+        }
+      ]
     }
 
     pod_identity_agent = {
@@ -330,11 +368,7 @@ variable "addon_configs" {
       tolerations = [
         {
           operator = "Exists"
-          effect   = "NoSchedule"
-        },
-        {
-          operator = "Exists"
-          effect   = "NoExecute"
+          effect   = null
         }
       ]
     }
@@ -344,17 +378,18 @@ variable "addon_configs" {
       replicaCount  = 3
       resources = {
         limits = {
-          cpu    = "100m"
-          memory = "128Mi"
+          cpu    = "200m"
+          memory = "200Mi"
         }
         requests = {
-          cpu    = "10m"
-          memory = "64Mi"
+          cpu    = "100m"
+          memory = "126Mi"
         }
       }
       tolerations = [{
         key      = "ClusterManagement"
         operator = "Exists"
+        effect   = null
       }]
       enable_custom_affinity = true
     }
@@ -398,6 +433,11 @@ variable "addon_configs" {
             memory = "64Mi"
           }
         }
+        tolerations = [{
+          key      = "ClusterManagement"
+          operator = "Exists"
+          effect   = null
+        }]
       }
 
       node = {
@@ -414,11 +454,7 @@ variable "addon_configs" {
         tolerations = [
           {
             operator = "Exists"
-            effect   = "NoSchedule"
-          },
-          {
-            operator = "Exists"
-            effect   = "NoExecute"
+            effect   = null
           }
         ]
       }

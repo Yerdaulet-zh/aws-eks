@@ -6,6 +6,11 @@ resource "aws_eks_addon" "metrics_server" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
   preserve                    = true
+
+  configuration_values = jsonencode({
+    resources   = var.addon_configs.metrics_server.resources
+    tolerations = var.addon_configs.metrics_server.tolerations
+  })
 }
 
 # ------ Pod Identity Agent Addon ------
@@ -214,7 +219,7 @@ resource "aws_eks_addon" "ebs_csi" {
     controller = {
       replicaCount = var.addon_configs.ebs_csi.controller.replicaCount
       resources    = var.addon_configs.ebs_csi.controller.resources
-
+      tolerations  = var.addon_configs.ebs_csi.controller.tolerations
       affinity = var.addon_configs.ebs_csi.enable_custom_affinity ? jsondecode(templatefile("${path.module}/templates/affinity.json.tftpl", {
         weight          = 100
         capacity_key    = "eks.amazonaws.com/capacityType"
