@@ -5,7 +5,7 @@ namespace: nginx-gateway
 
 resources:
   - namespace.yaml
-  - https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.5.1/deploy/crds.yaml
+  # - https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.5.1/deploy/crds.yaml
 
 helmCharts:
   - name: nginx-gateway-fabric
