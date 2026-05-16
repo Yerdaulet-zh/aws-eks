@@ -446,11 +446,11 @@ prometheus:
     # nodeSelector:
     #   role: stateful
 
-    # tolerations:
-      # - key: "workload"
-      #   operator: "Equal"
-      #   value: "stateful"
-      #   effect: "NoSchedule"
+    tolerations:
+      - key: "memory-optimized"
+        operator: "Equal"
+        value: "stateful"
+        effect: "NoSchedule"
 
     topologySpreadConstraints:
       # --- SPREAD ACROSS ZONES ---
