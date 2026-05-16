@@ -3,9 +3,9 @@ kind: Kustomization
 
 namespace: kube-system
 
-resources:
+# resources:
   # AWS LB Controller CRDs
-  - github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master
+  # - github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master
 
 helmCharts:
   - name: aws-load-balancer-controller
@@ -17,9 +17,7 @@ helmCharts:
       vpcId: "vpc-0e133e1f65ad6e1af"
       region: "eu-central-1"
       priorityClassName: system-cluster-critical
-
-      installCRDs: true
-
+      installCRDs: false
       enableCertManager: true
       serviceAccount:
         create: true
