@@ -34,5 +34,10 @@ helmCharts:
           cpu: 100m
           memory: 128Mi
         limits:
-          cpu: 200m
-          memory: 256Mi
+          cpu: 100m
+          memory: 156Mi
+      tolerations:
+        - key: "ClusterManagement"
+          operator: "Equal"
+          value: "true"
+          effect: null
