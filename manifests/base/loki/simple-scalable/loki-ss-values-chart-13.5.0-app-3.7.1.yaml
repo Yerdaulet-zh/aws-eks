@@ -77,7 +77,7 @@ defaults:
   # -- Tolerations for loki pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -554,7 +554,7 @@ write:
     # -- Tolerations for write pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -757,7 +757,7 @@ backend:
     # -- Tolerations for backend pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -861,7 +861,7 @@ ingester:
   # -- Tolerations for ingester pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -1312,7 +1312,7 @@ indexGateway:
   # -- Tolerations for ingester pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
   persistence:
@@ -1407,7 +1407,7 @@ compactor:
   # -- Tolerations for compactor pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -1518,7 +1518,7 @@ bloomGateway:
   # -- Tolerations for bloom-gateway pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -1618,7 +1618,7 @@ bloomPlanner:
   # -- Tolerations for bloom-planner pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -1764,7 +1764,7 @@ bloomBuilder:
   # -- Tolerations for bloom-builder pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -1857,7 +1857,7 @@ patternIngester:
   # -- Tolerations for pattern-ingester pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -1970,7 +1970,7 @@ ruler:
   # -- Tolerations for ruler pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -2063,7 +2063,7 @@ overridesExporter:
   # -- Tolerations for overrides-exporter pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -2139,7 +2139,7 @@ resultsCache:
   # -- Tolerations for overrides-exporter pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -2242,7 +2242,7 @@ chunksCache:
   # -- Tolerations for chunks-cache pods
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
@@ -2407,7 +2407,7 @@ rollout_operator:
   enabled: true
   tolerations:
     - key: memory-optimized
-      operator: equal
+      operator: Equal
       value: stateful
       effect: NoSchedule
 
