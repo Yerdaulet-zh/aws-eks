@@ -82,7 +82,7 @@ module "eks_dev" {
     # System Node Group| Karpenter & AWS Addons
     "systen-critical-1" = {
       node_group_name     = "systen-critical-1"
-      instance_types      = ["t4g.medium"]
+      instance_types      = ["t3a.medium"]
       capacity_type       = "ON_DEMAND"
       subnet_ids          = [data.terraform_remote_state.vpc.outputs.public_dual_stack_subnets["public_dual_stack_a"]]
       ami_type            = "AL2023_x86_64_STANDARD"
