@@ -8,7 +8,7 @@ enabled: true
 
 global:
   # The optional priority class to be used for the cert-manager pods.
-  priorityClassName: "system-addon-critical"
+  # priorityClassName: "system-addon-critical"
 
   # Set the verbosity of cert-manager. A range of 0 - 6, with 6 being the most verbose.
   logLevel: 2
@@ -16,6 +16,24 @@ global:
   leaderElection:
     # Override the namespace used for the leader election lease.
     namespace: "kube-system"
+
+    # The duration that non-leader candidates will wait after observing a
+    # leadership renewal until attempting to acquire leadership of a led but
+    # unrenewed leader slot. This is effectively the maximum duration that a
+    # leader can be stopped before it is replaced by another candidate.
+    # +docs:property
+    # leaseDuration: 60s
+
+    # The interval between attempts by the acting master to renew a leadership
+    # slot before it stops leading. This must be less than or equal to the
+    # lease duration.
+    # +docs:property
+    # renewDeadline: 40s
+
+    # The duration the clients should wait between attempting acquisition and
+    # renewal of a leadership.
+    # +docs:property
+    # retryPeriod: 15s
 
 # This option is equivalent to setting crds.enabled=true and crds.keep=true.
 # Deprecated: use crds.enabled and crds.keep instead.
