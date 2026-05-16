@@ -2,8 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - argo-cd/v9.5.9/
-  - aws-load-balncer-controller/v3.2.2/
-  - gateway/nginx-gateway-fabric-2.5.1/
-  - karpenter/v1.12.0/
-  - kube-prometheus-stack/v84.4.0/
+  - aws-load-balncer-controller/v3.2.2
+  - gateway/nginx-gateway-fabric-2.5.1
+  - kube-prometheus-stack/v84.4.0
