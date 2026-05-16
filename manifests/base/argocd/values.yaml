@@ -30,7 +30,11 @@ redis-ha:
       operator: "Equal"
       value: "true"
       effect: "NoSchedule"
+  haproxy:
+    hardAntiAffinity: false
   hardAntiAffinity: false
+  topologySpreadConstraints:
+    whenUnsatisfiable: ScheduleAnyway
 
 controller:
   replicas: 1
