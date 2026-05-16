@@ -8,7 +8,7 @@ enabled: true
 
 global:
   # The optional priority class to be used for the cert-manager pods.
-  priorityClassName: "system-cluster-critical"
+  # priorityClassName: "system-cluster-critical"
 
   # Set the verbosity of cert-manager. A range of 0 - 6, with 6 being the most verbose.
   logLevel: 2
