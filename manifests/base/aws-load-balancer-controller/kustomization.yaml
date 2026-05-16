@@ -24,3 +24,8 @@ helmCharts:
       serviceAccount:
         create: true
         name: aws-load-balancer-controller
+      tolerations:
+        - key: "ClusterManagement"
+          operator: "Equal"
+          value: "true"
+          effect: null
