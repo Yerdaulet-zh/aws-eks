@@ -71,15 +71,15 @@ defaults:
     readOnlyRootFilesystem: true
 
   # -- Node selector for loki pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Tolerations for loki pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   # -- KEDA autoscaling shared configuration for all components that support KEDA
   # kedaAutoscaling: # I will come here once KEDA is configured
@@ -525,8 +525,8 @@ write:
     unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for write pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for write pods
   # The value will be passed through tpl.
@@ -553,10 +553,10 @@ write:
 
     # -- Tolerations for write pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   # -- The default is to deploy all pods in parallel.
   podManagementPolicy: "OrderedReady"
@@ -728,8 +728,8 @@ backend:
     unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for backend pods
-  nodeSelector:
-    role: stateful
+  # nodeSelector:
+  #   role: stateful
 
   # -- Topology Spread Constraints for backend pods
   # The value will be passed through tpl.
@@ -756,10 +756,10 @@ backend:
 
     # -- Tolerations for backend pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   # -- The default is to deploy all pods in parallel.
   podManagementPolicy: "OrderedReady"
@@ -832,8 +832,8 @@ ingester:
     unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for ingester pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for ingester pods
   # The value will be passed through tpl.
@@ -860,10 +860,10 @@ ingester:
 
   # -- Tolerations for ingester pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   updateStrategy:
     # -- One of  'OnDelete' or 'RollingUpdate'
@@ -1283,8 +1283,8 @@ indexGateway:
   affinity: {}
 
   # -- Node selector for ingester pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for ingester pods
   # The value will be passed through tpl.
@@ -1311,10 +1311,10 @@ indexGateway:
 
   # -- Tolerations for ingester pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
   persistence:
     # -- Enable creating PVCs which is required when using boltdb-shipper
     enabled: true
@@ -1378,8 +1378,8 @@ compactor:
   resources: {}
 
   # -- Node selector for compactor pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for compactor pods
   # The value will be passed through tpl.
@@ -1406,10 +1406,10 @@ compactor:
 
   # -- Tolerations for compactor pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   persistence:
     # -- Enable creating PVCs for the compactor
@@ -1489,8 +1489,8 @@ bloomGateway:
     unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for bloom-gateway pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for bloom-gateway pods
   # The value will be passed through tpl.
@@ -1517,10 +1517,10 @@ bloomGateway:
 
   # -- Tolerations for bloom-gateway pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   persistence:
     # -- Enable creating PVCs for the bloom-gateway
@@ -1589,8 +1589,8 @@ bloomPlanner:
     unhealthyPodEvictionPolicy: IfHealthyBudget
 
   # -- Node selector for bloom-planner pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for bloom-planner pods
   # The value will be passed through tpl.
@@ -1617,10 +1617,10 @@ bloomPlanner:
 
   # -- Tolerations for bloom-planner pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   persistence:
     # -- Enable creating PVCs for the bloom-planner
@@ -1735,8 +1735,8 @@ bloomBuilder:
   affinity: {}
 
   # -- Node selector for bloom-builder pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for bloom-builder pods
   # The value will be passed through tpl.
@@ -1763,10 +1763,10 @@ bloomBuilder:
 
   # -- Tolerations for bloom-builder pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   # -- Update strategy for bloom-builder deployment
   strategy:
@@ -1828,8 +1828,8 @@ patternIngester:
     maxUnavailable: 1
     unhealthyPodEvictionPolicy: IfHealthyBudget
   # -- Node selector for pattern ingester pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for pattern-ingester pods
   # The value will be passed through tpl.
@@ -1856,10 +1856,10 @@ patternIngester:
 
   # -- Tolerations for pattern-ingester pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   persistence:
     # -- Enable creating PVCs for the pattern ingester
@@ -1941,8 +1941,8 @@ ruler:
   affinity: {}
 
   # -- Node selector for ruler pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for ruler pods
   # The value will be passed through tpl.
@@ -1969,10 +1969,10 @@ ruler:
 
   # -- Tolerations for ruler pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   persistence:
     # -- Enable creating PVCs which is required when using recording rules
@@ -2034,8 +2034,8 @@ overridesExporter:
   affinity: {}
 
   # -- Node selector for overrides-exporter pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for overrides-exporter pods
   # The value will be passed through tpl.
@@ -2062,10 +2062,10 @@ overridesExporter:
 
   # -- Tolerations for overrides-exporter pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   serviceAccount:
     # -- Specifies whether a ServiceAccount should be created
@@ -2120,8 +2120,8 @@ resultsCache:
   writebackParallelism: 1
 
   # -- Node selector for results-cache pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for overrides-exporter pods
   # The value will be passed through tpl.
@@ -2138,10 +2138,10 @@ resultsCache:
 
   # -- Tolerations for overrides-exporter pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   # -- Affinity for results-cache pods
   affinity: {}
@@ -2223,8 +2223,8 @@ chunksCache:
   writebackParallelism: 1
 
   # -- Node selector for chunks-cache pods
-  nodeSelector:
-    role: stateful
+  #nodeSelector:
+#    role: stateful
 
   # -- Topology Spread Constraints for chunks-cache pods
   # The value will be passed through tpl.
@@ -2241,10 +2241,10 @@ chunksCache:
 
   # -- Tolerations for chunks-cache pods
   tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
   # -- Affinity for chunks-cache pods
   affinity: {}
@@ -2328,8 +2328,8 @@ chunksCache:
     writebackParallelism: 1
 
     # -- Node selector for chunks-cach-l2 pods
-    nodeSelector:
-      role: stateful
+    # nodeSelector:
+    #   role: stateful
 
     # -- Topology Spread Constraints for chunks-cach-l2 pods
     # The value will be passed through tpl.
