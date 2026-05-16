@@ -72,15 +72,15 @@ controller:
   minReadySeconds: 10
 
   # -- nodeSelector to apply to Grafana Alloy pods.
-  nodeSelector:
-      role: stateful
+  # nodeSelector:
+  #     role: stateful
 
   # -- Tolerations to apply to Grafana Alloy pods.
-  tolerations:
-    - key: "workload"
-      operator: "Equal"
-      value: "stateful"
-      effect: "NoSchedule"
+  # tolerations:
+  #   - key: "memory-optimized"
+  #     operator: "Equal"
+  #     value: "stateful"
+  #     effect: "NoSchedule"
 
   # -- Topology Spread Constraints to apply to Grafana Alloy pods.
   topologySpreadConstraints:
