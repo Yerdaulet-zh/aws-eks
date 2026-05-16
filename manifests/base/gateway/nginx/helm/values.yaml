@@ -589,8 +589,8 @@ nginx:
 
     # -- The nodeSelector of the NGINX data plane pod.
     # nodeSelector: {}
-    nodeSelector:
-      role: frontend
+    # nodeSelector:
+    #   role: frontend
 
     # -- The affinity of the NGINX data plane pod.
     # affinity: {}
