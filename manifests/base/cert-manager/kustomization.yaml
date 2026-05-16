@@ -40,4 +40,4 @@ helmCharts:
         - key: "ClusterManagement"
           operator: "Equal"
           value: "true"
-          effect: null
+          effect: "NoSchedule"
