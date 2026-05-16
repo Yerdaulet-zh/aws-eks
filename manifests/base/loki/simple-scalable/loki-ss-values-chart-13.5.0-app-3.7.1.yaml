@@ -2405,6 +2405,11 @@ chunksCache:
 # -- Setting for the Grafana Rollout Operator https://github.com/grafana/helm-charts/tree/main/charts/rollout-operator
 rollout_operator:
   enabled: true
+  tolerations:
+    - key: memory-optimized
+      operator: equal
+      value: stateful
+      effect: NoSchedule
 
 
 # -- Configuration for the minio subchart
