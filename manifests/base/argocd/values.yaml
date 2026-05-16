@@ -30,6 +30,7 @@ redis-ha:
       operator: "Equal"
       value: "true"
       effect: "NoSchedule"
+  hardAntiAffinity: false
 
 controller:
   replicas: 1
