@@ -36,12 +36,12 @@ tempo:
 # These values are overridden by component-specific settings.
 defaults:
   # -- Default node selector for all pods
-  nodeSelector:
-    role: stateful
+  # nodeSelector:
+    # role: stateful
 
   # -- Default tolerations for all pods
   tolerations:
-    - key: "workload"
+    - key: "memory-optimized"
       operator: "Equal"
       value: "stateful"
       effect: "NoSchedule"
