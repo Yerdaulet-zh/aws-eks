@@ -13,6 +13,16 @@ global:
       operator: "Equal"
       value: "true"
       effect: "NoSchedule"
+    # -- Default tolerations for all components
+
+  # Default affinity preset for all components
+  affinity:
+    # -- Default pod anti-affinity rules. Either: `none`, `soft` or `hard`
+    podAntiAffinity: soft
+    # Node affinity rules
+    nodeAffinity:
+      # -- Default node affinity rules. Either: `none`, `soft` or `hard`
+      type: soft
 
 # Enable Insecure ArgoCD API Server
 configs:
