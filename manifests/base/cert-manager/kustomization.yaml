@@ -18,7 +18,7 @@ helmCharts:
 
     valuesInline:
       config:
-        enableGatewayAPI: true
+        enableGatewayAPI: false
       replicaCount: 2
       global:
         priorityClassName: system-cluster-critical
