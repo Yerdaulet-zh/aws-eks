@@ -220,7 +220,7 @@ logging:
     format: json
     # -- Logging time encoding for KEDA Operator.
     # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
-    timeEncoding: r    # -- If enabled, the stack traces will be also printed
+    timeEncoding: rfc3339    # -- If enabled, the stack traces will be also printed
     stackTracesEnabled: falsefc3339
 
   metricServer:
