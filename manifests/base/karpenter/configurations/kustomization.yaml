@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - default-node-class.yaml
+  - general-purpose-node-pools.yaml
+  - memory-optimized-node-pool.yaml
