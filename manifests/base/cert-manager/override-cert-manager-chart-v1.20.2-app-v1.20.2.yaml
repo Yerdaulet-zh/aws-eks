@@ -340,7 +340,7 @@ webhook:
   #
   topologySpreadConstraints:
   - maxSkew: 2
-    topologyKey: topology.kubernetes.io/hostnmae
+    topologyKey: topology.kubernetes.io/hostname
     whenUnsatisfiable: ScheduleAnyway
     labelSelector:
       matchLabels:
