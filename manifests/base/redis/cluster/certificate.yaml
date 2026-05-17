@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: redis-selfsigned-issuer
-  namespace: redis
+  namespace: redis-cluster
 spec:
   selfSigned: {}
 ---
@@ -10,7 +10,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: redis-ca-cert
-  namespace: redis
+  namespace: redis-cluster
 spec:
   isCA: true
   commonName: redis-ca
@@ -27,7 +27,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: redis-ca-issuer
-  namespace: redis
+  namespace: redis-cluster
 spec:
   ca:
     secretName: redis-ca-secret
@@ -36,21 +36,21 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: redis-cluster-tls
-  namespace: redis
+  namespace: redis-cluster
 spec:
   secretName: redis-tls-cert-secret
   duration: 2160h   # 90 days
   renewBefore: 360h # 15 days
   subject:
     organizations:
-      - imon.work
+      - imon.academy
   commonName: redis-cluster
   isCA: false
   privateKey:
     algorithm: RSA
     encoding: PKCS1
     size: 2048
-  usages:
+  usages: # mTLS
     - server auth
     - client auth
   dnsNames:
