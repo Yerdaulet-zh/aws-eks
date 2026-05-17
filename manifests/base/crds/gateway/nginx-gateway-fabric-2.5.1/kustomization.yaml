@@ -12,3 +12,4 @@ resources:
   - gateway.nginx.org_upstreamsettingspolicies.yaml
   - gateway.nginx.org_observabilitypolicies.yaml
   - gateway.nginx.org_proxysettingspolicies.yaml
+  - https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.5.1
