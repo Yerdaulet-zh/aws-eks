@@ -1,5 +1,6 @@
+---
 redisCluster:
-  name: "redis-cluster"
+  name: ""
   # -- Default number of replicas for both leader and follower when not explicitly set
   clusterSize: 3
   clusterVersion: v7
@@ -11,15 +12,15 @@ redisCluster:
     # - name:  Secret with Registry credentials
   serviceType: ClusterIP
   redisSecret:
-    secretName: "redis-auth"
-    secretKey: "password"
+    secretName: ""
+    secretKey: ""
   resources:
     requests:
       cpu: 100m
-      memory: 1Gi
+      memory: 128Mi
     limits:
       cpu: 100m
-      memory: 1Gi
+      memory: 128Mi
   minReadySeconds: 0
   # -- Some fields of statefulset are immutable, such as volumeClaimTemplates.
   #    When set to true, the operator will delete the statefulset and recreate it.
@@ -27,7 +28,7 @@ redisCluster:
   recreateStatefulSetOnUpdateInvalid: false
   # -- MaxMemoryPercentOfLimit is the percentage of redis container memory limit to be used as maxmemory.
   #    Default is 0 (disabled).
-  maxMemoryPercentOfLimit: 80
+  maxMemoryPercentOfLimit: 0
   persistentVolumeClaimRetentionPolicy:
     whenDeleted: Delete
     whenScaled: Retain
@@ -40,35 +41,19 @@ redisCluster:
     # -- Number of Redis leader (master) nodes. If not set, uses clusterSize value
     replicas: 3
     serviceType: ClusterIP
-    affinity: {}
-      # nodeAffinity:
-      #   requiredDuringSchedulingIgnoredDuringExecution:
-      #     nodeSelectorTerms:
-      #     - matchExpressions:
-      #       - key: disktype
-      #         operator: In
-      #         values:
-      #         - ssd
+
     tolerations:
-      - key: "redis-cluster"
+      - key: "memory-optimized"
         operator: "Equal"
         value: "stateful"
         effect: "NoSchedule"
-    nodeSelector: null
-      # memory: medium
-    securityContext:
-      allowPrivilegeEscalation: false
-      runAsNonRoot: true
-      runAsUser: 1000
-      runAsGroup: 1000
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-          - ALL
+
+    securityContext: {}
+
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: PreferNoSchedule
+        whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
             role: leader
@@ -82,35 +67,19 @@ redisCluster:
     # -- Number of Redis follower (slave) nodes. If not set, uses clusterSize value
     replicas: 3
     serviceType: ClusterIP
-    affinity: null
-      # nodeAffinity:
-      #   requiredDuringSchedulingIgnoredDuringExecution:
-      #     nodeSelectorTerms:
-      #     - matchExpressions:
-      #       - key: disktype
-      #         operator: In
-      #         values:
-      #         - ssd
+
     tolerations:
-      - key: "redis-cluster"
+      - key: "memory-optimized"
         operator: "Equal"
         value: "stateful"
         effect: "NoSchedule"
-    nodeSelector: null
-      # memory: medium
-    securityContext:
-      allowPrivilegeEscalation: false
-      runAsNonRoot: true
-      runAsUser: 1000
-      runAsGroup: 1000
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-          - ALL
+
+    securityContext: {}
+
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: PreferNoSchedule
+        whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
             role: follower
@@ -121,14 +90,11 @@ redisCluster:
       # minAvailable: 1
 
 externalConfig:
-  enabled: false
+  enabled: true
   data: |
     tcp-keepalive 400
     slowlog-max-len 158
     stream-node-max-bytes 2048
-
-externalService:
-  enabled: false
 
 serviceMonitor:
   enabled: true
@@ -136,7 +102,10 @@ serviceMonitor:
   scrapeTimeout: 10s
   # -- Namespace where servicemonitor resource will be created, if empty it will be created in the same namespace as the redis-cluster
   namespace: ""
-
+  # -- extraLabels are added to the servicemonitor when enabled set to true
+  extraLabels: {}
+    # foo: bar
+    # team: devops
 
 redisExporter:
   enabled: true
@@ -153,41 +122,68 @@ redisExporter:
   env: []
     # - name: VAR_NAME
     #   value: "value1"
-  securityContext:
-    allowPrivilegeEscalation: false
-    runAsNonRoot: true
-    runAsUser: 1000
-    runAsGroup: 1000
-    readOnlyRootFilesystem: true
-    capabilities:
-      drop:
-        - ALL
+  securityContext: {}
 
 sidecars: []
 
 initContainer:
-  enabled: false
+  enabled: true
+  image: ""
+  imagePullPolicy: "IfNotPresent"
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+  env: []
+  command: []
+  args: []
+
+priorityClassName: ""
+
+storageSpec:
+  volumeClaimTemplate:
+    spec:
+      storageClassName: gp3
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
+  nodeConfVolume: true
+  nodeConfVolumeClaimTemplate:
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
+  #   selector: {}
 
 podSecurityContext:
-  runAsNonRoot: true
   runAsUser: 1000
-  runAsGroup: 1000
   fsGroup: 1000
-  fsGroupChangePolicy: "OnRootMismatch"
 
-serviceAccountName: redis-cluster-sa
 
-# TLS:
-#   ca: ca.crt
-#   cert: tls.crt
-#   key: tls.key
-#   secret:
-#     secretName: "redis-tls-cert-secret"
+# serviceAccountName: redis-cluster-sa
+
+TLS:
+  tlsConfig:
+    ca: ca.crt
+    cert: tls.crt
+    key: tls.key
+    secret:
+      secretName: "redis-tls-cert-secret"
 
 acl:
   # Configure ACL from Kubernetes Secret
   secret:
-    secretName: ""
+    secretName: "redis-acl-secret"
   # Configure ACL from PersistentVolumeClaim
   # The PVC must contain a file named "user.acl" at root level
   # persistentVolumeClaim: "redis-acl-pvc"
+
+env: []
+  # - name: VAR_NAME
+  #   value: "value1"
+
