@@ -3,18 +3,5 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-
-helmCharts:
-  - name: redis-operator
-    repo: https://ot-container-kit.github.io/helm-charts
-    version: 0.24.0
-    releaseName: redis-operator
-    namespace: redis
-    valuesFile: operator/override-redis-operator-chart-v0.24.0-app-v0.24.0-values.yaml
-
-  - name: redis-cluster
-    repo: https://ot-container-kit.github.io/helm-charts
-    version: 0.17.4
-    releaseName: my-redis-cluster
-    namespace: redis
-    valuesFile: override-redis-cluster-chart-v0.17.4-app-v0.17.4-values.yaml
+  - operator/
+  - cluster/

@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: redis-cluster
+
+resources:
+  - secret.yaml
+  - certificate.yaml
+
+helmCharts:
+  - name: redis-cluster
+    repo: https://ot-container-kit.github.io/helm-charts
+    version: 0.17.4
+    releaseName: redis-cluster
+    valuesFile: override-redis-cluster-chart-v0.17.4-app-v0.17.4-values.yaml
+
+patches:
+  - target:
+      kind: RedisCluster
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: redis-cluster
+  - target:
+      kind: ConfigMap
+      name: redis-cluster-ext-config
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: redis-cluster
